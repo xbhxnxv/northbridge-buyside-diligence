@@ -59,7 +59,10 @@ def stage_sql() -> None:
     try:
         for script in scripts:
             t0 = time.perf_counter()
-            con.execute(script.read_text(encoding="utf-8"))
+            try:
+                con.execute(script.read_text(encoding="utf-8"))
+            except duckdb.Error as exc:
+                raise RuntimeError(f"{script.relative_to(ROOT)}: {exc}") from exc
             print(f"    {script.relative_to(ROOT)}  ({time.perf_counter() - t0:.1f}s)")
     finally:
         con.close()

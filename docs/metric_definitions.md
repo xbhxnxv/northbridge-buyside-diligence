@@ -18,7 +18,7 @@ Figures inside the generated blocks are rewritten by `notebooks/02_data_preparat
 
 **Overdue.** Billings with status `overdue` stay in revenue because the service was billed and delivered. They are reported separately as a cash-collection point.
 
-**Anomaly treatment (P06).** Negative amounts on invoices marked `paid` are flagged. The cube uses one of three treatments, set in `cfg_settings.anomaly_treatment`: `as_reported`, `flipped` or `excluded`. The current setting is `as_reported`. Step 3 chooses the treatment by testing each against the management accounts.
+**Anomaly treatment (P06).** Negative amounts on invoices marked `paid` are flagged. The cube uses one of three treatments, set in `cfg_settings.anomaly_treatment`: `as_reported`, `flipped` or `excluded`. Step 3 settled it as `excluded`, the only treatment under which the cube ties to the management accounts' product lines in every month (decision D01). These invoices therefore contribute nothing to revenue or MRR.
 
 ## MRR and ARR
 

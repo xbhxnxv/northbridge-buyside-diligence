@@ -11,6 +11,23 @@
 -- Depends on the customer_name_key() macro defined in 01_profile.sql.
 
 -- ---------------------------------------------------------------------------
+-- Settings
+-- anomaly_treatment chooses how the 15 negative amounts on invoices marked paid (P06)
+-- enter the cube: as_reported, flipped or excluded. Settled in Step 3 as 'excluded':
+-- it is the only option under which the cube ties to the management accounts'
+-- product lines in all 48 months (docs/decisions_log.md, D01).
+-- ---------------------------------------------------------------------------
+
+CREATE OR REPLACE TABLE cfg_settings AS
+SELECT 'excluded' AS anomaly_treatment;
+
+CREATE OR REPLACE MACRO invoice_amount(t, as_reported, flipped, excluded) AS
+    CASE t WHEN 'as_reported' THEN as_reported
+           WHEN 'flipped' THEN flipped
+           WHEN 'excluded' THEN excluded
+           ELSE error('unknown anomaly_treatment: ' || t) END;
+
+-- ---------------------------------------------------------------------------
 -- Customers
 -- ---------------------------------------------------------------------------
 
@@ -186,9 +203,9 @@ SELECT * FROM (VALUES
      'Each pair is identical on every business field, the same customer, product and month has no other billing, and every second copy sits in a separate block at the end of the INV numbering. A second billing for the same service in the same month is an error.',
      'Keep both and treat the copy as a separate billing (rejected: nothing distinguishes the two rows except the id). Remove by customer x product x month instead of exact key (rejected: would catch legitimate same-month billings if any existed; none do, so the result is the same).'),
     ('A02', 'P06', 'clean_invoices', 'flagged',
-     'Flag negative amounts on invoices marked paid or overdue (anomaly_flag). Carry amount_as_reported, amount_flipped and amount_excluded; the cube uses one of them according to cfg_settings.anomaly_treatment.',
-     'The treatment is not settled from the invoice data alone. Step 3 tests each option against the management accounts and the choice is recorded here.',
-     'Decide now by flipping the sign because the neighbouring months carry the positive amount (deferred: that is an inference; the reconciliation is the evidence).'),
+     'Flag negative amounts on invoices marked paid or overdue (anomaly_flag) and carry amount_as_reported, amount_flipped and amount_excluded. Settled in Step 3: the cube uses amount_excluded (cfg_settings.anomaly_treatment = excluded), so these rows contribute zero to revenue and MRR.',
+     'Excluded is the only treatment under which the cube ties to the management accounts'' product lines in all 48 months with no residual, so management left these invoices out of reported revenue. The months either side of each one carry the same amount as a positive, so they look like sign-entry errors and reported revenue is probably understated by their absolute value (Q11).',
+     'As reported (rejected: leaves a gap to the management accounts in every month concerned and creates 15 negative MRR rows). Flipped (rejected: also leaves a gap, twice the size; it may be the economically correct figure, which is recorded as a probable understatement and raised with management instead of booked).'),
     ('A03', 'P03', 'clean_invoices', 'linked',
      'Keep credit notes as negative revenue in the month they are dated. Link each to the original invoice with the same customer, product, date and absolute amount (credit_note_original_id, credited_by_id).',
      'Credit notes are real reversals of billed revenue. Every one matches exactly one original.',
@@ -223,8 +240,9 @@ SELECT * FROM (VALUES
      'Treat as outliers and cap or exclude (rejected: invoices match the subscription price in 2022 and 2023 and move with the same uplift as every other customer afterwards).')
 ) AS t(action_id, issue_id, table_name, action_type, rule, rationale, alternative_considered);
 
--- revenue_impact: change to net revenue in the cube under the default setting
--- (as_reported). impact_if_flipped / impact_if_excluded apply to A02 only.
+-- revenue_impact: change to net revenue in the cube under the current setting
+-- (cfg_settings). impact_if_flipped / impact_if_excluded apply to A02 only and are
+-- measured against the amount as reported.
 CREATE OR REPLACE TABLE cleaning_actions AS
 SELECT 'A01' AS action_id, 'P04' AS issue_id, 'invoices' AS table_name, invoice_id AS record_id, customer_id,
        invoice_date AS record_date, 'removed; kept ' || kept_invoice_id AS detail,
@@ -233,7 +251,9 @@ FROM clean_removed_invoices
 UNION ALL
 SELECT 'A02', 'P06', 'invoices', invoice_id, customer_id, invoice_date,
        'negative amount on ' || status || ' invoice',
-       0, amount_flipped - amount_as_reported, amount_excluded - amount_as_reported
+       invoice_amount((SELECT anomaly_treatment FROM cfg_settings), amount_as_reported, amount_flipped, amount_excluded)
+           - amount_as_reported,
+       amount_flipped - amount_as_reported, amount_excluded - amount_as_reported
 FROM clean_invoices WHERE anomaly_flag
 UNION ALL
 SELECT 'A03', 'P03', 'invoices', invoice_id, customer_id, invoice_date,
@@ -437,6 +457,6 @@ COMMENT ON COLUMN cleaning_actions.record_id IS 'Key of the affected record.';
 COMMENT ON COLUMN cleaning_actions.customer_id IS 'Customer of the affected record, where there is one.';
 COMMENT ON COLUMN cleaning_actions.record_date IS 'Date used to assign the action to a year.';
 COMMENT ON COLUMN cleaning_actions.detail IS 'What was done to the record.';
-COMMENT ON COLUMN cleaning_actions.revenue_impact IS 'Change to net revenue under the default anomaly setting (as_reported).';
+COMMENT ON COLUMN cleaning_actions.revenue_impact IS 'Change to net revenue under the current anomaly setting (cfg_settings).';
 COMMENT ON COLUMN cleaning_actions.impact_if_flipped IS 'A02 only: change to net revenue if the anomaly sign is flipped.';
 COMMENT ON COLUMN cleaning_actions.impact_if_excluded IS 'A02 only: change to net revenue if anomaly rows are excluded.';

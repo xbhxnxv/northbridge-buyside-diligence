@@ -244,7 +244,7 @@ One row per record affected by a cleaning rule. Feeds docs/cleaning_log.md.
 | customer_id | VARCHAR | Customer of the affected record, where there is one. |
 | record_date | DATE | Date used to assign the action to a year. |
 | detail | VARCHAR | What was done to the record. |
-| revenue_impact | DECIMAL(14,2) | Change to net revenue under the default anomaly setting (as_reported). |
+| revenue_impact | DECIMAL(15,2) | Change to net revenue under the current anomaly setting (cfg_settings). |
 | impact_if_flipped | DECIMAL(15,2) | A02 only: change to net revenue if the anomaly sign is flipped. |
 | impact_if_excluded | DECIMAL(15,2) | A02 only: change to net revenue if anomaly rows are excluded. |
 

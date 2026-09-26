@@ -1,0 +1,5 @@
+month,year,amount,difference_pct,material,explanation
+2023-06-01,2023,18500.0,0.681,True,"Cube ties to the sum of the management product lines. The reported total is £18,500 below the lines, a manual difference not allocated to any product line (Q07, Q12 to Q14)."
+2024-03-01,2024,-12000.0,-0.393,False,"Cube ties to the sum of the management product lines. The reported total is £12,000 above the lines, a manual difference not allocated to any product line (Q07, Q12 to Q14). The month also holds 2 negative paid invoice(s) (INV742515, INV775990), excluded as management did."
+2024-11-01,2024,9500.0,0.298,False,"Cube ties to the sum of the management product lines. The reported total is £9,500 below the lines, a manual difference not allocated to any product line (Q07, Q12 to Q14)."
+2025-02-01,2025,-15000.0,-0.395,False,"Cube ties to the sum of the management product lines. The reported total is £15,000 above the lines, a manual difference not allocated to any product line (Q07, Q12 to Q14)."

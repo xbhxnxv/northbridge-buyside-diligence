@@ -81,3 +81,35 @@ Questions for management raised by the data. Generated from the `qa_log` table, 
 **Evidence.** 132 customers have no industry; they are reported as Unknown.
 
 **Status.** open
+
+## Q11: Negative invoices (P06, Step 3)
+
+**Question.** Why were the negative amounts on invoices marked paid left out of reported revenue instead of being corrected? If they are sign errors, will the invoices and the management accounts be restated?
+
+**Evidence.** 15 invoices. Reported revenue excludes them: the cube ties to the product lines in all 48 months only when they are excluded. The months either side of each carry the same amount as a positive, so reported revenue is probably understated by £13,843.82 (2022 £5,788.75, 2023 £2,118.96, 2024 £4,073.48, 2025 £1,862.63).
+
+**Status.** open
+
+## Q12: Management accounts (P05, Step 3)
+
+**Question.** Please provide the journal listing behind the four manual differences between product-line revenue and reported total revenue, showing who posted each entry, when, and why.
+
+**Evidence.** Reported total less the sum of product lines: Jun 2023 -£18,500, Mar 2024 +£12,000, Nov 2024 -£9,500, Feb 2025 +£15,000. The invoice data ties to the product lines in each of these months.
+
+**Status.** open
+
+## Q13: Management accounts (P05, Step 3)
+
+**Question.** What is the policy on manual adjustments to reported revenue, who can approve them, and are they reviewed at month end?
+
+**Evidence.** Four months carry round-number differences between reported total revenue and the sum of the product lines.
+
+**Status.** open
+
+## Q14: Management accounts (P05, Step 3)
+
+**Question.** Which 2025 revenue figure appears in the information memorandum: the reported total or the sum of the product lines?
+
+**Evidence.** 2025 reported total revenue is £45,771,419.35; the sum of the product lines is £45,756,419.35. The February 2025 adjustment adds £15,000 to the reported total.
+
+**Status.** open

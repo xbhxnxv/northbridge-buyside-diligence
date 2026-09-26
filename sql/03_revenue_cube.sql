@@ -1,21 +1,13 @@
 -- 03_revenue_cube.sql
 -- Revenue cube and dimensions, exported to data/clean/ as CSV.
 --
--- The P06 anomaly treatment is a single setting in cfg_settings:
---   as_reported  keep the negative amounts as supplied (default until Step 3 decides)
+-- The P06 anomaly treatment is a single setting, cfg_settings.anomaly_treatment,
+-- created in 02_clean.sql (settled in Step 3 as 'excluded'):
+--   as_reported  keep the negative amounts as supplied
 --   flipped      reverse their sign
 --   excluded     treat them as zero
--- revenue_cube(t) and mrr_cube(t) build the facts for any treatment, so Step 3 and the
--- tests can compare options without rebuilding anything.
-
-CREATE OR REPLACE TABLE cfg_settings AS
-SELECT 'as_reported' AS anomaly_treatment;
-
-CREATE OR REPLACE MACRO invoice_amount(t, as_reported, flipped, excluded) AS
-    CASE t WHEN 'as_reported' THEN as_reported
-           WHEN 'flipped' THEN flipped
-           WHEN 'excluded' THEN excluded
-           ELSE error('unknown anomaly_treatment: ' || t) END;
+-- revenue_cube(t) and mrr_cube(t) build the facts for any treatment, so the
+-- reconciliation and the tests can compare options without rebuilding anything.
 
 -- One row per customer x product x month with any billing or credit.
 CREATE OR REPLACE MACRO revenue_cube(t) AS TABLE

@@ -175,11 +175,10 @@ def test_every_credit_note_linked_to_its_original(con):
 
 
 def test_cleaning_actions_explain_the_revenue_change(con):
-    """raw invoice total + revenue impact of all cleaning actions = cube net (default setting)."""
+    """raw invoice total + revenue impact of all cleaning actions = cube net (current setting)."""
     raw = scalar(con, "SELECT sum(amount) FROM raw_invoices")
     impact = scalar(con, "SELECT sum(revenue_impact) FROM cleaning_actions")
     cube = scalar(con, "SELECT sum(net_revenue) FROM fact_revenue_monthly")
-    assert scalar(con, "SELECT anomaly_treatment FROM cfg_settings") == "as_reported"
     assert raw + impact == cube
 
 
@@ -317,3 +316,59 @@ def test_product_lines_sum_to_cube_total(con):
         WHERE lines <> total
     """)
     assert bad == 0
+
+
+def test_anomaly_setting_is_excluded_and_ties_to_lines(con):
+    """Step 3 decision D01: excluded is the only treatment that ties to the product lines every month."""
+    assert scalar(con, "SELECT anomaly_treatment FROM cfg_settings") == "excluded"
+    tied = dict(con.execute("SELECT treatment, months_tied_to_lines FROM recon_options_summary").fetchall())
+    assert tied["excluded"] == 48
+    assert tied["as_reported"] < 48 and tied["flipped"] < 48
+
+
+def test_no_negative_mrr_rows(con):
+    assert scalar(con, "SELECT count(*) FROM fact_mrr_monthly WHERE mrr <= 0") == 0
+
+
+def test_every_month_labelled(con):
+    assert scalar(con, "SELECT count(*) FROM recon_monthly") == 48
+    assert scalar(con, "SELECT count(*) FROM recon_monthly WHERE status NOT IN ('tied', 'explained', 'unexplained') OR status IS NULL") == 0
+    # tied and explained months have no difference; unexplained months carry an explanation
+    assert scalar(con, "SELECT count(*) FROM recon_monthly WHERE status <> 'unexplained' AND difference <> 0") == 0
+    assert scalar(con, "SELECT count(*) FROM recon_monthly WHERE status <> 'tied' AND explanation IS NULL") == 0
+    assert scalar(con, "SELECT count(*) FROM recon_product_line_monthly WHERE status IS NULL") == 0
+
+
+def test_annual_difference_equals_documented_unexplained_items(con):
+    rows = con.execute("""
+        SELECT a.year, a.difference, coalesce(u.amount, 0)
+        FROM recon_annual a
+        LEFT JOIN (SELECT year, sum(amount) AS amount FROM recon_unexplained_items GROUP BY 1) u USING (year)
+    """).fetchall()
+    assert len(rows) == 4
+    for year, diff, items in rows:
+        assert diff == items, year
+
+
+def test_unexplained_items_are_the_management_line_gaps(con):
+    """Every unexplained month is one where the cube ties to the product lines but not the reported total."""
+    assert scalar(con, """
+        SELECT count(*) FROM recon_unexplained_items u
+        JOIN clean_management_accounts m USING (month)
+        WHERE u.amount <> m.lines_less_total OR NOT m.lines_total_mismatch_flag
+    """) == 0
+    assert scalar(con, "SELECT count(*) FROM recon_unexplained_items") == \
+        scalar(con, "SELECT count(*) FROM clean_management_accounts WHERE lines_total_mismatch_flag")
+
+
+def test_product_lines_tie_every_month_under_chosen_setting(con):
+    assert scalar(con, "SELECT count(*) FROM recon_product_line_monthly WHERE difference <> 0") == 0
+    assert scalar(con, "SELECT count(*) FROM recon_product_line_monthly") == 4 * 48
+
+
+def test_annual_reconciliation_within_tolerance_apart_from_documented_items(con):
+    """After removing the documented unexplained items, every year ties to the penny."""
+    assert scalar(con, """
+        SELECT count(*) FROM recon_annual a
+        WHERE abs(a.difference - coalesce((SELECT sum(amount) FROM recon_unexplained_items u WHERE u.year = a.year), 0)) >= 0.01
+    """) == 0

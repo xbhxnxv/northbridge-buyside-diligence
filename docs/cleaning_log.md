@@ -6,12 +6,12 @@ Principle: cleaning fixes data errors only. Genuine revenue stays in the data wi
 
 ## Summary
 
-£ impact is the change to net revenue in the cube under the current anomaly setting (`as_reported`), by the year of the record.
+£ impact is the change to net revenue in the cube under the current anomaly setting (`excluded`), by the year of the record.
 
 | action_id | issue_id | table_name | action_type | records | impact_2022 | impact_2023 | impact_2024 | impact_2025 | impact_total |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | A01 | P04 | invoices | removed | 40 | (£8,597) | (£70,158) | (£7,116) | (£11,086) | (£96,957) |
-| A02 | P06 | invoices | flagged | 15 | £0 | £0 | £0 | £0 | £0 |
+| A02 | P06 | invoices | flagged | 15 | £5,789 | £2,119 | £4,073 | £1,863 | £13,844 |
 | A03 | P03 | invoices | linked | 1,084 | £0 | £0 | £0 | £0 | £0 |
 | A04 | P08 | customers | filled | 132 | £0 | £0 | £0 | £0 | £0 |
 | A05 | P07 | customers | flagged | 458 | £0 | £0 | £0 | £0 | £0 |
@@ -57,13 +57,13 @@ Originals and copies carry the same status in every case, so no copy sits behind
 ### A02 (P06): flagged
 
 - **Table:** `clean_invoices`
-- **Rule:** Flag negative amounts on invoices marked paid or overdue (anomaly_flag). Carry amount_as_reported, amount_flipped and amount_excluded; the cube uses one of them according to cfg_settings.anomaly_treatment.
+- **Rule:** Flag negative amounts on invoices marked paid or overdue (anomaly_flag) and carry amount_as_reported, amount_flipped and amount_excluded. Settled in Step 3: the cube uses amount_excluded (cfg_settings.anomaly_treatment = excluded), so these rows contribute zero to revenue and MRR.
 - **Records affected:** 15
-- **£ impact on net revenue by year:** 2022: £0.00, 2023: £0.00, 2024: £0.00, 2025: £0.00
-- **Rationale:** The treatment is not settled from the invoice data alone. Step 3 tests each option against the management accounts and the choice is recorded here.
-- **Alternative considered:** Decide now by flipping the sign because the neighbouring months carry the positive amount (deferred: that is an inference; the reconciliation is the evidence).
+- **£ impact on net revenue by year:** 2022: £5,788.75, 2023: £2,118.96, 2024: £4,073.48, 2025: £1,862.63
+- **Rationale:** Excluded is the only treatment under which the cube ties to the management accounts' product lines in all 48 months with no residual, so management left these invoices out of reported revenue. The months either side of each one carry the same amount as a positive, so they look like sign-entry errors and reported revenue is probably understated by their absolute value (Q11).
+- **Alternative considered:** As reported (rejected: leaves a gap to the management accounts in every month concerned and creates 15 negative MRR rows). Flipped (rejected: also leaves a gap, twice the size; it may be the economically correct figure, which is recorded as a probable understatement and raised with management instead of booked).
 
-- **Alternative impacts:** flipping the sign would add £27,687.64 to net revenue; excluding the rows would add £13,843.82. Step 3 decides.
+- **Impact of each option against the amount as supplied:** flipping the sign would add £27,687.64 to net revenue; excluding the rows adds £13,843.82. Excluded is the setting in use (decision D01 in docs/decisions_log.md).
 
 ### A03 (P03): linked
 

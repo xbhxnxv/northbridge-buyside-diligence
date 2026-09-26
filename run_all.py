@@ -5,8 +5,10 @@ Stages, in order:
   2. sql        run sql/NN_*.sql in numeric order against a fresh data/northbridge.duckdb
   3. notebooks  execute notebooks/*.ipynb in place, in filename order
   4. databook   build databook/Northbridge_Databook.xlsx
-  5. dashboard  export the Power BI star-schema CSVs to dashboard/model_data/
-  6. tests      run the pytest tie-outs in tests/
+  5. dashboard  export the Power BI star-schema CSVs and expected values
+  6. memo       write memo/findings_memo.md and export it to PDF (two pages at most)
+  7. readme     write README.md with headline findings from the pipeline
+  8. tests      run the pytest tie-outs in tests/
 
 A stage whose inputs do not exist yet (for example no notebooks before Step 3) is
 skipped with a message rather than failing. Any stage that does run and fails stops
@@ -98,6 +100,20 @@ def stage_dashboard() -> None:
     run([PY, str(script.relative_to(ROOT))])
 
 
+def stage_memo() -> None:
+    script = ROOT / "memo" / "build_memo.py"
+    if not script.exists():
+        raise Skip("memo/build_memo.py not built yet")
+    run([PY, str(script.relative_to(ROOT))])
+
+
+def stage_readme() -> None:
+    script = ROOT / "docs" / "build_readme.py"
+    if not script.exists():
+        raise Skip("docs/build_readme.py not built yet")
+    run([PY, str(script.relative_to(ROOT))])
+
+
 def stage_tests() -> None:
     if not list((ROOT / "tests").glob("test_*.py")):
         raise Skip("no tests yet")
@@ -110,6 +126,8 @@ STAGES = {
     "notebooks": stage_notebooks,
     "databook": stage_databook,
     "dashboard": stage_dashboard,
+    "memo": stage_memo,
+    "readme": stage_readme,
     "tests": stage_tests,
 }
 

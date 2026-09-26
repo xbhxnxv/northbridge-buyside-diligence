@@ -170,6 +170,29 @@ Flag: **Review first** marks the entries most worth checking.
 - **Alternatives:** allocate cost to customers in the model (would present an allocation as fact); bidirectional relationships (ambiguous filter paths).
 - **Reverse:** see `dashboard/README.md` sections 2 and 5.
 
+## Step 7: Findings memo
+
+### D23. PDF export through python-docx and LibreOffice
+
+- **Date:** 27 September 2026
+- **Decision:** the memo is written to Markdown and to Word (python-docx), and LibreOffice Writer converts the Word file to PDF. pandoc was not installed, and a pandoc PDF would also need a LaTeX engine; LibreOffice was already needed for the databook. `libreoffice-writer` was installed with apt (first attempt). reportlab (the last resort) was not needed.
+- **Evidence:** `memo/memo_report.json`: 2 pages, about 1,050 words.
+- **Reverse:** install pandoc and a PDF engine, and render `memo/findings_memo.md` instead.
+
+### D24. Recommendation: proceed, with price and structure protections **Review first**
+
+- **Date:** 27 September 2026
+- **Decision:** the memo recommends proceeding with protections, not walking away.
+- **Alternatives:** walk away (the revenue is real, reconciles and is 88.5% recurring, so the issues go to value and not to existence); proceed without protections (ignores four High-rated red flags).
+- **Evidence:** `outputs/key_findings.md`; red flags 1 to 4 are rated High.
+- **Reverse:** edit section 6 of `memo/build_memo.py`.
+
+### D25. Memo numbers are generated and tested
+
+- **Date:** 27 September 2026
+- **Decision:** the memo text lives in `memo/build_memo.py` with every figure read from `outputs/tables/`. A test extracts every £ and % figure from the memo and from `outputs/key_findings.md` and finds each in `outputs/tables/` at the precision shown.
+- **Reverse:** not applicable.
+
 ## Limitations
 
 - `pandoc`, `python-docx`, `reportlab` and `pypdf` are not installed at the start of the run. LibreOffice 24.2 is installed. Handling is recorded under the step that needs them.

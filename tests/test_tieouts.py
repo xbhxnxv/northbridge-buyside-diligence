@@ -501,7 +501,13 @@ def test_key_figures_trace_to_the_database(con):
     assert close(kf["other_implementation_2025"],
                  scalar(con, "SELECT sum(amount) FROM clean_invoices WHERE oneoff_category = 'other_implementation'"))
     for r in table("key_figures"):
-        assert (TABLES_DIR / f"{r['source'].split(' ')[0]}.csv").exists() or r["source"].startswith("clean_"), r["name"]
+        src = r["source"]
+        if src.startswith("derived:"):
+            # "derived: a - b": recompute from the other key figures
+            a_, b_ = [x.strip() for x in src.split(":", 1)[1].split(" - ")]
+            assert close(float(r["value"]), kf[a_] - kf[b_]), r["name"]
+        else:
+            assert (TABLES_DIR / f"{src.split(' ')[0]}.csv").exists() or src.startswith(("clean_", "raw_")), r["name"]
 
 
 def test_step4_charts_exist():
@@ -661,3 +667,80 @@ def test_model_data_exported():
     model = ROOT / "dashboard" / "model_data"
     for name in ["FactRevenue", "FactMRR", "FactCost", "DimCustomer", "DimProduct", "DimProductLine", "DimDate"]:
         assert (model / f"{name}.csv").exists(), name
+
+
+# ---------------------------------------------------------------------------
+# Step 7: every £ and % in the written outputs comes from outputs/tables/
+# ---------------------------------------------------------------------------
+
+import re
+from bisect import bisect_left
+
+
+def pipeline_values() -> list[float]:
+    vals: set[float] = set()
+    for path in TABLES_DIR.glob("*.csv"):
+        with open(path, newline="", encoding="utf-8") as f:
+            for row in csv.reader(f):
+                for cell in row:
+                    try:
+                        v = float(cell)
+                    except ValueError:
+                        continue
+                    vals.update({v, abs(v), 100 * v, abs(100 * v)})
+    return sorted(vals)
+
+
+def has_value(values: list[float], target: float, tol: float) -> bool:
+    i = bisect_left(values, target - tol)
+    return i < len(values) and values[i] <= target + tol
+
+
+def figures_in(text: str) -> list[tuple[str, float, float]]:
+    """(token, value, tolerance) for every £ and % figure in a text."""
+    out = []
+    for mo in re.finditer(r"£(\d[\d,]*(?:\.\d+)?)m\b", text):
+        s = mo.group(1).replace(",", "")
+        dp = len(s.split(".")[1]) if "." in s else 0
+        out.append((mo.group(0), float(s) * 1e6, 0.5 * 10 ** -dp * 1e6 + 1e-6))
+    for mo in re.finditer(r"£(\d[\d,]*(?:\.\d+)?)(?![\d,.]*m\b)", text):
+        s = mo.group(1).replace(",", "")
+        dp = len(s.split(".")[1]) if "." in s else 0
+        out.append((mo.group(0), float(s), 0.5 * 10 ** -dp + 1e-9))
+    for mo in re.finditer(r"(?<![\w.])(\d+(?:\.\d+)?)%", text):
+        s = mo.group(1)
+        dp = len(s.split(".")[1]) if "." in s else 0
+        out.append((mo.group(0), float(s), 0.5 * 10 ** -dp + 1e-9))
+    return out
+
+
+@pytest.mark.parametrize("doc", ["memo/findings_memo.md", "outputs/key_findings.md"])
+def test_written_figures_match_outputs(doc):
+    path = ROOT / doc
+    if not path.exists():
+        pytest.skip(f"{doc} not built")
+    values = pipeline_values()
+    figures = figures_in(path.read_text(encoding="utf-8"))
+    assert len(figures) >= 30, doc
+    missing = [tok for tok, v, tol in figures if not has_value(values, v, tol)]
+    assert not missing, f"figures in {doc} not found in outputs/tables: {missing}"
+
+
+def test_memo_is_two_pages_or_fewer():
+    pdf = ROOT / "memo" / "findings_memo.pdf"
+    if not pdf.exists():
+        pytest.skip("memo PDF not built")
+    from pypdf import PdfReader
+    assert len(PdfReader(str(pdf)).pages) <= 2
+
+
+def test_memo_has_required_sections():
+    text = (ROOT / "memo" / "findings_memo.md").read_text(encoding="utf-8")
+    for heading in ("1. Scope and basis", "2. Key findings", "3. Red flags", "4. How the investor should view revenue",
+                    "5. Questions for management", "6. Overall view"):
+        assert heading in text, heading
+    questions = re.findall(r"^\d+\. \(Q\d{2}\)", text, flags=re.M)
+    assert 10 <= len(questions) <= 15
+    assert "synthetic" in text.lower()
+    for mo in re.finditer(r"\((Q\d{2})\)", text):   # every question id cited exists in the Q&A log
+        assert mo.group(1) in {r["qa_id"] for r in table("qa_log")}

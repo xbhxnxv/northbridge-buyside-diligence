@@ -1,0 +1,12 @@
+key,measure,benchmark_basis,benchmark_low,benchmark_high,benchmark_rows,sources,northbridge_2025,position
+smb,NRR,"SMB medians, ACV under $50k (SaaS Capital, High Alpha, Benchmarkit 2025)",94.0,107.0,14,"BM25, HA25, SC25",95.443477,within
+smb,NRR before price increase,"SMB medians, ACV under $50k (SaaS Capital, High Alpha, Benchmarkit 2025)",94.0,107.0,14,"BM25, HA25, SC25",89.199512,below
+smb,GRR,"SMB medians, ACV under $50k (SaaS Capital, High Alpha, Benchmarkit 2025)",83.0,92.0,14,"BM25, HA25, SC25",88.769051,within
+sc_smb,NRR,SaaS Capital 2025 SMB medians (same definition as ours),98.0,103.0,3,SC25,95.443477,below
+sc_smb,NRR before price increase,SaaS Capital 2025 SMB medians (same definition as ours),98.0,103.0,3,SC25,89.199512,below
+sc_smb,GRR,SaaS Capital 2025 SMB medians (same definition as ours),90.0,91.0,3,SC25,88.769051,below
+band,NRR,"Medians for ACV $25k to $50k (SaaS Capital, High Alpha, Benchmarkit 2025)",102.0,105.0,3,"BM25, HA25, SC25",95.443477,below
+band,GRR,"Medians for ACV $25k to $50k (SaaS Capital, High Alpha, Benchmarkit 2025)",88.0,92.0,3,"BM25, HA25, SC25",88.769051,within
+sc_band_q1,NRR,"SaaS Capital 2025 lower quartile, ACV $25k to $50k",97.0,97.0,1,SC25,95.443477,below
+cm_logo,Logo retention,"ChartMogul 2023 median, ARPA over $500 a month (low comparability)",77.7,77.7,1,CM23,87.267312,above
+cm_logo_q3,Logo retention,"ChartMogul 2023 upper quartile, ARPA over $500 a month (low comparability)",85.7,85.7,1,CM23,87.267312,above

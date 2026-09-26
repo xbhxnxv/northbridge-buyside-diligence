@@ -4,10 +4,16 @@
 
 Two jobs: replace the unsourced SaaS retention benchmarks with sourced figures (decision D12), and make reruns of `python run_all.py` byte-for-byte identical.
 
-### Benchmarks (D12, D28)
+### Benchmarks (D12, D28, D35 to D39)
 
-- Not replaced. This session's network policy blocked every benchmark publisher I tried (SaaS Capital, Benchmarkit, ChartMogul, High Alpha, Recurly and KeyBanc), so no primary source could be opened. The 4d ranges keep their "indicative, not sourced" label, and no figures were taken from search summaries or from memory. D12 lists each URL tried, and D28 records the fallback.
-- Added `tests/test_benchmarks.py`. It checks that the databook's benchmark rows match the table they are read from, and that the memo, key findings, README and interview prep say nothing about benchmarks while none are sourced. Two further checks, on `outputs/tables/benchmarks.csv` and on the removal of the indicative label, skip with a reason until sourced figures exist.
+- First attempt: not replaced. That session's network policy blocked every benchmark publisher tried, so the 4d ranges kept their indicative, unsourced label and nothing quoted a benchmark (D28).
+- Retry, with the publishers' domains allowed: the ranges are replaced by figures read from SaaS Capital (2025 retention benchmarks, with the 2023 edition as context), High Alpha (2025 SaaS Benchmarks Report), Benchmarkit (2025 B2B SaaS Performance Metrics Benchmarks) and ChartMogul (SaaS Retention Report, 2023, context only). KeyBanc/Sapphire and Recurly were still unreachable (D35).
+- New checked-in input `data/reference/benchmarks_source.csv` (151 rows: source, segment, metric, statistic, with URL, year and accessed date). The 04d notebook validates it and writes `outputs/tables/benchmarks.csv`, `4d_benchmark_comparison.csv`, `4d_northbridge_acv.csv`, the chart `outputs/charts/4d_benchmarks.png` and `docs/benchmarks.md`. `4d_benchmarks_indicative.csv` is removed. No network calls during a run (D39).
+- SMB comparison adopted: medians for ACV bands under $50k in the 2025 editions, with SaaS Capital shown on its own because its definitions match ours (D36, D37). Northbridge's 2025 NRR and GRR are below SaaS Capital's SMB medians, and NRR before the price increase is below every SMB median.
+- Databook 4d tab: the benchmark block reads `benchmarks.csv`, recomputes the SMB range with formulas, checks it against the notebook (three new TRUE checks) and carries a source note. The Summary tab's limitation line is updated. Still marked DRAFT.
+- Key finding F03, the memo's NRR finding (with a source footnote) and the interview prep (a new follow-up on how Northbridge compares with the market) quote the sourced figures. No materiality rating, red-flag rating or recommendation changed (D38). The memo is still two pages.
+- `docs/metric_definitions.md` has a Benchmarks section pointing to `docs/benchmarks.md`.
+- Tests: the two benchmark checks that skipped now run and pass; new checks tie `benchmarks.csv` to the checked-in source, recompute the comparison, and tie every benchmark figure in the memo, key findings, interview prep, `docs/benchmarks.md` and the databook to `benchmarks.csv`. The checks for the unsourced state now skip.
 
 ### Byte-stable reruns (D29 to D34)
 
@@ -19,7 +25,7 @@ Two jobs: replace the unsourced SaaS retention benchmarks with sourced figures (
 - The step 2 and step 3 tables are now exported through the same six-decimal rounding as the others.
 - Tests: `tests/test_reproducible.py` (marked slow, run with `python -m pytest tests -m slow`) checks that a rerun leaves `git status` unchanged. `pytest.ini` registers the marker.
 - `requirements.txt` adds `lxml` and `pikepdf`.
-- Every file in `outputs/tables/` and `outputs/charts/` is byte-identical to v1.0, so no figure, finding or rating changed.
+- The rerun work changed no table or chart: after it, every file in `outputs/tables/` and `outputs/charts/` was byte-identical to v1.0. The benchmark work above then added the benchmark tables and chart and changed F03's text and `key_figures.csv`.
 
 ## v1.0 (26 September 2026)
 

@@ -12,7 +12,7 @@ We reviewed the seller's data-room extract for Northbridge Software Ltd: 2,192 c
 - Recurring revenue was 88.5% of 2025 revenue (£40.48m), down from 96.9% in 2024, because £4.08m of 'other implementation' was billed to existing customers in 2025 [4a].
 - Headline revenue growth of 22.8% in 2025 falls to 12.1% on recurring revenue and 11.9% excluding other implementation [4a].
 - ARR was £41.36m at December 2025, up 10.3%. Every recurring line was billed 7% more from January 2025 (and 5% from January 2024); before the price increase ARR grew 3.1% [4a, 4e].
-- NRR was 95.8%, 98.7% and 95.4% for 2023 to 2025 (89.2% in 2025 before price); GRR fell from 94.5% to 88.8% [4d]. There is no December 2021, so 2022 cannot be measured.
+- NRR was 95.8%, 98.7% and 95.4% for 2023 to 2025 (89.2% in 2025 before price); GRR fell from 94.5% to 88.8% [4d]. There is no December 2021, so 2022 cannot be measured. Both 2025 figures are below the SaaS Capital SMB benchmark medians, which use our definitions (NRR 98% to 103%, GRR 90% to 91%), and NRR before price is below every SMB median in three 2025 surveys (94% to 107%).[^1]
 - Customers who signed up from 2023 leave faster: 78.6% were still subscribed after 12 months, against 92.5% for 2017 to 2022 signups; logo churn rose to 12.7% in 2025 [4c].
 - Six large accounts carry 20.8% of 2025 revenue. The largest, C1052, cut its ARR by 42.4% (£983,535) in September 2025 [4b].
 - Gross margin fell from 77.8% to 73.8% in 2025, entirely from the shift towards implementation work, which earns 27.1% [4f].
@@ -66,6 +66,8 @@ The revenue is real, reconciles to the management accounts and is mostly recurri
 - Specific warranty and indemnity on the 2025 implementation contracts and their revenue recognition, and a warranty on the management accounts (red flags 1 and 6).
 - Escrow or retention released on renewal of the six large accounts (red flag 4).
 - Completion accounts: exclude duplicate and disputed invoices from receivables in the working capital peg.
+
+[^1]: Benchmarks: SaaS Capital, 2025 B2B SaaS Retention Benchmarks (Research Brief 32); High Alpha, 2025 SaaS Benchmarks Report; Benchmarkit, 2025 B2B SaaS Performance Metrics Benchmarks. Medians for US$ ACV bands under $50k. Definitions, ranges and caveats: docs/benchmarks.md.
 
 ---
 

@@ -72,6 +72,16 @@ Net revenue still includes these credit notes, so MRR and net revenue differ by 
 
 **NRR and GRR sensitivities.** (a) Excluding the five customers with the largest December Y−1 MRR. (b) Excluding the price increase: each customer's December Y MRR is divided by the year's uplift factor before the calculation.
 
+## Benchmarks
+
+**Source figures.** SaaS retention benchmarks are read from published surveys into `data/reference/benchmarks_source.csv` and copied by the 04d notebook to `outputs/tables/benchmarks.csv`. Sources, sample sizes, each source's own definitions, the figures and the caveats are in [`docs/benchmarks.md`](benchmarks.md); how they were chosen is in decisions D35 to D39.
+
+**SMB segment.** Companies whose annual contract value is under US$50k. $50k to $250k is mid-market and above $250k enterprise; those are shown as context only.
+
+**Adopted SMB range.** For NRR and GRR, the lowest to the highest SMB median in the latest edition of each source rated high or medium for comparability. SaaS Capital's SMB medians are also shown on their own, because its NRR and GRR definitions are the same as the ones above.
+
+**Comparability.** High: the source's definition matches ours. Medium: close, but the treatment of price increases or the revenue basis is not stated. Low: a different method or population. A benchmark places Northbridge in a distribution; it is not a pass mark.
+
 ## ARR bridge (December to December, at customer × product line)
 
 For opening December Y−1 and closing December Y:

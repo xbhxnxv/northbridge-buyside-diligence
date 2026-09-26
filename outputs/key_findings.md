@@ -14,7 +14,7 @@ Materiality: **High** could change the price or structure of the deal; **Medium*
 
 ## Q3. Are customers staying, growing or leaving?
 
-- **F03 (High, databook tab 4d).** Retention is weakening. NRR was 95.8%, 98.7% and 95.4% for 2023 to 2025; excluding the price increase it was 95.8%, 94.0% and 89.2%. GRR fell from 94.5% to 88.8%. Logo churn rose from 90 customers (8.9%) in 2023 to 171 (12.7%) in 2025. NRR and GRR are available for 2023 to 2025 only.
+- **F03 (High, databook tab 4d).** Retention is weakening. NRR was 95.8%, 98.7% and 95.4% for 2023 to 2025; excluding the price increase it was 95.8%, 94.0% and 89.2%. GRR fell from 94.5% to 88.8%. Logo churn rose from 90 customers (8.9%) in 2023 to 171 (12.7%) in 2025. NRR and GRR are available for 2023 to 2025 only. Against sourced benchmarks, 2025 NRR and GRR are below the SaaS Capital medians for SMB software, whose definitions match ours (98% to 103% NRR, 90% to 91% GRR), and NRR before the price increase is below every SMB median in the three 2025 benchmark surveys (94% to 107%; GRR medians 83% to 92%); see docs/benchmarks.md.
 
 - **F04 (High, databook tab 4c).** Newer customers leave faster. At the same tenure, 78.6% of customers who signed up from 2023 were still subscribed after 12 months, against 92.5% for 2017 to 2022 signups (74.6% for the 2024 cohort). The fall appears in every channel, size band and industry; it is largest for Micro customers (91.3% to 66.1%).
 

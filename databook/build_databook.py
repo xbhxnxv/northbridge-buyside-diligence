@@ -275,7 +275,7 @@ def basis(b: Book):
         "Synthetic data room; no access to management, contracts, the general ledger or the bank statements.",
         "Four monthly differences between reported total revenue and the product lines are unexplained (Q07, Q12 to Q14).",
         "Margin by customer size depends on the cost allocation basis; the data room has no cost-to-serve driver.",
-        "SaaS benchmark ranges on the 4d tab are indicative and not sourced.",
+        "SaaS benchmarks on the 4d tab are survey medians whose definitions differ from ours in places (docs/benchmarks.md).",
         "Customer lifecycle before 2022 relies on subscription dates; invoices before 2022 are not in the data room.",
     ]
     for i, l in enumerate(lims, start=r + 1):
@@ -559,8 +559,8 @@ def tab_4d(b: Book):
     name = "4d NRR GRR"
     ws = b.sheet(name, "4d. Net and gross revenue retention (2023 to 2025 only: no December 2021 in the data)",
                  "Units: £'000 for MRR; % for NRR and GRR",
-                 "Source: outputs/tables/4d_nrr_grr.csv (notebooks/04d_nrr_grr.ipynb)",
-                 "NRR and GRR by year with sensitivities (excluding top 5, excluding price) and indicative benchmarks",
+                 "Source: outputs/tables/4d_nrr_grr.csv, benchmarks.csv, 4d_benchmark_comparison.csv (notebooks/04d_nrr_grr.ipynb)",
+                 "NRR and GRR by year with sensitivities (excluding top 5, excluding price) and sourced SMB benchmarks",
                  widths=[34, 10, 14, 14, 14, 10, 10, 12, 12])
     n = t("4d_nrr_grr")
     b.section(ws, "A5", "NRR and GRR (December to December MRR)")
@@ -597,13 +597,55 @@ def tab_4d(b: Book):
     b.style_chart(ch, "NRR and GRR, 2023 to 2025", "% of opening MRR", "Year", "0%")
     ch.y_axis.scaling.min = 0.7; ch.y_axis.scaling.max = 1.1
     ws.add_chart(ch, "L5")
-    bm = t("4d_benchmarks_indicative")
+    # Sourced SMB benchmarks (decision D12, resolved by D35 to D39): medians for ACV bands under $50k in the latest
+    # edition of each source rated high or medium, read from outputs/tables/benchmarks.csv; the range is computed here
+    # and checked against 4d_benchmark_comparison.csv from the 04d notebook.
+    bm = t("benchmarks")
+    latest = bm.year == bm.groupby("publisher").year.transform("max")
+    sel = bm[latest & bm.comparability.isin(["high", "medium"]) & bm.segment.str.startswith("SMB:") & (bm.statistic == "median")]
     k0 = g0 + 6
-    b.section(ws, f"A{k0 - 1}", "What good looks like for SMB-focused B2B SaaS (indicative, not sourced)")
-    b.header(ws, k0, 1, ["Measure", "Weaker", "Typical", "Strong", "Basis"])
-    for i, r in enumerate(bm.itertuples(), start=k0 + 1):
-        for j, v in enumerate([r.measure, r.weaker, r.typical, r.strong, r.basis]):
-            b.inp(ws, f"{col(1 + j)}{i}", v)
+    b.section(ws, f"A{k0 - 1}", "What good looks like: sourced SMB benchmarks (medians for ACV bands under US$50k; see docs/benchmarks.md)")
+    b.header(ws, k0, 1, ["Source", "Publisher", "Edition", "Segment", "Metric", "Median"])
+    r = k0 + 1
+    blocks = {}
+    for metric in ("NRR", "GRR"):
+        d = sel[sel.metric == metric]
+        d = pd.concat([d[d.source_id == "SC25"], d[d.source_id != "SC25"]])  # SaaS Capital first, so its rows are one range
+        first = r
+        for row in d.itertuples():
+            b.inp(ws, f"A{r}", row.source_id); b.inp(ws, f"B{r}", row.publisher); b.inp(ws, f"C{r}", int(row.year), "0")
+            b.inp(ws, f"D{r}", row.segment); b.inp(ws, f"E{r}", row.metric); b.inp(ws, f"F{r}", float(row.value) / 100, PCT)
+            r += 1
+        blocks[metric] = (first, r - 1, first + int((d.source_id == "SC25").sum()) - 1)
+    s0 = r + 1
+    b.header(ws, s0, 1, ["Measure", "SMB median, low", "SMB median, high", "SaaS Capital SMB median, low", "SaaS Capital SMB median, high",
+                         "Northbridge 2025", "Per 4d notebook: low", "Per 4d notebook: high", "Check"])
+    comp = t("4d_benchmark_comparison")
+    rep_row = {m: 7 + n.index[(n.basis == basis) & (n.year == 2025)][0] for m, basis in
+               (("NRR", "reported"), ("NRR before price increase", "excluding price increase"), ("GRR", "reported"))}
+    for i, (measure, metric, colref) in enumerate((("NRR", "NRR", "G"), ("NRR before price increase", "NRR", "G"), ("GRR", "GRR", "H")), start=s0 + 1):
+        lo, hi, sc_hi = blocks[metric]
+        b.text(ws, f"A{i}", measure)
+        b.fml(ws, f"B{i}", f"=MIN(F{lo}:F{hi})", PCT); b.fml(ws, f"C{i}", f"=MAX(F{lo}:F{hi})", PCT)
+        b.fml(ws, f"D{i}", f"=MIN(F{lo}:F{sc_hi})", PCT); b.fml(ws, f"E{i}", f"=MAX(F{lo}:F{sc_hi})", PCT)
+        b.fml(ws, f"F{i}", f"={colref}{rep_row[measure]}", PCT)
+        c_ = comp[(comp.key == "smb") & (comp.measure == measure)].iloc[0]
+        b.inp(ws, f"G{i}", float(c_.benchmark_low) / 100, PCT); b.inp(ws, f"H{i}", float(c_.benchmark_high) / 100, PCT)
+        b.check(ws, f"I{i}", f"=AND(ABS(B{i}-G{i})<0.000001,ABS(C{i}-H{i})<0.000001)",
+                f"4d {measure}: SMB benchmark range recomputed from benchmarks.csv equals the 4d notebook")
+        slug = measure.lower().replace(" ", "_")
+        b.mark(f"bm_smb_{slug}_low", ws, f"B{i}", "4d_benchmark_comparison", "benchmark_low", {"key": "smb", "measure": measure}, 0.01, 1e-6)
+        b.mark(f"bm_smb_{slug}_high", ws, f"C{i}", "4d_benchmark_comparison", "benchmark_high", {"key": "smb", "measure": measure}, 0.01, 1e-6)
+        b.mark(f"bm_sc_smb_{slug}_low", ws, f"D{i}", "4d_benchmark_comparison", "benchmark_low", {"key": "sc_smb", "measure": measure}, 0.01, 1e-6)
+        b.mark(f"bm_sc_smb_{slug}_high", ws, f"E{i}", "4d_benchmark_comparison", "benchmark_high", {"key": "sc_smb", "measure": measure}, 0.01, 1e-6)
+    note = s0 + 5
+    srcs = sel.drop_duplicates("source_id")
+    ws.merge_cells(f"A{note}:I{note + 2}")
+    b.text(ws, f"A{note}", "Sources: " + "; ".join(f"{x.publisher}, {x.title} ({x.year}), {x.url}, accessed {x.accessed_date}" for x in srcs.itertuples())
+           + ". Only SaaS Capital uses our definitions (December-to-December MRR, price increases in NRR, GRR capped at opening MRR); "
+           "the others do not state how price increases are treated. Bands are in US dollars; Northbridge's average ACV is in pounds. "
+           "Medians place Northbridge in a distribution of private SaaS companies, largely US-based where stated; they are not a pass mark.", wrap=True, italic=True)
+    ws.row_dimensions[note].height = 30
     b.commentary(ws, 24, 12, 9, 12, findings_for("4d"))
 
 

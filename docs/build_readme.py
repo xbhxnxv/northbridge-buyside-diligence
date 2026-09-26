@@ -19,6 +19,11 @@ K = dict(pd.read_csv(TABLES / "key_figures.csv")[["name", "value"]].itertuples(i
 QA = pd.read_csv(TABLES / "qa_log.csv")
 RUN = pd.read_csv(TABLES / "4b_top10_runrate.csv")
 BIG = RUN[RUN.declining].sort_values("change_vs_prior_dec").customer_id.iloc[0]
+ACV = pd.read_csv(TABLES / "4d_northbridge_acv.csv").iloc[0]
+
+
+def rng(key, metric):
+    return f"{K[f'bm_{key}_{metric}_low']:.0f}% to {K[f'bm_{key}_{metric}_high']:.0f}%"
 
 
 def m(x, dp=2):
@@ -89,7 +94,7 @@ def interview_prep() -> str:
     q_other = QA[QA.issue_ref == "P02"].qa_id.iloc[0]
     return f"""# Interview prep
 
-Five questions I am most likely to be asked about this project, with answers to say out loud (about 60 to 90 seconds each) and two follow-ups each. Every figure is from the pipeline. The project is a self-directed simulation on synthetic data.
+Five questions I am most likely to be asked about this project, with answers to say out loud (about 60 to 90 seconds each) and two follow-ups each (three for question 2). Every figure is from the pipeline. The project is a self-directed simulation on synthetic data.
 
 ## 1. How did you reconcile the data, and what did you do with differences you couldn't explain?
 
@@ -104,6 +109,7 @@ NRR is December MRR from the customers who were active the previous December, di
 
 - *Why does the price increase barely move GRR?* GRR caps each customer at its opening MRR, so a price rise can't push a customer above 100%; it only offsets some downgrades.
 - *What would you want from management?* Confirmation of the price increases and their contract basis ({QA[QA.topic == 'Price increases'].qa_id.iloc[0]}), and churn reasons by customer.
+- *How does Northbridge's retention compare with the market, and how reliable is that comparison?* I read three 2025 surveys myself: SaaS Capital's retention benchmarks, High Alpha's SaaS benchmarks report and Benchmarkit's performance metrics, with ChartMogul's 2023 retention report as context. SaaS Capital is the closest match, because it defines NRR and GRR the way I did: December to December on MRR, price increases counted in NRR, GRR capped at the opening figure. Its medians for SMB contract sizes are {rng('sc_smb', 'nrr')} for NRR and {rng('sc_smb', 'grr')} for GRR, and Northbridge is below both at {p(K['nrr_2025'])} and {p(K['grr_2025'])}. Before the price increase, NRR of {p(K['nrr_ex_price_2025'])} is below every SMB median in the three surveys, which run from {rng('smb', 'nrr')}. So the benchmarks support the retention red flag; they don't change its rating. On reliability, I'd be careful. These are medians of figures companies report themselves, largely from US businesses where the survey says, and they're banded by contract value in dollars. Only SaaS Capital says how it treats price increases. Northbridge's average contract is about £{ACV.average_acv_gbp:,.0f} a year, which puts it in the $25k to $50k band, but six large accounts lift that average, so most customers are in lower bands. I use the benchmarks to place Northbridge in a range, not as a pass mark, and I give more weight to the trend in its own numbers.
 
 ## 3. What was the biggest red flag, and what does it mean for price or structure?
 

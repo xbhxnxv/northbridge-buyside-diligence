@@ -1197,6 +1197,150 @@
     "scale": 0.01,
     "tol": 1e-06
   },
+  "bm_smb_nrr_low": {
+    "sheet": "4d NRR GRR",
+    "cell": "B60",
+    "table": "4d_benchmark_comparison",
+    "column": "benchmark_low",
+    "where": {
+      "key": "smb",
+      "measure": "NRR"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "bm_smb_nrr_high": {
+    "sheet": "4d NRR GRR",
+    "cell": "C60",
+    "table": "4d_benchmark_comparison",
+    "column": "benchmark_high",
+    "where": {
+      "key": "smb",
+      "measure": "NRR"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "bm_sc_smb_nrr_low": {
+    "sheet": "4d NRR GRR",
+    "cell": "D60",
+    "table": "4d_benchmark_comparison",
+    "column": "benchmark_low",
+    "where": {
+      "key": "sc_smb",
+      "measure": "NRR"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "bm_sc_smb_nrr_high": {
+    "sheet": "4d NRR GRR",
+    "cell": "E60",
+    "table": "4d_benchmark_comparison",
+    "column": "benchmark_high",
+    "where": {
+      "key": "sc_smb",
+      "measure": "NRR"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "bm_smb_nrr_before_price_increase_low": {
+    "sheet": "4d NRR GRR",
+    "cell": "B61",
+    "table": "4d_benchmark_comparison",
+    "column": "benchmark_low",
+    "where": {
+      "key": "smb",
+      "measure": "NRR before price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "bm_smb_nrr_before_price_increase_high": {
+    "sheet": "4d NRR GRR",
+    "cell": "C61",
+    "table": "4d_benchmark_comparison",
+    "column": "benchmark_high",
+    "where": {
+      "key": "smb",
+      "measure": "NRR before price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "bm_sc_smb_nrr_before_price_increase_low": {
+    "sheet": "4d NRR GRR",
+    "cell": "D61",
+    "table": "4d_benchmark_comparison",
+    "column": "benchmark_low",
+    "where": {
+      "key": "sc_smb",
+      "measure": "NRR before price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "bm_sc_smb_nrr_before_price_increase_high": {
+    "sheet": "4d NRR GRR",
+    "cell": "E61",
+    "table": "4d_benchmark_comparison",
+    "column": "benchmark_high",
+    "where": {
+      "key": "sc_smb",
+      "measure": "NRR before price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "bm_smb_grr_low": {
+    "sheet": "4d NRR GRR",
+    "cell": "B62",
+    "table": "4d_benchmark_comparison",
+    "column": "benchmark_low",
+    "where": {
+      "key": "smb",
+      "measure": "GRR"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "bm_smb_grr_high": {
+    "sheet": "4d NRR GRR",
+    "cell": "C62",
+    "table": "4d_benchmark_comparison",
+    "column": "benchmark_high",
+    "where": {
+      "key": "smb",
+      "measure": "GRR"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "bm_sc_smb_grr_low": {
+    "sheet": "4d NRR GRR",
+    "cell": "D62",
+    "table": "4d_benchmark_comparison",
+    "column": "benchmark_low",
+    "where": {
+      "key": "sc_smb",
+      "measure": "GRR"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "bm_sc_smb_grr_high": {
+    "sheet": "4d NRR GRR",
+    "cell": "E62",
+    "table": "4d_benchmark_comparison",
+    "column": "benchmark_high",
+    "where": {
+      "key": "sc_smb",
+      "measure": "GRR"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
   "arr_bridge_closing_2023": {
     "sheet": "4e ARR bridge",
     "cell": "B15",

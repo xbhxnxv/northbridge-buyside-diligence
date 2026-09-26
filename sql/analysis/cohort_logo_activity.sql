@@ -10,4 +10,5 @@ SELECT m.customer_id, m.signup_quarter, m.signup_year, m.signup_month, m.month,
        EXISTS (SELECT 1 FROM clean_subscriptions s
                WHERE s.customer_id = m.customer_id AND s.start_month <= m.month
                  AND (s.end_date IS NULL OR s.end_date > m.month)) AS active
-FROM months m;
+FROM months m
+ORDER BY m.customer_id, m.month;

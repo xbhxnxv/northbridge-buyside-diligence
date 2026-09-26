@@ -8,4 +8,5 @@ SELECT r.*, c.company_size, k.total_cost_of_delivery AS line_cost_month,
        count(*) FILTER (WHERE r.net_revenue > 0) OVER (PARTITION BY r.product_line, r.month_start) AS line_customers_month
 FROM r
 JOIN dim_customer c USING (customer_id)
-JOIN clean_costs k ON k.month = r.month_start AND k.product_line = r.product_line;
+JOIN clean_costs k ON k.month = r.month_start AND k.product_line = r.product_line
+ORDER BY r.customer_id, r.product_line, r.month_start;

@@ -141,8 +141,8 @@ COMMENT ON COLUMN dim_date.is_quarter_end IS 'TRUE for March, June, September an
 -- Export (data/clean/ is created by run_all.py)
 -- ---------------------------------------------------------------------------
 
-COPY fact_revenue_monthly TO 'data/clean/fact_revenue_monthly.csv' (HEADER);
-COPY fact_mrr_monthly TO 'data/clean/fact_mrr_monthly.csv' (HEADER);
-COPY dim_customer TO 'data/clean/dim_customer.csv' (HEADER);
-COPY dim_product TO 'data/clean/dim_product.csv' (HEADER);
-COPY dim_date TO 'data/clean/dim_date.csv' (HEADER);
+COPY (SELECT * FROM fact_revenue_monthly ORDER BY month_start, customer_id, product_id) TO 'data/clean/fact_revenue_monthly.csv' (HEADER);
+COPY (SELECT * FROM fact_mrr_monthly ORDER BY month_start, customer_id, product_id) TO 'data/clean/fact_mrr_monthly.csv' (HEADER);
+COPY (SELECT * FROM dim_customer ORDER BY customer_id) TO 'data/clean/dim_customer.csv' (HEADER);
+COPY (SELECT * FROM dim_product ORDER BY product_id) TO 'data/clean/dim_product.csv' (HEADER);
+COPY (SELECT * FROM dim_date ORDER BY month_start) TO 'data/clean/dim_date.csv' (HEADER);

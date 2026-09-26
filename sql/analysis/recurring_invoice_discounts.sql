@@ -11,4 +11,5 @@ JOIN dim_customer c USING (customer_id)
 JOIN clean_subscriptions s
   ON s.customer_id = i.customer_id AND s.product_id = i.product_id
  AND s.start_month <= i.month_start AND (s.end_date IS NULL OR s.end_date > i.month_start)
-WHERE i.revenue_type = 'recurring' AND NOT i.is_credit_note;
+WHERE i.revenue_type = 'recurring' AND NOT i.is_credit_note
+ORDER BY i.invoice_id, s.subscription_id;

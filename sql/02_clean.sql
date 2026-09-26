@@ -118,7 +118,8 @@ FROM (
                  ORDER BY invoice_id)
 ) d
 JOIN raw_invoices i USING (invoice_id)
-WHERE d.copy_no > 1;
+WHERE d.copy_no > 1
+ORDER BY i.invoice_id;
 
 CREATE OR REPLACE TABLE clean_invoices AS
 WITH kept AS (
@@ -244,6 +245,7 @@ SELECT * FROM (VALUES
 -- (cfg_settings). impact_if_flipped / impact_if_excluded apply to A02 only and are
 -- measured against the amount as reported.
 CREATE OR REPLACE TABLE cleaning_actions AS
+SELECT * FROM (
 SELECT 'A01' AS action_id, 'P04' AS issue_id, 'invoices' AS table_name, invoice_id AS record_id, customer_id,
        invoice_date AS record_date, 'removed; kept ' || kept_invoice_id AS detail,
        -amount AS revenue_impact, 0::DECIMAL(14,2) AS impact_if_flipped, 0::DECIMAL(14,2) AS impact_if_excluded
@@ -281,7 +283,8 @@ SELECT 'A09', 'P10', 'invoices', invoice_id, customer_id, invoice_date, 'dated b
 FROM clean_invoices WHERE before_signup_flag
 UNION ALL
 SELECT 'A10', 'P01', 'customers', customer_id, customer_id, signup_date, 'is_large_account', 0, 0, 0
-FROM clean_customers WHERE is_large_account;
+FROM clean_customers WHERE is_large_account
+) ORDER BY action_id, record_id;
 
 -- ---------------------------------------------------------------------------
 -- Q&A log for management. Evidence strings are built from the data so the numbers

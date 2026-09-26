@@ -2,6 +2,7 @@
   "project": "Project Northbridge",
   "target": "Northbridge Software Ltd",
   "report_date": "27 September 2026",
+  "document_date": "2026-09-26",
   "repo_url": "https://github.com/xbhxnxv/northbridge-buyside-diligence",
   "disclaimer": "Synthetic data. This is a self-directed simulation of buy-side financial due diligence on a fictional company, built for a portfolio. It is not client work and uses no real company's data."
 }

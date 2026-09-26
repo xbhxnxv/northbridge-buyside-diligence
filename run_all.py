@@ -10,6 +10,11 @@ Stages, in order:
   7. readme     write README.md with headline findings from the pipeline
   8. tests      run the pytest tie-outs in tests/
 
+Every run gives byte-identical outputs: child processes get PYTHONHASHSEED=0,
+notebooks are executed without timing metadata, and the xlsx, docx and PDF have
+their dates and ids fixed (tools/normalise_*.py). `--check-determinism` runs the
+pipeline twice and fails if any tracked file differs between the runs.
+
 A stage whose inputs do not exist yet (for example no notebooks before Step 3) is
 skipped with a message rather than failing. Any stage that does run and fails stops
 the pipeline with a non-zero exit code.
@@ -18,11 +23,13 @@ Usage:
   python run_all.py                 run every stage
   python run_all.py --only sql tests
   python run_all.py --skip generate
+  python run_all.py --check-determinism
 """
 
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 import time
@@ -31,6 +38,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 DB_PATH = ROOT / "data" / "northbridge.duckdb"
 PY = sys.executable
+# String hashing is randomised per process unless this is fixed, which changes the order of
+# sets and so the order of floating-point sums. Child processes (and the notebook kernels
+# they start) inherit it.
+ENV = {**os.environ, "PYTHONHASHSEED": "0"}
 
 
 class Skip(Exception):
@@ -38,7 +49,7 @@ class Skip(Exception):
 
 
 def run(cmd: list[str]) -> None:
-    result = subprocess.run(cmd, cwd=ROOT)
+    result = subprocess.run(cmd, cwd=ROOT, env=ENV)
     if result.returncode != 0:
         raise RuntimeError(f"command failed ({result.returncode}): {' '.join(cmd)}")
 
@@ -59,6 +70,7 @@ def stage_sql() -> None:
         if stale.exists():
             stale.unlink()
     con = duckdb.connect(str(DB_PATH))
+    con.execute("SET preserve_insertion_order = true")  # DuckDB's default, made explicit
     try:
         for script in scripts:
             t0 = time.perf_counter()
@@ -82,8 +94,10 @@ def stage_notebooks() -> None:
             "--to", "notebook", "--execute", "--inplace",
             "--ExecutePreprocessor.timeout=1200",
             "--ExecutePreprocessor.kernel_name=python3",
+            "--ExecutePreprocessor.record_timing=False",
             str(nb.relative_to(ROOT)),
         ])
+        run([PY, "tools/normalise_notebook.py", str(nb.relative_to(ROOT))])
 
 
 def stage_databook() -> None:
@@ -136,7 +150,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--only", nargs="+", choices=STAGES, help="run only these stages")
     parser.add_argument("--skip", nargs="+", choices=STAGES, default=[], help="skip these stages")
+    parser.add_argument("--check-determinism", action="store_true",
+                        help="run the pipeline twice and fail if any tracked file differs (tools/check_reproducible.py)")
     args = parser.parse_args()
+    if args.check_determinism:
+        return subprocess.run([PY, "tools/check_reproducible.py"], cwd=ROOT, env=ENV).returncode
 
     selected = [s for s in STAGES if (not args.only or s in args.only) and s not in args.skip]
     summary: list[tuple[str, str, float]] = []

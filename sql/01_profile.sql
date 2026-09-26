@@ -59,24 +59,26 @@ JOIN duckdb_columns() c ON c.table_name = p.table_name AND c.column_name = p.col
 ORDER BY p.table_name, c.column_index;
 
 CREATE OR REPLACE TABLE prof_primary_keys AS
-SELECT 'raw_customers' AS table_name, 'customer_id' AS key_columns,
+SELECT * EXCLUDE (ord) FROM (
+SELECT 1 AS ord, 'raw_customers' AS table_name, 'customer_id' AS key_columns,
        count(*) AS row_count, count(DISTINCT customer_id) AS distinct_keys,
        count(*) FILTER (WHERE customer_id IS NULL) AS null_keys FROM raw_customers
 UNION ALL
-SELECT 'raw_products', 'product_id', count(*), count(DISTINCT product_id),
+SELECT 2, 'raw_products', 'product_id', count(*), count(DISTINCT product_id),
        count(*) FILTER (WHERE product_id IS NULL) FROM raw_products
 UNION ALL
-SELECT 'raw_subscriptions', 'subscription_id', count(*), count(DISTINCT subscription_id),
+SELECT 3, 'raw_subscriptions', 'subscription_id', count(*), count(DISTINCT subscription_id),
        count(*) FILTER (WHERE subscription_id IS NULL) FROM raw_subscriptions
 UNION ALL
-SELECT 'raw_invoices', 'invoice_id', count(*), count(DISTINCT invoice_id),
+SELECT 4, 'raw_invoices', 'invoice_id', count(*), count(DISTINCT invoice_id),
        count(*) FILTER (WHERE invoice_id IS NULL) FROM raw_invoices
 UNION ALL
-SELECT 'raw_costs', 'month, product_line', count(*), count(DISTINCT (month, product_line)),
+SELECT 5, 'raw_costs', 'month, product_line', count(*), count(DISTINCT (month, product_line)),
        count(*) FILTER (WHERE month IS NULL OR product_line IS NULL) FROM raw_costs
 UNION ALL
-SELECT 'raw_management_accounts', 'month', count(*), count(DISTINCT month),
-       count(*) FILTER (WHERE month IS NULL) FROM raw_management_accounts;
+SELECT 6, 'raw_management_accounts', 'month', count(*), count(DISTINCT month),
+       count(*) FILTER (WHERE month IS NULL) FROM raw_management_accounts
+) ORDER BY ord;
 
 -- ---------------------------------------------------------------------------
 -- 2. Date ranges and dates outside the January 2022 to December 2025 window
@@ -187,33 +189,35 @@ ORDER BY table_name, column_name, rows DESC, value;
 -- ---------------------------------------------------------------------------
 
 CREATE OR REPLACE TABLE prof_referential_integrity AS
-SELECT 'invoices.customer_id not in customers' AS check_name, count(*) AS orphan_rows
+SELECT * EXCLUDE (ord) FROM (
+SELECT 1 AS ord, 'invoices.customer_id not in customers' AS check_name, count(*) AS orphan_rows
 FROM raw_invoices i WHERE NOT EXISTS (SELECT 1 FROM raw_customers c WHERE c.customer_id = i.customer_id)
 UNION ALL
-SELECT 'invoices.product_id not in products', count(*)
+SELECT 2, 'invoices.product_id not in products', count(*)
 FROM raw_invoices i WHERE NOT EXISTS (SELECT 1 FROM raw_products p WHERE p.product_id = i.product_id)
 UNION ALL
-SELECT 'subscriptions.customer_id not in customers', count(*)
+SELECT 3, 'subscriptions.customer_id not in customers', count(*)
 FROM raw_subscriptions s WHERE NOT EXISTS (SELECT 1 FROM raw_customers c WHERE c.customer_id = s.customer_id)
 UNION ALL
-SELECT 'subscriptions.product_id not in products', count(*)
+SELECT 4, 'subscriptions.product_id not in products', count(*)
 FROM raw_subscriptions s WHERE NOT EXISTS (SELECT 1 FROM raw_products p WHERE p.product_id = s.product_id)
 UNION ALL
-SELECT 'costs.product_line not in products', count(*)
+SELECT 5, 'costs.product_line not in products', count(*)
 FROM raw_costs k WHERE NOT EXISTS (SELECT 1 FROM raw_products p WHERE p.product_line = k.product_line)
 UNION ALL
-SELECT 'customers with no subscription', count(*)
+SELECT 6, 'customers with no subscription', count(*)
 FROM raw_customers c WHERE NOT EXISTS (SELECT 1 FROM raw_subscriptions s WHERE s.customer_id = c.customer_id)
 UNION ALL
-SELECT 'customers with no invoice in the window', count(*)
+SELECT 7, 'customers with no invoice in the window', count(*)
 FROM raw_customers c WHERE NOT EXISTS (SELECT 1 FROM raw_invoices i WHERE i.customer_id = c.customer_id)
 UNION ALL
-SELECT 'of which: a subscription line live at any point in the window', count(*)
+SELECT 8, 'of which: a subscription line live at any point in the window', count(*)
 FROM raw_customers c
 WHERE NOT EXISTS (SELECT 1 FROM raw_invoices i WHERE i.customer_id = c.customer_id)
   AND EXISTS (SELECT 1 FROM raw_subscriptions s
               WHERE s.customer_id = c.customer_id
-                AND (s.end_date IS NULL OR s.end_date > DATE '2022-01-01'));
+                AND (s.end_date IS NULL OR s.end_date > DATE '2022-01-01'))
+) ORDER BY ord;
 
 CREATE OR REPLACE TABLE prof_revenue_type_consistency AS
 SELECT i.revenue_type AS invoice_revenue_type, p.revenue_type AS product_revenue_type,
@@ -406,19 +410,20 @@ ORDER BY i.invoice_id;
 -- ---------------------------------------------------------------------------
 
 CREATE OR REPLACE TABLE prof_subscription_checks AS
-SELECT 'contract lines' AS metric, count(*)::DOUBLE AS value FROM raw_subscriptions
-UNION ALL SELECT 'start_date after end_date', count(*) FILTER (WHERE end_date < start_date) FROM raw_subscriptions
-UNION ALL SELECT 'start_date equal to end_date', count(*) FILTER (WHERE end_date = start_date) FROM raw_subscriptions
-UNION ALL SELECT 'active (blank end_date)', count(*) FILTER (WHERE end_date IS NULL) FROM raw_subscriptions
-UNION ALL SELECT 'active share %', round(100.0 * count(*) FILTER (WHERE end_date IS NULL) / count(*), 1) FROM raw_subscriptions
-UNION ALL SELECT 'ended', count(*) FILTER (WHERE end_date IS NOT NULL) FROM raw_subscriptions
-UNION ALL SELECT 'ended before the window (end_date <= 2022-01-01)', count(*) FILTER (WHERE end_date <= DATE '2022-01-01') FROM raw_subscriptions
-UNION ALL SELECT 'end_date not on the 1st of a month', count(*) FILTER (WHERE end_date IS NOT NULL AND day(end_date) <> 1) FROM raw_subscriptions
-UNION ALL SELECT 'customer x product with more than one active line',
+SELECT * EXCLUDE (ord) FROM (
+SELECT 1 AS ord, 'contract lines' AS metric, count(*)::DOUBLE AS value FROM raw_subscriptions
+UNION ALL SELECT 2, 'start_date after end_date', count(*) FILTER (WHERE end_date < start_date) FROM raw_subscriptions
+UNION ALL SELECT 3, 'start_date equal to end_date', count(*) FILTER (WHERE end_date = start_date) FROM raw_subscriptions
+UNION ALL SELECT 4, 'active (blank end_date)', count(*) FILTER (WHERE end_date IS NULL) FROM raw_subscriptions
+UNION ALL SELECT 5, 'active share %', round(100.0 * count(*) FILTER (WHERE end_date IS NULL) / count(*), 1) FROM raw_subscriptions
+UNION ALL SELECT 6, 'ended', count(*) FILTER (WHERE end_date IS NOT NULL) FROM raw_subscriptions
+UNION ALL SELECT 7, 'ended before the window (end_date <= 2022-01-01)', count(*) FILTER (WHERE end_date <= DATE '2022-01-01') FROM raw_subscriptions
+UNION ALL SELECT 8, 'end_date not on the 1st of a month', count(*) FILTER (WHERE end_date IS NOT NULL AND day(end_date) <> 1) FROM raw_subscriptions
+UNION ALL SELECT 9, 'customer x product with more than one active line',
     (SELECT count(*) FROM (SELECT customer_id, product_id FROM raw_subscriptions WHERE end_date IS NULL GROUP BY ALL HAVING count(*) > 1))
-UNION ALL SELECT 'lines starting before the customer signup_date',
+UNION ALL SELECT 10, 'lines starting before the customer signup_date',
     (SELECT count(*) FROM raw_subscriptions s JOIN raw_customers c USING (customer_id) WHERE s.start_date < c.signup_date)
-UNION ALL SELECT 'recurring invoice months not covered by any subscription line',
+UNION ALL SELECT 11, 'recurring invoice months not covered by any subscription line',
     (SELECT count(*) FROM (
         SELECT DISTINCT i.customer_id, i.product_id, date_trunc('month', i.invoice_date) AS m
         FROM raw_invoices i JOIN raw_products p USING (product_id)
@@ -427,7 +432,8 @@ UNION ALL SELECT 'recurring invoice months not covered by any subscription line'
         SELECT 1 FROM raw_subscriptions s
         WHERE s.customer_id = inv.customer_id AND s.product_id = inv.product_id
           AND date_trunc('month', s.start_date) <= inv.m
-          AND (s.end_date IS NULL OR s.end_date > inv.m)));
+          AND (s.end_date IS NULL OR s.end_date > inv.m)))
+) ORDER BY ord;
 
 CREATE OR REPLACE TABLE prof_subscription_terms AS
 SELECT contract_term_months, count(*) AS lines,
@@ -498,19 +504,21 @@ ORDER BY m.month;
 -- ---------------------------------------------------------------------------
 
 CREATE OR REPLACE TABLE prof_name_formats AS
-SELECT 'leading or trailing spaces' AS pattern, count(*) FILTER (WHERE customer_name <> trim(customer_name)) AS customers FROM raw_customers
-UNION ALL SELECT 'double spaces', count(*) FILTER (WHERE customer_name LIKE '%  %') FROM raw_customers
-UNION ALL SELECT 'trailing punctuation', count(*) FILTER (WHERE regexp_matches(customer_name, '[.,;:]$')) FROM raw_customers
-UNION ALL SELECT 'all upper case', count(*) FILTER (WHERE customer_name = upper(customer_name)) FROM raw_customers
-UNION ALL SELECT 'all lower case', count(*) FILTER (WHERE customer_name = lower(customer_name)) FROM raw_customers
-UNION ALL SELECT 'ends "Ltd"', count(*) FILTER (WHERE regexp_matches(customer_name, '\bLtd\.?$')) FROM raw_customers
-UNION ALL SELECT 'ends "Limited"', count(*) FILTER (WHERE regexp_matches(customer_name, '\bLimited\.?$')) FROM raw_customers
-UNION ALL SELECT 'ends "PLC"', count(*) FILTER (WHERE regexp_matches(customer_name, '\bPLC\.?$')) FROM raw_customers
-UNION ALL SELECT 'ends "LLP"', count(*) FILTER (WHERE regexp_matches(customer_name, '\bLLP\.?$')) FROM raw_customers
-UNION ALL SELECT 'ends "& Co"', count(*) FILTER (WHERE regexp_matches(customer_name, '& Co\.?$')) FROM raw_customers
-UNION ALL SELECT 'ends "and Co"', count(*) FILTER (WHERE regexp_matches(customer_name, '\band Co\.?$')) FROM raw_customers
-UNION ALL SELECT 'contains "Grp"', count(*) FILTER (WHERE regexp_matches(customer_name, '\bGrp\b')) FROM raw_customers
-UNION ALL SELECT 'contains " and "', count(*) FILTER (WHERE regexp_matches(customer_name, '\band\b')) FROM raw_customers;
+SELECT * EXCLUDE (ord) FROM (
+SELECT 1 AS ord, 'leading or trailing spaces' AS pattern, count(*) FILTER (WHERE customer_name <> trim(customer_name)) AS customers FROM raw_customers
+UNION ALL SELECT 2, 'double spaces', count(*) FILTER (WHERE customer_name LIKE '%  %') FROM raw_customers
+UNION ALL SELECT 3, 'trailing punctuation', count(*) FILTER (WHERE regexp_matches(customer_name, '[.,;:]$')) FROM raw_customers
+UNION ALL SELECT 4, 'all upper case', count(*) FILTER (WHERE customer_name = upper(customer_name)) FROM raw_customers
+UNION ALL SELECT 5, 'all lower case', count(*) FILTER (WHERE customer_name = lower(customer_name)) FROM raw_customers
+UNION ALL SELECT 6, 'ends "Ltd"', count(*) FILTER (WHERE regexp_matches(customer_name, '\bLtd\.?$')) FROM raw_customers
+UNION ALL SELECT 7, 'ends "Limited"', count(*) FILTER (WHERE regexp_matches(customer_name, '\bLimited\.?$')) FROM raw_customers
+UNION ALL SELECT 8, 'ends "PLC"', count(*) FILTER (WHERE regexp_matches(customer_name, '\bPLC\.?$')) FROM raw_customers
+UNION ALL SELECT 9, 'ends "LLP"', count(*) FILTER (WHERE regexp_matches(customer_name, '\bLLP\.?$')) FROM raw_customers
+UNION ALL SELECT 10, 'ends "& Co"', count(*) FILTER (WHERE regexp_matches(customer_name, '& Co\.?$')) FROM raw_customers
+UNION ALL SELECT 11, 'ends "and Co"', count(*) FILTER (WHERE regexp_matches(customer_name, '\band Co\.?$')) FROM raw_customers
+UNION ALL SELECT 12, 'contains "Grp"', count(*) FILTER (WHERE regexp_matches(customer_name, '\bGrp\b')) FROM raw_customers
+UNION ALL SELECT 13, 'contains " and "', count(*) FILTER (WHERE regexp_matches(customer_name, '\band\b')) FROM raw_customers
+) ORDER BY ord;
 
 CREATE OR REPLACE TABLE prof_name_irregular AS
 SELECT customer_id, customer_name, customer_name_key(customer_name) AS name_key,

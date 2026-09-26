@@ -22,7 +22,11 @@ CLEAN = ROOT / "data" / "clean"
 
 
 def connect(read_only: bool = True) -> duckdb.DuckDBPyConnection:
-    return duckdb.connect(str(DB_PATH), read_only=read_only)
+    # Tables are created with ORDER BY; keeping insertion order means a plain scan returns
+    # rows in that order on every run (this is DuckDB's default, set here so it is explicit).
+    con = duckdb.connect(str(DB_PATH), read_only=read_only)
+    con.execute("SET preserve_insertion_order = true")
+    return con
 
 
 def q(con: duckdb.DuckDBPyConnection, sql: str) -> pd.DataFrame:

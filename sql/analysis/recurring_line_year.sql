@@ -8,4 +8,5 @@ SELECT r.customer_id, r.product_line, year(r.month_start) AS year,
                AND m.month_start = make_date(year(r.month_start), 12, 1)) AS customer_live_in_december
 FROM fact_revenue_monthly r
 WHERE r.revenue_type = 'recurring'
-GROUP BY ALL;
+GROUP BY ALL
+ORDER BY r.customer_id, r.product_line, year;

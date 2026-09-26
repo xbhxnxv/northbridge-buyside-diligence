@@ -935,8 +935,9 @@ def build() -> Path:
     order = ["Cover", "Contents"] + order[1:] + ["Checks"]
     b.wb._sheets = [b.wb[n] for n in order]
     b.wb.properties.creator = "Northbridge pipeline (databook/build_databook.py)"
-    b.wb.properties.created = dt.datetime(2026, 9, 27)
-    b.wb.properties.modified = dt.datetime(2026, 9, 27)
+    stamp = dt.datetime.fromisoformat(CONFIG["document_date"])
+    b.wb.properties.created = stamp
+    b.wb.properties.modified = stamp
     OUT.parent.mkdir(exist_ok=True)
     b.wb.save(OUT)
     CELL_MAP.write_text(json.dumps(b.cells, indent=2), encoding="utf-8")
@@ -950,6 +951,12 @@ if __name__ == "__main__":
     from recalc import recalc
 
     result = recalc(str(path))
+    # LibreOffice stamps the save time and new random chart axis ids; fix them so a rerun
+    # with the same numbers gives the same bytes.
+    sys.path.insert(0, str(ROOT / "tools"))
+    from normalise_ooxml import normalise
+
+    normalise(path)
     (ROOT / "databook" / "recalc_report.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
     print(json.dumps({k: v for k, v in result.items() if k != "errors"}, indent=2))
     if "error" in result or result.get("status") != "success":

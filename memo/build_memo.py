@@ -272,7 +272,12 @@ def main() -> int:
     (MEMO / "findings_memo.md").write_text(md, encoding="utf-8")
     docx_path = MEMO / "findings_memo.docx"
     to_docx(docx_path)
+    sys.path.insert(0, str(ROOT / "tools"))
+    from normalise_ooxml import normalise as normalise_docx
+    from normalise_pdf import normalise as normalise_pdf
+    normalise_docx(docx_path)  # fixed dates and zip layout, so a rerun gives the same bytes
     pdf = to_pdf(docx_path)
+    normalise_pdf(pdf)
     from pypdf import PdfReader
     pages = len(PdfReader(str(pdf)).pages)
     words = len(md.split())

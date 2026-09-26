@@ -151,6 +151,7 @@ def expected_values(t) -> pd.DataFrame:
 
 def main():
     con = duckdb.connect(str(DB), read_only=True)
+    con.execute("SET preserve_insertion_order = true")  # DuckDB's default, made explicit
     t = export(con)
     ev = expected_values(t)
     ev.to_csv(EXPECTED, index=False)

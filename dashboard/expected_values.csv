@@ -1,0 +1,625 @@
+context,year,filter_column,filter_value,measure,value
+year,2022,,,Net Revenue,28232151.64
+year,2022,,,Recurring Revenue,27248292.05
+year,2022,,,One-off Revenue,983859.59
+year,2022,,,Other Implementation Revenue,0.0
+year,2022,,,Recurring %,0.965151
+year,2022,,,Net Revenue YoY %,
+year,2022,,,MRR,2417140.3
+year,2022,,,ARR,29005683.6
+year,2022,,,Active Customers,1010.0
+year,2022,,,ARR YoY %,
+year,2022,,,NRR,
+year,2022,,,GRR,
+year,2022,,,Logo Churn Rate,
+year,2022,,,Top 10 Concentration %,0.334238
+year,2022,,,Gross Profit,21865079.32
+year,2022,,,Gross Margin %,0.774474
+year x product line,2022,product_line,Core Platform,Net Revenue,20979313.89
+year x product line,2022,product_line,Core Platform,Recurring Revenue,20979313.89
+year x product line,2022,product_line,Core Platform,One-off Revenue,0.0
+year x product line,2022,product_line,Core Platform,Other Implementation Revenue,0.0
+year x product line,2022,product_line,Core Platform,Recurring %,1.0
+year x product line,2022,product_line,Core Platform,Net Revenue YoY %,
+year x product line,2022,product_line,Core Platform,MRR,1857094.57
+year x product line,2022,product_line,Core Platform,ARR,22285134.84
+year x product line,2022,product_line,Core Platform,Active Customers,1010.0
+year x product line,2022,product_line,Core Platform,ARR YoY %,
+year x product line,2022,product_line,Core Platform,NRR,
+year x product line,2022,product_line,Core Platform,GRR,
+year x product line,2022,product_line,Core Platform,Logo Churn Rate,
+year x product line,2022,product_line,Core Platform,Top 10 Concentration %,0.311507
+year x product line,2022,product_line,Core Platform,Gross Profit,17115469.03
+year x product line,2022,product_line,Core Platform,Gross Margin %,0.815826
+year x product line,2022,product_line,Analytics Add-on,Net Revenue,3078864.24
+year x product line,2022,product_line,Analytics Add-on,Recurring Revenue,3078864.24
+year x product line,2022,product_line,Analytics Add-on,One-off Revenue,0.0
+year x product line,2022,product_line,Analytics Add-on,Other Implementation Revenue,0.0
+year x product line,2022,product_line,Analytics Add-on,Recurring %,1.0
+year x product line,2022,product_line,Analytics Add-on,Net Revenue YoY %,
+year x product line,2022,product_line,Analytics Add-on,MRR,276166.26
+year x product line,2022,product_line,Analytics Add-on,ARR,3313995.12
+year x product line,2022,product_line,Analytics Add-on,Active Customers,330.0
+year x product line,2022,product_line,Analytics Add-on,ARR YoY %,
+year x product line,2022,product_line,Analytics Add-on,NRR,
+year x product line,2022,product_line,Analytics Add-on,GRR,
+year x product line,2022,product_line,Analytics Add-on,Logo Churn Rate,
+year x product line,2022,product_line,Analytics Add-on,Top 10 Concentration %,0.4159
+year x product line,2022,product_line,Analytics Add-on,Gross Profit,2397841.3
+year x product line,2022,product_line,Analytics Add-on,Gross Margin %,0.778807
+year x product line,2022,product_line,Payments Module,Net Revenue,3190113.92
+year x product line,2022,product_line,Payments Module,Recurring Revenue,3190113.92
+year x product line,2022,product_line,Payments Module,One-off Revenue,0.0
+year x product line,2022,product_line,Payments Module,Other Implementation Revenue,0.0
+year x product line,2022,product_line,Payments Module,Recurring %,1.0
+year x product line,2022,product_line,Payments Module,Net Revenue YoY %,
+year x product line,2022,product_line,Payments Module,MRR,283879.47
+year x product line,2022,product_line,Payments Module,ARR,3406553.64
+year x product line,2022,product_line,Payments Module,Active Customers,226.0
+year x product line,2022,product_line,Payments Module,ARR YoY %,
+year x product line,2022,product_line,Payments Module,NRR,
+year x product line,2022,product_line,Payments Module,GRR,
+year x product line,2022,product_line,Payments Module,Logo Churn Rate,
+year x product line,2022,product_line,Payments Module,Top 10 Concentration %,0.515518
+year x product line,2022,product_line,Payments Module,Gross Profit,2088988.25
+year x product line,2022,product_line,Payments Module,Gross Margin %,0.654832
+year x product line,2022,product_line,Implementation Services,Net Revenue,983859.59
+year x product line,2022,product_line,Implementation Services,Recurring Revenue,0.0
+year x product line,2022,product_line,Implementation Services,One-off Revenue,983859.59
+year x product line,2022,product_line,Implementation Services,Other Implementation Revenue,0.0
+year x product line,2022,product_line,Implementation Services,Recurring %,0.0
+year x product line,2022,product_line,Implementation Services,Net Revenue YoY %,
+year x product line,2022,product_line,Implementation Services,MRR,0.0
+year x product line,2022,product_line,Implementation Services,ARR,0.0
+year x product line,2022,product_line,Implementation Services,Active Customers,0.0
+year x product line,2022,product_line,Implementation Services,ARR YoY %,
+year x product line,2022,product_line,Implementation Services,NRR,
+year x product line,2022,product_line,Implementation Services,GRR,
+year x product line,2022,product_line,Implementation Services,Logo Churn Rate,
+year x product line,2022,product_line,Implementation Services,Top 10 Concentration %,0.114303
+year x product line,2022,product_line,Implementation Services,Gross Profit,262780.74
+year x product line,2022,product_line,Implementation Services,Gross Margin %,0.267092
+year,2023,,,Net Revenue,32192869.95
+year,2023,,,Recurring Revenue,31014666.15
+year,2023,,,One-off Revenue,1178203.8
+year,2023,,,Other Implementation Revenue,0.0
+year,2023,,,Recurring %,0.963402
+year,2023,,,Net Revenue YoY %,0.140291
+year,2023,,,MRR,2731778.55
+year,2023,,,ARR,32781342.6
+year,2023,,,Active Customers,1205.0
+year,2023,,,ARR YoY %,0.13017
+year,2023,,,NRR,0.957664
+year,2023,,,GRR,0.945219
+year,2023,,,Logo Churn Rate,0.089109
+year,2023,,,Top 10 Concentration %,0.297609
+year,2023,,,Gross Profit,24915921.37
+year,2023,,,Gross Margin %,0.773958
+year x product line,2023,product_line,Core Platform,Net Revenue,23830469.2
+year x product line,2023,product_line,Core Platform,Recurring Revenue,23830469.2
+year x product line,2023,product_line,Core Platform,One-off Revenue,0.0
+year x product line,2023,product_line,Core Platform,Other Implementation Revenue,0.0
+year x product line,2023,product_line,Core Platform,Recurring %,1.0
+year x product line,2023,product_line,Core Platform,Net Revenue YoY %,0.135903
+year x product line,2023,product_line,Core Platform,MRR,2096276.24
+year x product line,2023,product_line,Core Platform,ARR,25155314.88
+year x product line,2023,product_line,Core Platform,Active Customers,1205.0
+year x product line,2023,product_line,Core Platform,ARR YoY %,0.128793
+year x product line,2023,product_line,Core Platform,NRR,0.944616
+year x product line,2023,product_line,Core Platform,GRR,0.944616
+year x product line,2023,product_line,Core Platform,Logo Churn Rate,0.089109
+year x product line,2023,product_line,Core Platform,Top 10 Concentration %,0.276421
+year x product line,2023,product_line,Core Platform,Gross Profit,19467293.62
+year x product line,2023,product_line,Core Platform,Gross Margin %,0.816908
+year x product line,2023,product_line,Analytics Add-on,Net Revenue,3594489.9
+year x product line,2023,product_line,Analytics Add-on,Recurring Revenue,3594489.9
+year x product line,2023,product_line,Analytics Add-on,One-off Revenue,0.0
+year x product line,2023,product_line,Analytics Add-on,Other Implementation Revenue,0.0
+year x product line,2023,product_line,Analytics Add-on,Recurring %,1.0
+year x product line,2023,product_line,Analytics Add-on,Net Revenue YoY %,0.167473
+year x product line,2023,product_line,Analytics Add-on,MRR,318734.55
+year x product line,2023,product_line,Analytics Add-on,ARR,3824814.6
+year x product line,2023,product_line,Analytics Add-on,Active Customers,413.0
+year x product line,2023,product_line,Analytics Add-on,ARR YoY %,0.15414
+year x product line,2023,product_line,Analytics Add-on,NRR,0.938722
+year x product line,2023,product_line,Analytics Add-on,GRR,0.938722
+year x product line,2023,product_line,Analytics Add-on,Logo Churn Rate,0.09697
+year x product line,2023,product_line,Analytics Add-on,Top 10 Concentration %,0.368063
+year x product line,2023,product_line,Analytics Add-on,Gross Profit,2793743.0
+year x product line,2023,product_line,Analytics Add-on,Gross Margin %,0.777229
+year x product line,2023,product_line,Payments Module,Net Revenue,3589707.05
+year x product line,2023,product_line,Payments Module,Recurring Revenue,3589707.05
+year x product line,2023,product_line,Payments Module,One-off Revenue,0.0
+year x product line,2023,product_line,Payments Module,Other Implementation Revenue,0.0
+year x product line,2023,product_line,Payments Module,Recurring %,1.0
+year x product line,2023,product_line,Payments Module,Net Revenue YoY %,0.12526
+year x product line,2023,product_line,Payments Module,MRR,316767.76
+year x product line,2023,product_line,Payments Module,ARR,3801213.12
+year x product line,2023,product_line,Payments Module,Active Customers,275.0
+year x product line,2023,product_line,Payments Module,ARR YoY %,0.115853
+year x product line,2023,product_line,Payments Module,NRR,0.955479
+year x product line,2023,product_line,Payments Module,GRR,0.955479
+year x product line,2023,product_line,Payments Module,Logo Churn Rate,0.084071
+year x product line,2023,product_line,Payments Module,Top 10 Concentration %,0.465096
+year x product line,2023,product_line,Payments Module,Gross Profit,2317022.26
+year x product line,2023,product_line,Payments Module,Gross Margin %,0.645463
+year x product line,2023,product_line,Implementation Services,Net Revenue,1178203.8
+year x product line,2023,product_line,Implementation Services,Recurring Revenue,0.0
+year x product line,2023,product_line,Implementation Services,One-off Revenue,1178203.8
+year x product line,2023,product_line,Implementation Services,Other Implementation Revenue,0.0
+year x product line,2023,product_line,Implementation Services,Recurring %,0.0
+year x product line,2023,product_line,Implementation Services,Net Revenue YoY %,0.197532
+year x product line,2023,product_line,Implementation Services,MRR,0.0
+year x product line,2023,product_line,Implementation Services,ARR,0.0
+year x product line,2023,product_line,Implementation Services,Active Customers,0.0
+year x product line,2023,product_line,Implementation Services,ARR YoY %,
+year x product line,2023,product_line,Implementation Services,NRR,
+year x product line,2023,product_line,Implementation Services,GRR,
+year x product line,2023,product_line,Implementation Services,Logo Churn Rate,
+year x product line,2023,product_line,Implementation Services,Top 10 Concentration %,0.095251
+year x product line,2023,product_line,Implementation Services,Gross Profit,337862.49
+year x product line,2023,product_line,Implementation Services,Gross Margin %,0.286761
+year,2024,,,Net Revenue,37258898.51
+year,2024,,,Recurring Revenue,36114683.69
+year,2024,,,One-off Revenue,1144214.82
+year,2024,,,Other Implementation Revenue,0.0
+year,2024,,,Recurring %,0.96929
+year,2024,,,Net Revenue YoY %,0.157365
+year,2024,,,MRR,3124736.34
+year,2024,,,ARR,37496836.08
+year,2024,,,Active Customers,1343.0
+year,2024,,,ARR YoY %,0.143847
+year,2024,,,NRR,0.98747
+year,2024,,,GRR,0.929122
+year,2024,,,Logo Churn Rate,0.109544
+year,2024,,,Top 10 Concentration %,0.266523
+year,2024,,,Gross Profit,28982805.36
+year,2024,,,Gross Margin %,0.777876
+year x product line,2024,product_line,Core Platform,Net Revenue,27735968.67
+year x product line,2024,product_line,Core Platform,Recurring Revenue,27735968.67
+year x product line,2024,product_line,Core Platform,One-off Revenue,0.0
+year x product line,2024,product_line,Core Platform,Other Implementation Revenue,0.0
+year x product line,2024,product_line,Core Platform,Recurring %,1.0
+year x product line,2024,product_line,Core Platform,Net Revenue YoY %,0.163887
+year x product line,2024,product_line,Core Platform,MRR,2401943.82
+year x product line,2024,product_line,Core Platform,ARR,28823325.84
+year x product line,2024,product_line,Core Platform,Active Customers,1343.0
+year x product line,2024,product_line,Core Platform,ARR YoY %,0.145815
+year x product line,2024,product_line,Core Platform,NRR,0.980274
+year x product line,2024,product_line,Core Platform,GRR,0.933594
+year x product line,2024,product_line,Core Platform,Logo Churn Rate,0.109544
+year x product line,2024,product_line,Core Platform,Top 10 Concentration %,0.249413
+year x product line,2024,product_line,Core Platform,Gross Profit,22695483.72
+year x product line,2024,product_line,Core Platform,Gross Margin %,0.818269
+year x product line,2024,product_line,Analytics Add-on,Net Revenue,4168383.63
+year x product line,2024,product_line,Analytics Add-on,Recurring Revenue,4168383.63
+year x product line,2024,product_line,Analytics Add-on,One-off Revenue,0.0
+year x product line,2024,product_line,Analytics Add-on,Other Implementation Revenue,0.0
+year x product line,2024,product_line,Analytics Add-on,Recurring %,1.0
+year x product line,2024,product_line,Analytics Add-on,Net Revenue YoY %,0.159659
+year x product line,2024,product_line,Analytics Add-on,MRR,356801.01
+year x product line,2024,product_line,Analytics Add-on,ARR,4281612.12
+year x product line,2024,product_line,Analytics Add-on,Active Customers,484.0
+year x product line,2024,product_line,Analytics Add-on,ARR YoY %,0.11943
+year x product line,2024,product_line,Analytics Add-on,NRR,0.914942
+year x product line,2024,product_line,Analytics Add-on,GRR,0.871373
+year x product line,2024,product_line,Analytics Add-on,Logo Churn Rate,0.11138
+year x product line,2024,product_line,Analytics Add-on,Top 10 Concentration %,0.306939
+year x product line,2024,product_line,Analytics Add-on,Gross Profit,3230813.62
+year x product line,2024,product_line,Analytics Add-on,Gross Margin %,0.775076
+year x product line,2024,product_line,Payments Module,Net Revenue,4210331.39
+year x product line,2024,product_line,Payments Module,Recurring Revenue,4210331.39
+year x product line,2024,product_line,Payments Module,One-off Revenue,0.0
+year x product line,2024,product_line,Payments Module,Other Implementation Revenue,0.0
+year x product line,2024,product_line,Payments Module,Recurring %,1.0
+year x product line,2024,product_line,Payments Module,Net Revenue YoY %,0.17289
+year x product line,2024,product_line,Payments Module,MRR,365991.51
+year x product line,2024,product_line,Payments Module,ARR,4391898.12
+year x product line,2024,product_line,Payments Module,Active Customers,322.0
+year x product line,2024,product_line,Payments Module,ARR YoY %,0.155394
+year x product line,2024,product_line,Payments Module,NRR,0.983985
+year x product line,2024,product_line,Payments Module,GRR,0.937129
+year x product line,2024,product_line,Payments Module,Logo Churn Rate,0.105455
+year x product line,2024,product_line,Payments Module,Top 10 Concentration %,0.416366
+year x product line,2024,product_line,Payments Module,Gross Profit,2715580.62
+year x product line,2024,product_line,Payments Module,Gross Margin %,0.64498
+year x product line,2024,product_line,Implementation Services,Net Revenue,1144214.82
+year x product line,2024,product_line,Implementation Services,Recurring Revenue,0.0
+year x product line,2024,product_line,Implementation Services,One-off Revenue,1144214.82
+year x product line,2024,product_line,Implementation Services,Other Implementation Revenue,0.0
+year x product line,2024,product_line,Implementation Services,Recurring %,0.0
+year x product line,2024,product_line,Implementation Services,Net Revenue YoY %,-0.028848
+year x product line,2024,product_line,Implementation Services,MRR,0.0
+year x product line,2024,product_line,Implementation Services,ARR,0.0
+year x product line,2024,product_line,Implementation Services,Active Customers,0.0
+year x product line,2024,product_line,Implementation Services,ARR YoY %,
+year x product line,2024,product_line,Implementation Services,NRR,
+year x product line,2024,product_line,Implementation Services,GRR,
+year x product line,2024,product_line,Implementation Services,Logo Churn Rate,
+year x product line,2024,product_line,Implementation Services,Top 10 Concentration %,0.100713
+year x product line,2024,product_line,Implementation Services,Gross Profit,340927.4
+year x product line,2024,product_line,Implementation Services,Gross Margin %,0.297958
+year,2025,,,Net Revenue,45756419.35
+year,2025,,,Recurring Revenue,40475097.15
+year,2025,,,One-off Revenue,5281322.2
+year,2025,,,Other Implementation Revenue,4076574.31
+year,2025,,,Recurring %,0.884577
+year,2025,,,Net Revenue YoY %,0.228067
+year,2025,,,MRR,3446652.32
+year,2025,,,ARR,41359827.84
+year,2025,,,Active Customers,1462.0
+year,2025,,,ARR YoY %,0.103022
+year,2025,,,NRR,0.954435
+year,2025,,,GRR,0.887691
+year,2025,,,Logo Churn Rate,0.127327
+year,2025,,,Top 10 Concentration %,0.223386
+year,2025,,,Gross Profit,33748285.64
+year,2025,,,Gross Margin %,0.737564
+year x product line,2025,product_line,Core Platform,Net Revenue,31584836.35
+year x product line,2025,product_line,Core Platform,Recurring Revenue,31584836.35
+year x product line,2025,product_line,Core Platform,One-off Revenue,0.0
+year x product line,2025,product_line,Core Platform,Other Implementation Revenue,0.0
+year x product line,2025,product_line,Core Platform,Recurring %,1.0
+year x product line,2025,product_line,Core Platform,Net Revenue YoY %,0.138768
+year x product line,2025,product_line,Core Platform,MRR,2740351.46
+year x product line,2025,product_line,Core Platform,ARR,32884217.52
+year x product line,2025,product_line,Core Platform,Active Customers,1462.0
+year x product line,2025,product_line,Core Platform,ARR YoY %,0.140889
+year x product line,2025,product_line,Core Platform,NRR,0.981636
+year x product line,2025,product_line,Core Platform,GRR,0.917417
+year x product line,2025,product_line,Core Platform,Logo Churn Rate,0.127327
+year x product line,2025,product_line,Core Platform,Top 10 Concentration %,0.234362
+year x product line,2025,product_line,Core Platform,Gross Profit,25922129.85
+year x product line,2025,product_line,Core Platform,Gross Margin %,0.820714
+year x product line,2025,product_line,Analytics Add-on,Net Revenue,4574888.36
+year x product line,2025,product_line,Analytics Add-on,Recurring Revenue,4574888.36
+year x product line,2025,product_line,Analytics Add-on,One-off Revenue,0.0
+year x product line,2025,product_line,Analytics Add-on,Other Implementation Revenue,0.0
+year x product line,2025,product_line,Analytics Add-on,Recurring %,1.0
+year x product line,2025,product_line,Analytics Add-on,Net Revenue YoY %,0.097521
+year x product line,2025,product_line,Analytics Add-on,MRR,368181.18
+year x product line,2025,product_line,Analytics Add-on,ARR,4418174.16
+year x product line,2025,product_line,Analytics Add-on,Active Customers,539.0
+year x product line,2025,product_line,Analytics Add-on,ARR YoY %,0.031895
+year x product line,2025,product_line,Analytics Add-on,NRR,0.84758
+year x product line,2025,product_line,Analytics Add-on,GRR,0.792131
+year x product line,2025,product_line,Analytics Add-on,Logo Churn Rate,0.113636
+year x product line,2025,product_line,Analytics Add-on,Top 10 Concentration %,0.230344
+year x product line,2025,product_line,Analytics Add-on,Gross Profit,3556345.12
+year x product line,2025,product_line,Analytics Add-on,Gross Margin %,0.777362
+year x product line,2025,product_line,Payments Module,Net Revenue,4315372.44
+year x product line,2025,product_line,Payments Module,Recurring Revenue,4315372.44
+year x product line,2025,product_line,Payments Module,One-off Revenue,0.0
+year x product line,2025,product_line,Payments Module,Other Implementation Revenue,0.0
+year x product line,2025,product_line,Payments Module,Recurring %,1.0
+year x product line,2025,product_line,Payments Module,Net Revenue YoY %,0.024948
+year x product line,2025,product_line,Payments Module,MRR,338119.68
+year x product line,2025,product_line,Payments Module,ARR,4057436.16
+year x product line,2025,product_line,Payments Module,Active Customers,354.0
+year x product line,2025,product_line,Payments Module,ARR YoY %,-0.076154
+year x product line,2025,product_line,Payments Module,NRR,0.786034
+year x product line,2025,product_line,Payments Module,GRR,0.734612
+year x product line,2025,product_line,Payments Module,Logo Churn Rate,0.102484
+year x product line,2025,product_line,Payments Module,Top 10 Concentration %,0.308553
+year x product line,2025,product_line,Payments Module,Gross Profit,2839872.7
+year x product line,2025,product_line,Payments Module,Gross Margin %,0.658083
+year x product line,2025,product_line,Implementation Services,Net Revenue,5281322.2
+year x product line,2025,product_line,Implementation Services,Recurring Revenue,0.0
+year x product line,2025,product_line,Implementation Services,One-off Revenue,5281322.2
+year x product line,2025,product_line,Implementation Services,Other Implementation Revenue,4076574.31
+year x product line,2025,product_line,Implementation Services,Recurring %,0.0
+year x product line,2025,product_line,Implementation Services,Net Revenue YoY %,3.615674
+year x product line,2025,product_line,Implementation Services,MRR,0.0
+year x product line,2025,product_line,Implementation Services,ARR,0.0
+year x product line,2025,product_line,Implementation Services,Active Customers,0.0
+year x product line,2025,product_line,Implementation Services,ARR YoY %,
+year x product line,2025,product_line,Implementation Services,NRR,
+year x product line,2025,product_line,Implementation Services,GRR,
+year x product line,2025,product_line,Implementation Services,Logo Churn Rate,
+year x product line,2025,product_line,Implementation Services,Top 10 Concentration %,0.25461
+year x product line,2025,product_line,Implementation Services,Gross Profit,1429937.97
+year x product line,2025,product_line,Implementation Services,Gross Margin %,0.270754
+2025 x region_group,2025,region_group,UK,Net Revenue,42366708.72
+2025 x region_group,2025,region_group,UK,Recurring Revenue,37413800.12
+2025 x region_group,2025,region_group,UK,One-off Revenue,4952908.6
+2025 x region_group,2025,region_group,UK,Other Implementation Revenue,3824251.69
+2025 x region_group,2025,region_group,UK,Recurring %,0.883094
+2025 x region_group,2025,region_group,UK,Net Revenue YoY %,0.229173
+2025 x region_group,2025,region_group,UK,MRR,3176811.43
+2025 x region_group,2025,region_group,UK,ARR,38121737.16
+2025 x region_group,2025,region_group,UK,Active Customers,1357.0
+2025 x region_group,2025,region_group,UK,ARR YoY %,0.098656
+2025 x region_group,2025,region_group,UK,NRR,0.949164
+2025 x region_group,2025,region_group,UK,GRR,0.883496
+2025 x region_group,2025,region_group,UK,Logo Churn Rate,0.128205
+2025 x region_group,2025,region_group,UK,Top 10 Concentration %,0.223386
+2025 x region_group,2025,region_group,UK,Gross Profit,
+2025 x region_group,2025,region_group,UK,Gross Margin %,
+2025 x region_group,2025,region_group,EU,Net Revenue,3389710.63
+2025 x region_group,2025,region_group,EU,Recurring Revenue,3061297.03
+2025 x region_group,2025,region_group,EU,One-off Revenue,328413.6
+2025 x region_group,2025,region_group,EU,Other Implementation Revenue,252322.62
+2025 x region_group,2025,region_group,EU,Recurring %,0.903115
+2025 x region_group,2025,region_group,EU,Net Revenue YoY %,0.214402
+2025 x region_group,2025,region_group,EU,MRR,269840.89
+2025 x region_group,2025,region_group,EU,ARR,3238090.68
+2025 x region_group,2025,region_group,EU,Active Customers,105.0
+2025 x region_group,2025,region_group,EU,ARR YoY %,0.15716
+2025 x region_group,2025,region_group,EU,NRR,1.019791
+2025 x region_group,2025,region_group,EU,GRR,0.939701
+2025 x region_group,2025,region_group,EU,Logo Churn Rate,0.115789
+2025 x region_group,2025,region_group,EU,Top 10 Concentration %,0.223386
+2025 x region_group,2025,region_group,EU,Gross Profit,
+2025 x region_group,2025,region_group,EU,Gross Margin %,
+2025 x region,2025,region,Germany (EU),Net Revenue,702070.27
+2025 x region,2025,region,Germany (EU),Recurring Revenue,672644.43
+2025 x region,2025,region,Germany (EU),One-off Revenue,29425.84
+2025 x region,2025,region,Germany (EU),Other Implementation Revenue,0.0
+2025 x region,2025,region,Germany (EU),Recurring %,0.958087
+2025 x region,2025,region,Germany (EU),Net Revenue YoY %,0.153014
+2025 x region,2025,region,Germany (EU),MRR,61070.9
+2025 x region,2025,region,Germany (EU),ARR,732850.8
+2025 x region,2025,region,Germany (EU),Active Customers,32.0
+2025 x region,2025,region,Germany (EU),ARR YoY %,0.234518
+2025 x region,2025,region,Germany (EU),NRR,0.997328
+2025 x region,2025,region,Germany (EU),GRR,0.923223
+2025 x region,2025,region,Germany (EU),Logo Churn Rate,0.111111
+2025 x region,2025,region,Germany (EU),Top 10 Concentration %,0.223386
+2025 x region,2025,region,Germany (EU),Gross Profit,
+2025 x region,2025,region,Germany (EU),Gross Margin %,
+2025 x region,2025,region,Ireland (EU),Net Revenue,754144.14
+2025 x region,2025,region,Ireland (EU),Recurring Revenue,732033.36
+2025 x region,2025,region,Ireland (EU),One-off Revenue,22110.78
+2025 x region,2025,region,Ireland (EU),Other Implementation Revenue,0.0
+2025 x region,2025,region,Ireland (EU),Recurring %,0.970681
+2025 x region,2025,region,Ireland (EU),Net Revenue YoY %,0.097517
+2025 x region,2025,region,Ireland (EU),MRR,64079.36
+2025 x region,2025,region,Ireland (EU),ARR,768952.32
+2025 x region,2025,region,Ireland (EU),Active Customers,35.0
+2025 x region,2025,region,Ireland (EU),ARR YoY %,0.105736
+2025 x region,2025,region,Ireland (EU),NRR,0.934519
+2025 x region,2025,region,Ireland (EU),GRR,0.859816
+2025 x region,2025,region,Ireland (EU),Logo Churn Rate,0.142857
+2025 x region,2025,region,Ireland (EU),Top 10 Concentration %,0.223386
+2025 x region,2025,region,Ireland (EU),Gross Profit,
+2025 x region,2025,region,Ireland (EU),Gross Margin %,
+2025 x region,2025,region,London,Net Revenue,12412008.52
+2025 x region,2025,region,London,Recurring Revenue,11497199.2
+2025 x region,2025,region,London,One-off Revenue,914809.32
+2025 x region,2025,region,London,Other Implementation Revenue,653604.01
+2025 x region,2025,region,London,Recurring %,0.926296
+2025 x region,2025,region,London,Net Revenue YoY %,0.180262
+2025 x region,2025,region,London,MRR,990876.5
+2025 x region,2025,region,London,ARR,11890518.0
+2025 x region,2025,region,London,Active Customers,307.0
+2025 x region,2025,region,London,ARR YoY %,0.121835
+2025 x region,2025,region,London,NRR,1.004583
+2025 x region,2025,region,London,GRR,0.932312
+2025 x region,2025,region,London,Logo Churn Rate,0.134483
+2025 x region,2025,region,London,Top 10 Concentration %,0.223386
+2025 x region,2025,region,London,Gross Profit,
+2025 x region,2025,region,London,Gross Margin %,
+2025 x region,2025,region,Midlands,Net Revenue,3866934.11
+2025 x region,2025,region,Midlands,Recurring Revenue,3364247.38
+2025 x region,2025,region,Midlands,One-off Revenue,502686.73
+2025 x region,2025,region,Midlands,Other Implementation Revenue,345976.01
+2025 x region,2025,region,Midlands,Recurring %,0.870004
+2025 x region,2025,region,Midlands,Net Revenue YoY %,0.238156
+2025 x region,2025,region,Midlands,MRR,305310.56
+2025 x region,2025,region,Midlands,ARR,3663726.72
+2025 x region,2025,region,Midlands,Active Customers,168.0
+2025 x region,2025,region,Midlands,ARR YoY %,0.173966
+2025 x region,2025,region,Midlands,NRR,0.915125
+2025 x region,2025,region,Midlands,GRR,0.839256
+2025 x region,2025,region,Midlands,Logo Churn Rate,0.178344
+2025 x region,2025,region,Midlands,Top 10 Concentration %,0.223386
+2025 x region,2025,region,Midlands,Gross Profit,
+2025 x region,2025,region,Midlands,Gross Margin %,
+2025 x region,2025,region,Netherlands (EU),Net Revenue,1933496.22
+2025 x region,2025,region,Netherlands (EU),Recurring Revenue,1656619.24
+2025 x region,2025,region,Netherlands (EU),One-off Revenue,276876.98
+2025 x region,2025,region,Netherlands (EU),Other Implementation Revenue,252322.62
+2025 x region,2025,region,Netherlands (EU),Recurring %,0.8568
+2025 x region,2025,region,Netherlands (EU),Net Revenue YoY %,0.293117
+2025 x region,2025,region,Netherlands (EU),MRR,144690.63
+2025 x region,2025,region,Netherlands (EU),ARR,1736287.56
+2025 x region,2025,region,Netherlands (EU),Active Customers,38.0
+2025 x region,2025,region,Netherlands (EU),ARR YoY %,0.150427
+2025 x region,2025,region,Netherlands (EU),NRR,1.067917
+2025 x region,2025,region,Netherlands (EU),GRR,0.982991
+2025 x region,2025,region,Netherlands (EU),Logo Churn Rate,0.090909
+2025 x region,2025,region,Netherlands (EU),Top 10 Concentration %,0.223386
+2025 x region,2025,region,Netherlands (EU),Gross Profit,
+2025 x region,2025,region,Netherlands (EU),Gross Margin %,
+2025 x region,2025,region,North East,Net Revenue,2101416.65
+2025 x region,2025,region,North East,Recurring Revenue,1828013.06
+2025 x region,2025,region,North East,One-off Revenue,273403.59
+2025 x region,2025,region,North East,Other Implementation Revenue,213341.5
+2025 x region,2025,region,North East,Recurring %,0.869896
+2025 x region,2025,region,North East,Net Revenue YoY %,0.294822
+2025 x region,2025,region,North East,MRR,158542.33
+2025 x region,2025,region,North East,ARR,1902507.96
+2025 x region,2025,region,North East,Active Customers,79.0
+2025 x region,2025,region,North East,ARR YoY %,0.169343
+2025 x region,2025,region,North East,NRR,0.993475
+2025 x region,2025,region,North East,GRR,0.91569
+2025 x region,2025,region,North East,Logo Churn Rate,0.123288
+2025 x region,2025,region,North East,Top 10 Concentration %,0.223386
+2025 x region,2025,region,North East,Gross Profit,
+2025 x region,2025,region,North East,Gross Margin %,
+2025 x region,2025,region,North West,Net Revenue,3795240.61
+2025 x region,2025,region,North West,Recurring Revenue,3268083.14
+2025 x region,2025,region,North West,One-off Revenue,527157.47
+2025 x region,2025,region,North West,Other Implementation Revenue,409290.3
+2025 x region,2025,region,North West,Recurring %,0.8611
+2025 x region,2025,region,North West,Net Revenue YoY %,0.260664
+2025 x region,2025,region,North West,MRR,277779.87
+2025 x region,2025,region,North West,ARR,3333358.44
+2025 x region,2025,region,North West,Active Customers,158.0
+2025 x region,2025,region,North West,ARR YoY %,0.109889
+2025 x region,2025,region,North West,NRR,0.953855
+2025 x region,2025,region,North West,GRR,0.879916
+2025 x region,2025,region,North West,Logo Churn Rate,0.121622
+2025 x region,2025,region,North West,Top 10 Concentration %,0.223386
+2025 x region,2025,region,North West,Gross Profit,
+2025 x region,2025,region,North West,Gross Margin %,
+2025 x region,2025,region,Northern Ireland,Net Revenue,1476615.96
+2025 x region,2025,region,Northern Ireland,Recurring Revenue,1054829.96
+2025 x region,2025,region,Northern Ireland,One-off Revenue,421786.0
+2025 x region,2025,region,Northern Ireland,Other Implementation Revenue,384969.99
+2025 x region,2025,region,Northern Ireland,Recurring %,0.714356
+2025 x region,2025,region,Northern Ireland,Net Revenue YoY %,0.446797
+2025 x region,2025,region,Northern Ireland,MRR,88982.94
+2025 x region,2025,region,Northern Ireland,ARR,1067795.28
+2025 x region,2025,region,Northern Ireland,Active Customers,43.0
+2025 x region,2025,region,Northern Ireland,ARR YoY %,0.106098
+2025 x region,2025,region,Northern Ireland,NRR,0.921295
+2025 x region,2025,region,Northern Ireland,GRR,0.85355
+2025 x region,2025,region,Northern Ireland,Logo Churn Rate,0.214286
+2025 x region,2025,region,Northern Ireland,Top 10 Concentration %,0.223386
+2025 x region,2025,region,Northern Ireland,Gross Profit,
+2025 x region,2025,region,Northern Ireland,Gross Margin %,
+2025 x region,2025,region,Scotland,Net Revenue,2709042.81
+2025 x region,2025,region,Scotland,Recurring Revenue,2182363.09
+2025 x region,2025,region,Scotland,One-off Revenue,526679.72
+2025 x region,2025,region,Scotland,Other Implementation Revenue,412539.28
+2025 x region,2025,region,Scotland,Recurring %,0.805585
+2025 x region,2025,region,Scotland,Net Revenue YoY %,0.440185
+2025 x region,2025,region,Scotland,MRR,195779.63
+2025 x region,2025,region,Scotland,ARR,2349355.56
+2025 x region,2025,region,Scotland,Active Customers,107.0
+2025 x region,2025,region,Scotland,ARR YoY %,0.269639
+2025 x region,2025,region,Scotland,NRR,1.007327
+2025 x region,2025,region,Scotland,GRR,0.934131
+2025 x region,2025,region,Scotland,Logo Churn Rate,0.078652
+2025 x region,2025,region,Scotland,Top 10 Concentration %,0.223386
+2025 x region,2025,region,Scotland,Gross Profit,
+2025 x region,2025,region,Scotland,Gross Margin %,
+2025 x region,2025,region,South East,Net Revenue,4712311.7
+2025 x region,2025,region,South East,Recurring Revenue,4321960.26
+2025 x region,2025,region,South East,One-off Revenue,390351.44
+2025 x region,2025,region,South East,Other Implementation Revenue,198243.29
+2025 x region,2025,region,South East,Recurring %,0.917163
+2025 x region,2025,region,South East,Net Revenue YoY %,0.310326
+2025 x region,2025,region,South East,MRR,381503.83
+2025 x region,2025,region,South East,ARR,4578045.96
+2025 x region,2025,region,South East,Active Customers,209.0
+2025 x region,2025,region,South East,ARR YoY %,0.240265
+2025 x region,2025,region,South East,NRR,1.008909
+2025 x region,2025,region,South East,GRR,0.924786
+2025 x region,2025,region,South East,Logo Churn Rate,0.104396
+2025 x region,2025,region,South East,Top 10 Concentration %,0.223386
+2025 x region,2025,region,South East,Gross Profit,
+2025 x region,2025,region,South East,Gross Margin %,
+2025 x region,2025,region,South West,Net Revenue,5132217.72
+2025 x region,2025,region,South West,Recurring Revenue,4605508.33
+2025 x region,2025,region,South West,One-off Revenue,526709.39
+2025 x region,2025,region,South West,Other Implementation Revenue,444040.53
+2025 x region,2025,region,South West,Recurring %,0.897372
+2025 x region,2025,region,South West,Net Revenue YoY %,0.130978
+2025 x region,2025,region,South West,MRR,391984.67
+2025 x region,2025,region,South West,ARR,4703816.04
+2025 x region,2025,region,South West,Active Customers,129.0
+2025 x region,2025,region,South West,ARR YoY %,0.031127
+2025 x region,2025,region,South West,NRR,0.944175
+2025 x region,2025,region,South West,GRR,0.898586
+2025 x region,2025,region,South West,Logo Churn Rate,0.110169
+2025 x region,2025,region,South West,Top 10 Concentration %,0.223386
+2025 x region,2025,region,South West,Gross Profit,
+2025 x region,2025,region,South West,Gross Margin %,
+2025 x region,2025,region,Wales,Net Revenue,1493223.68
+2025 x region,2025,region,Wales,Recurring Revenue,1265356.8
+2025 x region,2025,region,Wales,One-off Revenue,227866.88
+2025 x region,2025,region,Wales,Other Implementation Revenue,199793.93
+2025 x region,2025,region,Wales,Recurring %,0.847399
+2025 x region,2025,region,Wales,Net Revenue YoY %,0.279008
+2025 x region,2025,region,Wales,MRR,107924.46
+2025 x region,2025,region,Wales,ARR,1295093.52
+2025 x region,2025,region,Wales,Active Customers,64.0
+2025 x region,2025,region,Wales,ARR YoY %,0.07275
+2025 x region,2025,region,Wales,NRR,0.972745
+2025 x region,2025,region,Wales,GRR,0.895926
+2025 x region,2025,region,Wales,Logo Churn Rate,0.112903
+2025 x region,2025,region,Wales,Top 10 Concentration %,0.223386
+2025 x region,2025,region,Wales,Gross Profit,
+2025 x region,2025,region,Wales,Gross Margin %,
+2025 x region,2025,region,Yorkshire,Net Revenue,4667696.96
+2025 x region,2025,region,Yorkshire,Recurring Revenue,4026238.9
+2025 x region,2025,region,Yorkshire,One-off Revenue,641458.06
+2025 x region,2025,region,Yorkshire,Other Implementation Revenue,562452.85
+2025 x region,2025,region,Yorkshire,Recurring %,0.862575
+2025 x region,2025,region,Yorkshire,Net Revenue YoY %,0.169423
+2025 x region,2025,region,Yorkshire,MRR,278126.64
+2025 x region,2025,region,Yorkshire,ARR,3337519.68
+2025 x region,2025,region,Yorkshire,Active Customers,93.0
+2025 x region,2025,region,Yorkshire,ARR YoY %,-0.18041
+2025 x region,2025,region,Yorkshire,NRR,0.734462
+2025 x region,2025,region,Yorkshire,GRR,0.706193
+2025 x region,2025,region,Yorkshire,Logo Churn Rate,0.126437
+2025 x region,2025,region,Yorkshire,Top 10 Concentration %,0.223386
+2025 x region,2025,region,Yorkshire,Gross Profit,
+2025 x region,2025,region,Yorkshire,Gross Margin %,
+2025 x size_band,2025,size_band,Micro (1-9),Net Revenue,5678883.83
+2025 x size_band,2025,size_band,Micro (1-9),Recurring Revenue,4681223.64
+2025 x size_band,2025,size_band,Micro (1-9),One-off Revenue,997660.19
+2025 x size_band,2025,size_band,Micro (1-9),Other Implementation Revenue,830735.86
+2025 x size_band,2025,size_band,Micro (1-9),Recurring %,0.824321
+2025 x size_band,2025,size_band,Micro (1-9),Net Revenue YoY %,0.257251
+2025 x size_band,2025,size_band,Micro (1-9),MRR,401094.7
+2025 x size_band,2025,size_band,Micro (1-9),ARR,4813136.4
+2025 x size_band,2025,size_band,Micro (1-9),Active Customers,371.0
+2025 x size_band,2025,size_band,Micro (1-9),ARR YoY %,0.100442
+2025 x size_band,2025,size_band,Micro (1-9),NRR,0.928233
+2025 x size_band,2025,size_band,Micro (1-9),GRR,0.847316
+2025 x size_band,2025,size_band,Micro (1-9),Logo Churn Rate,0.167139
+2025 x size_band,2025,size_band,Micro (1-9),Top 10 Concentration %,0.223386
+2025 x size_band,2025,size_band,Micro (1-9),Gross Profit,
+2025 x size_band,2025,size_band,Micro (1-9),Gross Margin %,
+2025 x size_band,2025,size_band,Small (10-49),Net Revenue,12761233.07
+2025 x size_band,2025,size_band,Small (10-49),Recurring Revenue,10644851.37
+2025 x size_band,2025,size_band,Small (10-49),One-off Revenue,2116381.7
+2025 x size_band,2025,size_band,Small (10-49),Other Implementation Revenue,1685970.76
+2025 x size_band,2025,size_band,Small (10-49),Recurring %,0.834155
+2025 x size_band,2025,size_band,Small (10-49),Net Revenue YoY %,0.369054
+2025 x size_band,2025,size_band,Small (10-49),MRR,927223.18
+2025 x size_band,2025,size_band,Small (10-49),ARR,11126678.16
+2025 x size_band,2025,size_band,Small (10-49),Active Customers,594.0
+2025 x size_band,2025,size_band,Small (10-49),ARR YoY %,0.165941
+2025 x size_band,2025,size_band,Small (10-49),NRR,0.956813
+2025 x size_band,2025,size_band,Small (10-49),GRR,0.874387
+2025 x size_band,2025,size_band,Small (10-49),Logo Churn Rate,0.134438
+2025 x size_band,2025,size_band,Small (10-49),Top 10 Concentration %,0.223386
+2025 x size_band,2025,size_band,Small (10-49),Gross Profit,
+2025 x size_band,2025,size_band,Small (10-49),Gross Margin %,
+2025 x size_band,2025,size_band,Medium (50-249),Net Revenue,12785193.46
+2025 x size_band,2025,size_band,Medium (50-249),Recurring Revenue,11213234.18
+2025 x size_band,2025,size_band,Medium (50-249),One-off Revenue,1571959.28
+2025 x size_band,2025,size_band,Medium (50-249),Other Implementation Revenue,1067358.36
+2025 x size_band,2025,size_band,Medium (50-249),Recurring %,0.877048
+2025 x size_band,2025,size_band,Medium (50-249),Net Revenue YoY %,0.305578
+2025 x size_band,2025,size_band,Medium (50-249),MRR,1001989.56
+2025 x size_band,2025,size_band,Medium (50-249),ARR,12023874.72
+2025 x size_band,2025,size_band,Medium (50-249),Active Customers,372.0
+2025 x size_band,2025,size_band,Medium (50-249),ARR YoY %,0.207526
+2025 x size_band,2025,size_band,Medium (50-249),NRR,0.972857
+2025 x size_band,2025,size_band,Medium (50-249),GRR,0.902259
+2025 x size_band,2025,size_band,Medium (50-249),Logo Churn Rate,0.10303
+2025 x size_band,2025,size_band,Medium (50-249),Top 10 Concentration %,0.223386
+2025 x size_band,2025,size_band,Medium (50-249),Gross Profit,
+2025 x size_band,2025,size_band,Medium (50-249),Gross Margin %,
+2025 x size_band,2025,size_band,Large (250+),Net Revenue,14531108.99
+2025 x size_band,2025,size_band,Large (250+),Recurring Revenue,13935787.96
+2025 x size_band,2025,size_band,Large (250+),One-off Revenue,595321.03
+2025 x size_band,2025,size_band,Large (250+),Other Implementation Revenue,492509.33
+2025 x size_band,2025,size_band,Large (250+),Recurring %,0.959031
+2025 x size_band,2025,size_band,Large (250+),Net Revenue YoY %,0.066265
+2025 x size_band,2025,size_band,Large (250+),MRR,1116344.88
+2025 x size_band,2025,size_band,Large (250+),ARR,13396138.56
+2025 x size_band,2025,size_band,Large (250+),Active Customers,125.0
+2025 x size_band,2025,size_band,Large (250+),ARR YoY %,-0.016615
+2025 x size_band,2025,size_band,Large (250+),NRR,0.947715
+2025 x size_band,2025,size_band,Large (250+),GRR,0.899324
+2025 x size_band,2025,size_band,Large (250+),Logo Churn Rate,0.042735
+2025 x size_band,2025,size_band,Large (250+),Top 10 Concentration %,0.223386
+2025 x size_band,2025,size_band,Large (250+),Gross Profit,
+2025 x size_band,2025,size_band,Large (250+),Gross Margin %,

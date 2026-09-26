@@ -154,8 +154,25 @@ Flag: **Review first** marks the entries most worth checking.
 - **Decision:** the 2025 ARR waterfall is a stacked bar with a base series filled in the page colour (LibreOffice drops a "no fill" setting when it re-saves). The Reconciliation chart sits under the tables because the explanation column is wide. The cohort triangle on 4c shows tenure 0 to 36 months with a colour scale; the full triangle is in `outputs/tables/4c_logo_retention_triangle.csv`.
 - **Reverse:** edit `databook/build_databook.py`.
 
+## Step 6: Power BI build plan
+
+### D21. Power BI model CSVs are regenerated, not committed
+
+- **Date:** 27 September 2026
+- **Decision:** `dashboard/model_data/*.csv` is in `.gitignore`. `python run_all.py` writes it (the dashboard stage).
+- **Evidence:** the fact tables are 5.7MB and 2.3MB and regenerate exactly; the brief says not to commit large intermediates.
+- **Reverse:** remove the line from `.gitignore`.
+
+### D22. Model shape and slicer behaviour
+
+- **Date:** 27 September 2026
+- **Decision:** a product-line dimension above `DimProduct` so that one slicer filters revenue, MRR and cost. Top 10 concentration ignores customer slicers. Gross profit is blank under customer filters, because cost has no customer grain. NRR, GRR and logo churn read December of the year in context. The ARR bridge page uses a separate unrelated table from `outputs/tables/4e_arr_bridge_long.csv`.
+- **Alternatives:** allocate cost to customers in the model (would present an allocation as fact); bidirectional relationships (ambiguous filter paths).
+- **Reverse:** see `dashboard/README.md` sections 2 and 5.
+
 ## Limitations
 
 - `pandoc`, `python-docx`, `reportlab` and `pypdf` are not installed at the start of the run. LibreOffice 24.2 is installed. Handling is recorded under the step that needs them.
 - The container had LibreOffice core without its spreadsheet component, so LibreOffice could not open any spreadsheet (conversion failed with "source file could not be loaded" and the recalculation macro hung). Fixed by `apt-get update` then `apt-get install --no-install-recommends libreoffice-calc` (first attempt failed on a stale package index; second attempt succeeded). A fresh environment needs `libreoffice-calc` for the databook stage; the README says so.
 - PyMuPDF was installed into the virtual environment to render the databook and memo PDFs to images for visual checks. It is not needed by the pipeline.
+- No Power BI Desktop in this environment, so the `.pbix` and page screenshots are left for Abhinav (as the brief expected). The measures are written against the documented model and checked in Python, not in Power BI.

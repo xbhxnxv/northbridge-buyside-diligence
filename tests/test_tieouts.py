@@ -597,3 +597,67 @@ def test_databook_has_native_charts_and_draft_commentary(databook):
         ws = formulas[name]
         assert len(ws._charts) >= 1, name
         assert any(isinstance(c.value, str) and c.value.startswith("DRAFT commentary") for row in ws.iter_rows() for c in row), name
+
+
+# ---------------------------------------------------------------------------
+# Step 6: Power BI expected values
+# ---------------------------------------------------------------------------
+
+def expected_values() -> list[dict]:
+    path = ROOT / "dashboard" / "expected_values.csv"
+    if not path.exists():
+        pytest.skip("expected_values.csv not built; run `python run_all.py`")
+    with open(path, newline="", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+
+def test_expected_values_agree_with_step4():
+    ev = {(int(r["year"]), r["measure"]): r["value"] for r in expected_values() if r["context"] == "year"}
+    mix = {int(r["year"]): r for r in table("4a_revenue_mix")}
+    arr = {int(r["year"]): r for r in table("4a_arr")}
+    nrr = {int(r["year"]): r for r in table("4d_nrr_grr") if r["basis"] == "reported"}
+    top = {int(r["year"]): r for r in table("4b_top_n_shares") if r["top_n"] == "10"}
+    gm = {int(r["year"]): r for r in table("4f_margin_reconciliation")}
+    kf = {r["name"]: float(r["value"]) for r in table("key_figures")}
+    for y in (2022, 2023, 2024, 2025):
+        assert close(ev[(y, "Net Revenue")], mix[y]["net_revenue"])
+        assert close(ev[(y, "Recurring Revenue")], mix[y]["recurring"])
+        assert close(ev[(y, "One-off Revenue")], mix[y]["oneoff"])
+        assert close(ev[(y, "ARR")], arr[y]["arr"])
+        assert int(float(ev[(y, "Active Customers")])) == int(float(arr[y]["active_customers"]))
+        assert close(ev[(y, "Top 10 Concentration %")], float(top[y]["share_of_net_pct"]) / 100, 1e-6)
+        assert close(ev[(y, "Gross Margin %")], float(gm[y]["gross_margin_pct"]) / 100, 1e-6)
+        if y >= 2023:
+            assert close(ev[(y, "NRR")], float(nrr[y]["nrr_pct"]) / 100, 1e-6)
+            assert close(ev[(y, "GRR")], float(nrr[y]["grr_pct"]) / 100, 1e-6)
+            assert close(ev[(y, "Logo Churn Rate")], kf[f"logo_churn_rate_{y}"] / 100, 1e-6)
+        else:
+            assert ev[(y, "NRR")] == "" and ev[(y, "GRR")] == ""   # no December 2021
+
+
+def test_expected_values_segments_agree_with_4g():
+    seg = {(r["dimension"], r["segment"]): r for r in table("4g_segments")}
+    for r in expected_values():
+        if r["context"] in ("2025 x region_group", "2025 x size_band") and r["measure"] in ("NRR", "Logo Churn Rate", "Net Revenue"):
+            dim = "region_group" if r["filter_column"] == "region_group" else "company_size"
+            s = seg[(dim, r["filter_value"])]
+            col_, scale = {"NRR": ("nrr_2025_pct", 0.01), "Logo Churn Rate": ("logo_churn_2025_pct", 0.01),
+                           "Net Revenue": ("net_revenue_2025", 1)}[r["measure"]]
+            assert close(r["value"], float(s[col_]) * scale, 1e-6 if scale != 1 else 0.01), (r["filter_value"], r["measure"])
+
+
+def test_expected_values_additive_measures_add_up():
+    rows = expected_values()
+    total = {(int(r["year"]), r["measure"]): float(r["value"]) for r in rows if r["context"] == "year" and r["value"]}
+    for ctx, years in (("year x product line", (2022, 2023, 2024, 2025)), ("2025 x region_group", (2025,)),
+                       ("2025 x region", (2025,)), ("2025 x size_band", (2025,))):
+        for y in years:
+            for m in ("Net Revenue", "Recurring Revenue", "ARR"):
+                parts = sum(float(r["value"]) for r in rows if r["context"] == ctx and int(r["year"]) == y and r["measure"] == m)
+                assert close(parts, total[(y, m)]), (ctx, y, m)
+
+
+def test_model_data_exported():
+    model = ROOT / "dashboard" / "model_data"
+    for name in ["FactRevenue", "FactMRR", "FactCost", "DimCustomer", "DimProduct", "DimProductLine", "DimDate"]:
+        assert (model / f"{name}.csv").exists(), name

@@ -1,0 +1,216 @@
+// =====================================================================================
+// Northbridge Software Ltd: Power BI measures
+// Definitions follow docs/metric_definitions.md. Expected values for checking the build
+// are in dashboard/expected_values.csv (computed in Python by dashboard/export_model_data.py
+// with the same logic, including which slicers each measure ignores).
+//
+// Model: FactRevenue, FactMRR (customer x product x month), FactCost (product line x month);
+// DimCustomer, DimProduct, DimProductLine, DimDate (month grain, marked as the date table on
+// DimDate[month_start]). All relationships one-to-many, single direction, dimension to fact.
+// Create the measures in a table called _Measures (Enter data, one blank column, then hide it).
+// =====================================================================================
+
+
+// ---------------------------------------------------------------------------------------
+// Revenue
+// ---------------------------------------------------------------------------------------
+
+// Billings plus credit notes. Ties to the management accounts' product lines every month.
+Net Revenue =
+SUM ( FactRevenue[net_revenue] )
+
+// Net revenue on Core Platform, Analytics Add-on and Payments Module.
+Recurring Revenue =
+SUM ( FactRevenue[recurring_net] )
+
+// Implementation Services (signup and other).
+One-off Revenue =
+SUM ( FactRevenue[oneoff_net] )
+
+// The 2025 implementation invoices billed outside the customer's signup month (P02, Q02-Q05).
+Other Implementation Revenue =
+SUM ( FactRevenue[oneoff_other_net] )
+
+Recurring % =
+DIVIDE ( [Recurring Revenue], [Net Revenue] )
+
+// Prior calendar year, keeping every other filter (product line, region, size).
+Net Revenue PY =
+VAR y = MAX ( DimDate[year] )
+RETURN
+    CALCULATE ( [Net Revenue], REMOVEFILTERS ( DimDate ), DimDate[year] = y - 1 )
+
+Net Revenue YoY % =
+VAR py = [Net Revenue PY]
+RETURN
+    IF ( NOT ISBLANK ( py ), DIVIDE ( [Net Revenue] - py, py ) )
+
+Recurring Revenue YoY % =
+VAR y = MAX ( DimDate[year] )
+VAR py = CALCULATE ( [Recurring Revenue], REMOVEFILTERS ( DimDate ), DimDate[year] = y - 1 )
+RETURN
+    IF ( NOT ISBLANK ( py ), DIVIDE ( [Recurring Revenue] - py, py ) )
+
+
+// ---------------------------------------------------------------------------------------
+// MRR, ARR and customers
+// ---------------------------------------------------------------------------------------
+
+// MRR at the last month in the filter context (December for a year). Recurring billings
+// before credit notes.
+MRR =
+VAR LastMonth = MAX ( DimDate[month_start] )
+RETURN
+    CALCULATE ( SUM ( FactMRR[mrr] ), REMOVEFILTERS ( DimDate ), DimDate[month_start] = LastMonth )
+
+// December MRR x 12 for the year in context.
+ARR =
+VAR y = MAX ( DimDate[year] )
+RETURN
+    12 * CALCULATE ( SUM ( FactMRR[mrr] ), REMOVEFILTERS ( DimDate ), DimDate[year] = y, DimDate[month_number] = 12 )
+
+ARR PY =
+VAR y = MAX ( DimDate[year] )
+RETURN
+    12 * CALCULATE ( SUM ( FactMRR[mrr] ), REMOVEFILTERS ( DimDate ), DimDate[year] = y - 1, DimDate[month_number] = 12 )
+
+ARR YoY % =
+VAR py = [ARR PY]
+RETURN
+    IF ( py > 0, DIVIDE ( [ARR] - py, py ) )
+
+// Customers with MRR above zero in the last month of the context.
+Active Customers =
+VAR LastMonth = MAX ( DimDate[month_start] )
+RETURN
+    CALCULATE (
+        DISTINCTCOUNT ( FactMRR[customer_id] ),
+        REMOVEFILTERS ( DimDate ),
+        DimDate[month_start] = LastMonth,
+        FactMRR[mrr] > 0
+    )
+
+
+// ---------------------------------------------------------------------------------------
+// Retention: December Y-1 to December Y for the year in context.
+// Only 2023, 2024 and 2025 can be computed: there is no December 2021 in the data.
+// Customer, region, size and product line filters apply (a product line filter measures
+// retention of that line).
+// ---------------------------------------------------------------------------------------
+
+NRR =
+VAR y = MAX ( DimDate[year] )
+VAR OpenMonth = DATE ( y - 1, 12, 1 )
+VAR CloseMonth = DATE ( y, 12, 1 )
+VAR OpeningCustomers =
+    CALCULATETABLE ( VALUES ( FactMRR[customer_id] ), REMOVEFILTERS ( DimDate ), DimDate[month_start] = OpenMonth )
+VAR OpeningMRR =
+    CALCULATE ( SUM ( FactMRR[mrr] ), REMOVEFILTERS ( DimDate ), DimDate[month_start] = OpenMonth )
+VAR ClosingMRR =
+    CALCULATE ( SUM ( FactMRR[mrr] ), REMOVEFILTERS ( DimDate ), DimDate[month_start] = CloseMonth, OpeningCustomers )
+RETURN
+    IF ( y >= 2023, DIVIDE ( ClosingMRR, OpeningMRR ) )
+
+// As NRR, with each customer's closing MRR capped at its opening MRR.
+GRR =
+VAR y = MAX ( DimDate[year] )
+VAR OpenMonth = DATE ( y - 1, 12, 1 )
+VAR CloseMonth = DATE ( y, 12, 1 )
+VAR OpeningCustomers =
+    CALCULATETABLE ( VALUES ( FactMRR[customer_id] ), REMOVEFILTERS ( DimDate ), DimDate[month_start] = OpenMonth )
+VAR OpeningMRR =
+    CALCULATE ( SUM ( FactMRR[mrr] ), REMOVEFILTERS ( DimDate ), DimDate[month_start] = OpenMonth )
+VAR CappedMRR =
+    SUMX (
+        OpeningCustomers,
+        VAR o = CALCULATE ( SUM ( FactMRR[mrr] ), REMOVEFILTERS ( DimDate ), DimDate[month_start] = OpenMonth )
+        VAR c = CALCULATE ( SUM ( FactMRR[mrr] ), REMOVEFILTERS ( DimDate ), DimDate[month_start] = CloseMonth )
+        RETURN MIN ( o, c )
+    )
+RETURN
+    IF ( y >= 2023, DIVIDE ( CappedMRR, OpeningMRR ) )
+
+// Customers active in December Y-1 with no MRR in December Y, over customers active in December Y-1.
+Logo Churn Rate =
+VAR y = MAX ( DimDate[year] )
+VAR Opening =
+    CALCULATETABLE ( VALUES ( FactMRR[customer_id] ), REMOVEFILTERS ( DimDate ), DimDate[month_start] = DATE ( y - 1, 12, 1 ) )
+VAR Closing =
+    CALCULATETABLE ( VALUES ( FactMRR[customer_id] ), REMOVEFILTERS ( DimDate ), DimDate[month_start] = DATE ( y, 12, 1 ) )
+RETURN
+    IF ( y >= 2023, DIVIDE ( COUNTROWS ( EXCEPT ( Opening, Closing ) ), COUNTROWS ( Opening ) ) )
+
+
+// ---------------------------------------------------------------------------------------
+// Concentration: deliberately ignores the region and size slicers (and any other customer
+// filter), because concentration is a whole-company measure. It respects year and product line.
+// ---------------------------------------------------------------------------------------
+
+Top 10 Concentration % =
+VAR AllCustomers = CALCULATETABLE ( VALUES ( DimCustomer[customer_id] ), REMOVEFILTERS ( DimCustomer ) )
+VAR Top10 = TOPN ( 10, AllCustomers, CALCULATE ( [Net Revenue], REMOVEFILTERS ( DimCustomer ) ) )
+VAR Total = CALCULATE ( [Net Revenue], REMOVEFILTERS ( DimCustomer ) )
+RETURN
+    DIVIDE ( CALCULATE ( [Net Revenue], REMOVEFILTERS ( DimCustomer ), Top10 ), Total )
+
+
+// ---------------------------------------------------------------------------------------
+// Margin. Cost of delivery exists only at product line x month (FactCost), so gross profit
+// cannot be split by customer: the measures return blank when a customer attribute (region,
+// size, channel, industry, a customer) is filtered. Year and product line filters apply.
+// Gross profit here is invoice-based; it differs from management gross profit only by the
+// four unexplained manual adjustments to reported revenue (Reconciliation tab of the databook).
+// ---------------------------------------------------------------------------------------
+
+Cost of Delivery =
+SUM ( FactCost[total_cost] )
+
+Gross Profit =
+IF ( NOT ISCROSSFILTERED ( DimCustomer ), [Net Revenue] - [Cost of Delivery] )
+
+Gross Margin % =
+DIVIDE ( [Gross Profit], [Net Revenue] )
+
+Gross Margin % PY =
+VAR y = MAX ( DimDate[year] )
+RETURN
+    CALCULATE ( [Gross Margin %], REMOVEFILTERS ( DimDate ), DimDate[year] = y - 1 )
+
+Gross Margin Change (pts) =
+IF ( NOT ISBLANK ( [Gross Margin % PY] ), ( [Gross Margin %] - [Gross Margin % PY] ) * 100 )
+
+
+// ---------------------------------------------------------------------------------------
+// Cohort measures (Customers and retention page): ignore the year slicer, because tenure is
+// counted from each customer's signup month, not from the calendar year selected.
+// Use with DimCustomer[cohort] on rows and a tenure axis from a disconnected table:
+//   Tenure = GENERATESERIES ( 0, 48, 1 )   (calculated table, column [Value])
+// ---------------------------------------------------------------------------------------
+
+Cohort Active Customers =
+VAR t = SELECTEDVALUE ( Tenure[Value] )
+RETURN
+    SUMX (
+        VALUES ( DimCustomer[customer_id] ),
+        VAR SignupMonth = DATE ( YEAR ( CALCULATE ( MIN ( DimCustomer[signup_date] ) ) ), MONTH ( CALCULATE ( MIN ( DimCustomer[signup_date] ) ) ), 1 )
+        VAR M = EDATE ( SignupMonth, t )
+        RETURN
+            IF ( CALCULATE ( SUM ( FactMRR[mrr] ), REMOVEFILTERS ( DimDate ), DimDate[month_start] = M ) > 0, 1, 0 )
+    )
+
+Cohort Revenue Retention (vs month 3) =
+VAR t = SELECTEDVALUE ( Tenure[Value] )
+VAR MRRAt =
+    SUMX (
+        VALUES ( DimCustomer[customer_id] ),
+        VAR SignupMonth = DATE ( YEAR ( CALCULATE ( MIN ( DimCustomer[signup_date] ) ) ), MONTH ( CALCULATE ( MIN ( DimCustomer[signup_date] ) ) ), 1 )
+        RETURN CALCULATE ( SUM ( FactMRR[mrr] ), REMOVEFILTERS ( DimDate ), DimDate[month_start] = EDATE ( SignupMonth, t ) )
+    )
+VAR MRRMonth3 =
+    SUMX (
+        VALUES ( DimCustomer[customer_id] ),
+        VAR SignupMonth = DATE ( YEAR ( CALCULATE ( MIN ( DimCustomer[signup_date] ) ) ), MONTH ( CALCULATE ( MIN ( DimCustomer[signup_date] ) ) ), 1 )
+        RETURN CALCULATE ( SUM ( FactMRR[mrr] ), REMOVEFILTERS ( DimDate ), DimDate[month_start] = EDATE ( SignupMonth, 3 ) )
+    )
+RETURN
+    DIVIDE ( MRRAt, MRRMonth3 )

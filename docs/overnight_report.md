@@ -230,3 +230,48 @@ I have not read the generator, so this is my reading of which issues were plante
 - How do you know the databook matches the analysis?
 
 **11. What Step 6 does first.** Exports the star-schema CSVs for Power BI and writes the relationships and DAX measures.
+
+## Step 6 summary: Power BI build plan
+
+**1. Status.** Done, apart from the `.pbix` and screenshots, which need Power BI Desktop.
+
+**2. Readings.**
+- The model is a star with one snowflake level: `DimProductLine` sits above `DimProduct`, so a single product-line slicer filters revenue, MRR and cost.
+- There are 24 measures in `dashboard/measures.dax`, each commented.
+- Measures that deliberately ignore slicers:
+  - Top 10 concentration ignores customer slicers.
+  - Cohort measures ignore the year slicer.
+  - Gross profit is blank under customer filters, because cost has no customer grain.
+
+**3. Adjustments.** None.
+
+**4. Revenue walk.** Not applicable.
+
+**5. Expected values.** 624 rows in `dashboard/expected_values.csv` across these contexts: each year; each year × product line; 2025 × region group, region and size band. The year rows match the Step 4 outputs exactly. Example for 2025:
+
+| Net revenue | ARR | Recurring % | NRR | GRR | Top 10 share | Gross margin |
+|---:|---:|---:|---:|---:|---:|---:|
+| £45.76m | £41.36m | 88.5% | 95.4% | 88.8% | 22.3% | 73.8% |
+
+**6. Files created.**
+- `dashboard/export_model_data.py`: exports the model and computes the expected values.
+- `dashboard/measures.dax`: the measures.
+- `dashboard/README.md`: model, relationships, wireframes, slicers and numbered build steps.
+- `dashboard/expected_values.csv`: the expected values.
+- `dashboard/model_data/*.csv`: generated, not committed (D21).
+
+**7. Tests and runtime.** 88 passed. Runtime is in the Step 8 summary.
+
+**8. Git.** Pushed to `main`.
+
+**9. Judgement calls to review.**
+- D22: gross profit is blank under region and size filters. You may prefer to show the allocated margin from 4f instead, but it is an allocation.
+- The DAX has not been run in Power BI. It follows standard patterns, but check it against `expected_values.csv` as you build.
+
+**10. Be ready to explain.**
+- Why does FactCost need a product-line dimension, and what goes wrong if you join it to DimProduct?
+- Why does the Top 10 measure remove customer filters?
+- How do the NRR and GRR measures pick the opening and closing Decembers?
+- How would you prove your Power BI numbers match the databook?
+
+**11. What Step 7 does first.** Writes the findings memo from the key figures, then exports it to PDF and checks the page count.

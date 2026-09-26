@@ -177,3 +177,56 @@ I have not read the generator, so this is my reading of which issues were plante
    - 5 customer names have irregular punctuation.
    - 1,423 invoices are dated a few days before signup, always in the same month.
    - In a real deal: they affect customer counts, cohort dates and segment analysis. Log them and raise them, but they don't change value.
+
+## Step 5 summary: Excel databook
+
+**1. Status.** Done. `databook/Northbridge_Databook.xlsx` has 13 tabs, is built by `databook/build_databook.py` from `outputs/tables/`, and is recalculated by LibreOffice. It contains 901 formulas and 0 errors, and all 53 check cells are TRUE.
+
+**2. Readings.** Every total, share, growth rate, difference and check on the analysis tabs is a live formula. The only values are the inputs loaded from the pipeline (in blue). Source totals tie on the face of each tab: 4a to Reconciliation, 4b and 4g to 4a, 4d opening MRR to 4a ARR, the 4e bridges to 4a, and 4f gross profit to management gross profit after the unexplained adjustments.
+
+**3. Adjustments.** None.
+
+**4. Revenue walk.** Shown on the Reconciliation tab as formulas: raw gross billings, less duplicates, anomaly treatment and credit notes give cube net revenue; adding the unreconciled difference gives the management total.
+
+**5. Verification.**
+
+| Check | Result |
+|---|---|
+| Recalculation method | LibreOffice 24.2 headless, Basic macro `calculateAll` (D19) |
+| Formulas / errors | 901 / 0 (`databook/recalc_report.json`) |
+| Check cells TRUE | 53 of 53; overall check TRUE |
+| Key figures against `outputs/tables/` | 147 of 147 within £0.005 (ratios within 1e-6) |
+| Inputs blue, formulas black | Tested on seven analysis tabs |
+
+**6. Files created.**
+- `databook/build_databook.py`: the builder.
+- `databook/recalc.py`: LibreOffice recalculation and error scan.
+- `databook/Northbridge_Databook.xlsx`: the databook.
+- `databook/cell_map.json` and `databook/recalc_report.json`: for the tests.
+- `report_config.json`: project name, report date, disclaimer.
+- `notebooks/nb_utils.py`: saved tables rounded to 6 decimals so runs are identical.
+- `tests/test_tieouts.py`: 5 databook tests.
+
+**7. Tests and runtime.** 84 passed. From scratch, `run_all.py` takes 59.8 seconds.
+
+**8. Git.** Pushed to `main`.
+
+**9. Polish by hand.**
+- Commentary: the DRAFT boxes use the generated key-findings text word for word. Rewrite each in your own words and cut it to two or three sentences per tab.
+- Charts: openpyxl charts are plain. Worth tidying:
+  - Axis number formats on the 4b and 4d charts.
+  - The ARR waterfall: its base series is white, so check it prints cleanly.
+  - Legend placement.
+- Column widths:
+  - The Reconciliation explanation column is 100 wide.
+  - The 4c triangle columns are narrow.
+  - The Q&A log rows are fixed at 75 points high; long evidence text may need more.
+- Number formats: the Reconciliation monthly % column uses three decimals so small differences show. Change it to one if you prefer the house style.
+
+**10. Be ready to explain.**
+- Why keep inputs in pounds and display thousands, instead of dividing by 1,000?
+- What does each check on the Checks tab prove, and which one would you show a reviewer first?
+- Why are inputs blue and formulas black, and what would a hardcoded total hide?
+- How do you know the databook matches the analysis?
+
+**11. What Step 6 does first.** Exports the star-schema CSVs for Power BI and writes the relationships and DAX measures.

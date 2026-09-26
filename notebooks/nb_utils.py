@@ -118,7 +118,13 @@ def sql_file(con: duckdb.DuckDBPyConnection, name: str) -> pd.DataFrame:
 def save_table(df: pd.DataFrame, name: str) -> pd.DataFrame:
     """Save a Step 4+ output table to outputs/tables/<name>.csv (stable name read by the databook)."""
     TABLES.mkdir(parents=True, exist_ok=True)
-    df.to_csv(TABLES / f"{name}.csv", index=False)
+    out = df.copy()
+    # Round floats to 6 decimal places so parallel-summation noise in the last bits does not
+    # change the saved file from one run to the next (+ 0.0 turns -0.0 into 0.0).
+    for c in out.columns:
+        if pd.api.types.is_float_dtype(out[c]):
+            out[c] = out[c].round(6) + 0.0
+    out.to_csv(TABLES / f"{name}.csv", index=False)
     return df
 
 

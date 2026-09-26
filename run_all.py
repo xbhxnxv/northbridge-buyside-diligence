@@ -51,6 +51,7 @@ def stage_sql() -> None:
         raise Skip("no sql/NN_*.sql scripts yet")
     import duckdb
 
+    (ROOT / "data" / "clean").mkdir(parents=True, exist_ok=True)
     for suffix in ("", ".wal"):
         stale = DB_PATH.with_name(DB_PATH.name + suffix)
         if stale.exists():

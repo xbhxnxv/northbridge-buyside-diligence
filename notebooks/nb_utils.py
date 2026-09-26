@@ -91,3 +91,17 @@ def md_table(df: pd.DataFrame, formats: dict | None = None, index: bool = False)
     for _, row in frame.iterrows():
         lines.append("| " + " | ".join(cell(c, row[c]).replace("|", "\\|") for c in cols) + " |")
     return "\n".join(lines)
+
+
+def replace_block(path: Path, name: str, content: str) -> None:
+    """Replace the text between <!-- BEGIN GENERATED: name --> and <!-- END GENERATED: name -->.
+
+    Lets a hand-written document carry numbers that are regenerated on every run.
+    """
+    begin, end = f"<!-- BEGIN GENERATED: {name} -->", f"<!-- END GENERATED: {name} -->"
+    text = path.read_text(encoding="utf-8")
+    if begin not in text or end not in text:
+        raise ValueError(f"{path.name}: markers for block '{name}' not found")
+    head, rest = text.split(begin, 1)
+    _, tail = rest.split(end, 1)
+    path.write_text(f"{head}{begin}\n{content.strip()}\n{end}{tail}", encoding="utf-8")

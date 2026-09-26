@@ -122,3 +122,160 @@ def test_profile_issue_register_years_add_up(con):
         WHERE abs(amount_net - (net_2022 + net_2023 + net_2024 + net_2025)) > 0.005
     """)
     assert bad == 0
+
+
+# ---------------------------------------------------------------------------
+# Step 2.3: cleaning
+# ---------------------------------------------------------------------------
+
+@pytest.mark.parametrize("name", TABLES)
+def test_clean_rows_reconcile_to_raw(con, name):
+    """raw rows = clean rows + removed rows, per table."""
+    raw = scalar(con, f"SELECT count(*) FROM raw_{name}")
+    clean = scalar(con, f"SELECT count(*) FROM clean_{name}")
+    removed = scalar(con, "SELECT count(*) FROM clean_removed_invoices") if name == "invoices" else 0
+    assert raw == clean + removed
+
+
+def test_removed_rows_are_exactly_the_duplicate_copies(con):
+    assert scalar(con, "SELECT count(*) FROM clean_removed_invoices") == 40
+    assert scalar(con, """
+        SELECT count(*) FROM clean_removed_invoices r
+        WHERE NOT EXISTS (SELECT 1 FROM clean_invoices k
+                          WHERE k.invoice_id = r.kept_invoice_id AND k.customer_id = r.customer_id
+                            AND k.product_id = r.product_id AND k.invoice_date = r.invoice_date
+                            AND k.amount = r.amount AND k.status = r.status)
+    """) == 0
+    # no exact duplicates remain
+    assert scalar(con, """
+        SELECT count(*) FROM (SELECT 1 FROM clean_invoices
+                              GROUP BY customer_id, product_id, invoice_date, amount, revenue_type, status
+                              HAVING count(*) > 1)
+    """) == 0
+
+
+def test_p04_amount_removed(con):
+    assert scalar(con, "SELECT sum(amount) FROM clean_removed_invoices") == Decimal("96957.26")
+
+
+def test_every_credit_note_linked_to_its_original(con):
+    assert scalar(con, "SELECT count(*) FROM clean_invoices WHERE is_credit_note AND credit_note_original_id IS NULL") == 0
+    bad = scalar(con, """
+        SELECT count(*) FROM clean_invoices cn
+        LEFT JOIN clean_invoices o ON o.invoice_id = cn.credit_note_original_id
+        WHERE cn.is_credit_note
+          AND (o.invoice_id IS NULL OR o.is_credit_note OR o.customer_id <> cn.customer_id
+               OR o.product_id <> cn.product_id OR o.invoice_date <> cn.invoice_date OR o.amount <> -cn.amount
+               OR o.credited_by_id <> cn.invoice_id)
+    """)
+    assert bad == 0
+    # one-to-one: no original is linked by two credit notes
+    assert scalar(con, """SELECT count(*) FROM (SELECT credit_note_original_id FROM clean_invoices
+                          WHERE is_credit_note GROUP BY 1 HAVING count(*) > 1)""") == 0
+
+
+def test_cleaning_actions_explain_the_revenue_change(con):
+    """raw invoice total + revenue impact of all cleaning actions = cube net (default setting)."""
+    raw = scalar(con, "SELECT sum(amount) FROM raw_invoices")
+    impact = scalar(con, "SELECT sum(revenue_impact) FROM cleaning_actions")
+    cube = scalar(con, "SELECT sum(net_revenue) FROM fact_revenue_monthly")
+    assert scalar(con, "SELECT anomaly_treatment FROM cfg_settings") == "as_reported"
+    assert raw + impact == cube
+
+
+def test_customers_never_dropped_and_industry_filled(con):
+    assert scalar(con, "SELECT count(*) FROM clean_customers WHERE industry IS NULL") == 0
+    assert scalar(con, "SELECT count(*) FROM clean_customers WHERE industry = 'Unknown'") == \
+        scalar(con, "SELECT count(*) FROM raw_customers WHERE industry IS NULL")
+
+
+# ---------------------------------------------------------------------------
+# Step 2.4: revenue cube
+# ---------------------------------------------------------------------------
+
+def test_cube_net_equals_clean_invoice_net_total_and_by_year(con):
+    rows = con.execute("""
+        WITH inv AS (
+            SELECT year(month_start) AS y,
+                   sum(invoice_amount((SELECT anomaly_treatment FROM cfg_settings),
+                                      amount_as_reported, amount_flipped, amount_excluded)) AS net
+            FROM clean_invoices GROUP BY 1),
+        cube AS (SELECT year(month_start) AS y, sum(net_revenue) AS net FROM fact_revenue_monthly GROUP BY 1)
+        SELECT inv.y, inv.net, cube.net FROM inv FULL JOIN cube USING (y) ORDER BY 1
+    """).fetchall()
+    assert [r[0] for r in rows] == [2022, 2023, 2024, 2025]
+    for y, inv_net, cube_net in rows:
+        assert inv_net == cube_net, y
+    assert sum(r[1] for r in rows) == scalar(con, "SELECT sum(net_revenue) FROM fact_revenue_monthly")
+
+
+def test_cube_row_identities(con):
+    assert scalar(con, """
+        SELECT count(*) FROM fact_revenue_monthly
+        WHERE recurring_net + oneoff_net <> net_revenue
+           OR gross_billings + credit_notes <> net_revenue
+           OR oneoff_signup_net + oneoff_other_net <> oneoff_net
+    """) == 0
+
+
+@pytest.mark.parametrize("table,grain", [
+    ("fact_revenue_monthly", "customer_id, product_id, month_start"),
+    ("fact_mrr_monthly", "customer_id, product_id, month_start"),
+    ("dim_customer", "customer_id"),
+    ("dim_product", "product_id"),
+    ("dim_date", "month_start"),
+])
+def test_no_duplicate_grain_rows(con, table, grain):
+    assert scalar(con, f"SELECT count(*) FROM (SELECT {grain} FROM {table} GROUP BY {grain} HAVING count(*) > 1)") == 0
+
+
+@pytest.mark.parametrize("fact", ["fact_revenue_monthly", "fact_mrr_monthly"])
+def test_cube_keys_exist_in_dimensions(con, fact):
+    assert scalar(con, f"SELECT count(*) FROM {fact} f WHERE NOT EXISTS (SELECT 1 FROM dim_customer d WHERE d.customer_id = f.customer_id)") == 0
+    assert scalar(con, f"SELECT count(*) FROM {fact} f WHERE NOT EXISTS (SELECT 1 FROM dim_product d WHERE d.product_id = f.product_id)") == 0
+    assert scalar(con, f"SELECT count(*) FROM {fact} f WHERE NOT EXISTS (SELECT 1 FROM dim_date d WHERE d.month_start = f.month_start)") == 0
+
+
+def test_mrr_is_recurring_billings_before_credit_notes(con):
+    mrr = scalar(con, "SELECT sum(mrr) FROM fact_mrr_monthly")
+    billings = scalar(con, "SELECT sum(gross_billings) FROM fact_revenue_monthly WHERE revenue_type = 'recurring'")
+    assert mrr == billings
+
+
+def test_anomaly_switch_moves_revenue_by_exactly_the_anomaly_amounts(con):
+    rows = con.execute("""
+        WITH a AS (SELECT year(month_start) AS y, sum(net_revenue) AS net FROM revenue_cube('as_reported') GROUP BY 1),
+             f AS (SELECT year(month_start) AS y, sum(net_revenue) AS net FROM revenue_cube('flipped') GROUP BY 1),
+             e AS (SELECT year(month_start) AS y, sum(net_revenue) AS net FROM revenue_cube('excluded') GROUP BY 1),
+             n AS (SELECT year(month_start) AS y, sum(amount) AS anomaly FROM clean_invoices WHERE anomaly_flag GROUP BY 1)
+        SELECT a.y, a.net, f.net, e.net, coalesce(n.anomaly, 0)
+        FROM a JOIN f USING (y) JOIN e USING (y) LEFT JOIN n USING (y) ORDER BY 1
+    """).fetchall()
+    assert len(rows) == 4
+    for y, as_rep, flipped, excluded, anomaly in rows:
+        assert flipped - as_rep == -2 * anomaly, y     # anomaly amounts are negative
+        assert excluded - as_rep == -anomaly, y
+    assert scalar(con, "SELECT count(*) FROM clean_invoices WHERE anomaly_flag AND amount >= 0") == 0
+
+
+def test_exports_match_tables(con):
+    clean_dir = ROOT / "data" / "clean"
+    for t in ["fact_revenue_monthly", "fact_mrr_monthly", "dim_customer", "dim_product", "dim_date"]:
+        with open(clean_dir / f"{t}.csv", newline="", encoding="utf-8") as f:
+            n = sum(1 for _ in f) - 1
+        assert n == scalar(con, f"SELECT count(*) FROM {t}"), t
+
+
+def test_source_to_cube_walk_adds_up():
+    path = ROOT / "outputs" / "tables" / "step2_source_to_cube_walk.csv"
+    if not path.exists():
+        pytest.skip("walk not built; run the notebooks")
+    with open(path, newline="") as f:
+        for r in csv.DictReader(f):
+            total = sum(Decimal(r[c]) for c in ["raw_gross_billings", "less_duplicates", "anomaly_treatment", "credit_notes"])
+            assert abs(total - Decimal(r["cube_net"])) < Decimal("0.005"), r["year"]
+
+
+def test_qa_log_ids_sequential(con):
+    ids = [r[0] for r in con.execute("SELECT qa_id FROM qa_log ORDER BY qa_id").fetchall()]
+    assert ids == [f"Q{i:02d}" for i in range(1, len(ids) + 1)]

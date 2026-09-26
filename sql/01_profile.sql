@@ -352,7 +352,7 @@ JOIN raw_products p USING (product_id)
 WHERE p.revenue_type = 'recurring'
 GROUP BY pos.customer_id, pos.product_id, f.list_price, f.upper_fence
 HAVING count(*) FILTER (WHERE pos.amount > f.upper_fence) > 0
-ORDER BY total DESC;
+ORDER BY total DESC, pos.customer_id, pos.product_id;
 
 CREATE OR REPLACE TABLE prof_outlier_within_customer AS
 WITH pos AS (

@@ -76,7 +76,9 @@ def pct_fmt(dp: int = 0):
 
 def save(fig, name: str, source: str = SOURCE) -> str:
     """Add the source note and save to outputs/charts/<name>.png."""
-    fig.text(0.01, 0.005, source, fontsize=6.5, color=TEXT_2, ha="left", va="bottom")
+    # Placed just below the figure; bbox_inches="tight" extends the canvas to include it,
+    # so it never collides with axis labels.
+    fig.text(0.01, -0.01, source, fontsize=6.5, color=TEXT_2, ha="left", va="top")
     CHARTS.mkdir(parents=True, exist_ok=True)
     path = CHARTS / f"{name}.png"
     fig.savefig(path, bbox_inches="tight", pad_inches=0.15, metadata={"Software": None})

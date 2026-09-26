@@ -1,6 +1,120 @@
 # Overnight report
 
-<!-- MORNING SUMMARY: written at the end of the run -->
+## MORNING SUMMARY
+
+### 1. Status by step
+
+| Step | Status |
+|---|---|
+| 3 Reconciliation | Done. The cube ties to the management accounts' product lines in all 48 months; four unexplained manual adjustments to the reported total. |
+| 4 Core analyses | Done. 4a to 4g plus key findings; 13 charts, 39 output tables, Q15 to Q21 added. |
+| 5 Excel databook | Done. 13 tabs, 901 formulas, 0 errors, 53 of 53 checks TRUE. |
+| 6 Power BI plan | Done, except the `.pbix` and screenshots, which need Power BI Desktop. |
+| 7 Findings memo | Done. Two pages; PDF built via Word and LibreOffice. |
+| 8 Packaging | Done. README, CV bullets and interview prep; fresh-clone run passed; tagged v1.0. |
+
+### 2. Headline findings
+
+| # | Finding | Number | Investor question | Materiality |
+|---|---|---|---|---|
+| 1 | One-off implementation billing inflates 2025 | £4.08m (8.9% of revenue); growth 22.8% falls to 11.9% without it | Q2 recurring | High |
+| 2 | Growth is price-led | ARR +10.3% in 2025, +3.1% before the 7% price rise | Q6 revenue change | High |
+| 3 | Retention weakening | NRR 95.4% (89.2% before price); GRR 88.8% | Q3 customers | High |
+| 4 | Newer customers leave faster | 12-month retention 78.6% (2023+) against 92.5% (2017 to 2022) | Q3 customers | High |
+| 5 | Largest customer shrinking | C1052 ARR down £983,535 (42.4%); six large accounts are 20.8% of revenue | Q4 concentration | High |
+| 6 | Margin diluted by services mix | Gross margin 77.8% to 73.8%; mix effect 4.03 points | Q5 margin | Medium |
+| 7 | Heavy discounting of large customers | £5.35m given up in 2025; large customers 22.2% off list | Q5 margin | Medium |
+| 8 | Revenue is real but reported total has manual entries | Ties 48 of 48 months to product lines; +£15,000 in 2025 | Q1 real revenue | Low |
+
+### 3. Planted issues found
+
+Duplicate invoices; negative "paid" invoices; manual adjustments to reported revenue; the 2025 implementation-invoice cluster; uniform 5% and 7% price rises; newer cohorts churning faster; large-customer contraction; margin dilution from services; and data-quality items (Ltd/Limited name pairs, missing industry, invoices dated before signup). Detail is in "Planted issues found" at the end of this report.
+
+### 4. Recommendation
+
+**Proceed, with price and structure protections.** The revenue is real, reconciles to the management accounts and is 88.5% recurring, so there is no reason to walk away. But 2025 growth rests on £4.08m of one-off billing and on price increases, underlying ARR growth was 3.1%, and retention and the largest customer are both weakening. Value on ARR or recurring revenue. Add an earn-out on ARR or NRR, a specific warranty and indemnity on the 2025 implementation contracts, and escrow tied to large-account renewals.
+
+### 5. Decisions made on your behalf
+
+Full entries are in `docs/decisions_log.md`. **Review first** marks the ones worth reading before anything else.
+
+- D01: anomaly treatment "excluded" (your decision; confirmed: 48 of 48 months tie to lines).
+- D02: sum of product lines trusted in the four adjustment months (your decision; confirmed).
+- D03: duplicates are an extract fault; management already excludes them.
+- D04: materiality £1,000 a month to flag, 0.5% of month material, 0.1% of year material; labels tied, explained, unexplained.
+- D05: anomaly setting moved to `02_clean.sql` so the cleaning log shows its real impact.
+- D06 **Review first**: I approved the metric definitions myself.
+- D07: invoice ledger is the source of truth; the uplift over subscription prices is a price increase.
+- D08: penny-rounding residuals (under £1 of ARR per line) counted as price.
+- D09: revenue bridge adds full-year effect, billing gaps and credit-note change so it adds up exactly.
+- D10: cohort cells shown only once the whole cohort has reached the tenure; month-3 baseline.
+- D11: NRR sensitivities use the five largest opening customers, and closing MRR deflated by k.
+- D12 **Review first**: SaaS benchmark ranges are indicative and not sourced.
+- D13: size-band margin shown on two cost bases (revenue share and equal share per customer line).
+- D14: discount measured by grossing up at the contract line's discount_pct.
+- D15: segment flags at plus or minus 5 points; under 30 customers is too small.
+- D16 **Review first**: materiality ratings (High, Medium, Low) are my judgement.
+- D17: Step 4 questions are inserted into the Q&A log by the findings notebook.
+- D18: databook stores pounds and displays £'000, so tie-outs work to the penny.
+- D19: LibreOffice recalculation (fallbacks not needed).
+- D20: chart and layout choices in the databook.
+- D21: Power BI model CSVs are regenerated, not committed (8MB).
+- D22: model shape; top-10 concentration ignores customer slicers; gross profit blank under customer filters.
+- D23: memo PDF via python-docx and LibreOffice (no pandoc).
+- D24 **Review first**: recommendation to proceed with protections.
+- D25: memo figures generated and tested against `outputs/tables/`.
+- D26: README, CV bullets and interview prep generated from the pipeline.
+- D27: style rules enforced by a test.
+
+### 6. Limitations and anything that failed
+
+- LibreOffice was installed without its spreadsheet component, so it could not open any spreadsheet. The first `apt-get install` failed on a stale package index; `apt-get update` then installing `libreoffice-calc` worked. `libreoffice-writer` was then installed for the memo. A new environment needs both (the README says so).
+- pandoc is not available, so the memo uses the second route (Word, then LibreOffice to PDF).
+- PyMuPDF was installed only to render pages for visual checks. It is not a pipeline dependency.
+- No Power BI Desktop: the DAX has been checked in Python against the same logic, not run in Power BI.
+- Notebooks, the xlsx, the docx and the PDF carry run metadata, so they show as modified after every run even when every number is the same. The CSV outputs, charts and markdown are byte-identical from run to run.
+- Benchmarks in 4d are not sourced (D12).
+
+### 7. What you need to do by hand
+
+1. Build the Power BI report following `dashboard/README.md` section 7, check it against `dashboard/expected_values.csv`, and save five screenshots to `dashboard/screenshots/`.
+2. Databook polish (Step 5 summary, item 9): rewrite the DRAFT commentary boxes in your words, tidy chart styling, and adjust column widths.
+3. Memo: read `memo/findings_memo.pdf` and adjust wording to your voice (edit `memo/build_memo.py`, then rerun, so the numbers stay tested).
+4. Read the four decisions flagged **Review first**.
+5. Practise `docs/interview_prep.md` out loud.
+
+### 8. Repo state
+
+| Item | Value |
+|---|---|
+| Final commit | the commit tagged `v1.0` on `main` (`git log -1 v1.0`) |
+| Tag | `v1.0`, pushed |
+| Tests | 106 passed |
+| `run_all.py` from a fresh clone | 65.3 seconds (plus 46 seconds for `pip install`) |
+| `main` | up to date with the session branch |
+
+### 9. Read this first (15 minutes)
+
+1. `memo/findings_memo.pdf` (3 min): the story in two pages.
+2. `outputs/key_findings.md` (2 min): every finding with its number and investor question.
+3. `docs/overnight_report.md`, "Planted issues found" (3 min): what each issue is and how it plays out in a deal.
+4. `docs/metric_definitions.md`, sections on MRR, NRR/GRR and the ARR bridge (3 min): the definitions interviewers probe.
+5. `notebooks/03_reconciliation.ipynb` sections 1 and 7 (2 min): how the anomaly treatment was chosen and what the flagged months contain.
+6. `databook/Northbridge_Databook.xlsx`, Reconciliation and Checks tabs (2 min): what the other side's adviser would open first.
+
+### 10. Be ready to explain
+
+1. How did you reconcile the cube to the management accounts? (Monthly and by product line; three anomaly options tested; 48 of 48 months tie to lines.)
+2. What did you do with differences you could not explain? (Labelled unexplained, quantified by year, Q12 to Q14; no adjustment.)
+3. How are NRR and GRR defined and what are their limits? (December to December; GRR capped; no 2022; price lifts NRR, 89.2% before price.)
+4. Why exclude credit notes from MRR? (Concessions would look like churn in the month they are issued.)
+5. What is the biggest red flag? (£4.08m other implementation in 2025; growth 22.8% to 11.9%; warranty and valuation on recurring.)
+6. How did you find the price increases? (Subscription vs invoiced MRR gap; 100% of lines move by exactly 5% then 7%.)
+7. Why compare cohorts at matched tenure? (Older cohorts have had longer to churn; 78.6% against 92.5% at 12 months.)
+8. Why did gross margin fall? (Mix: implementation work at 27.1% margin; no line's margin fell.)
+9. One cleaning judgement call? (Did not merge 229 name pairs; attributes no closer than random; Q01.)
+10. How do you know the databook, memo and README match the analysis? (Generated from `outputs/tables/`; tests check every £ and % and every check cell.)
+
 
 ## Step 3 summary: Reconciliation
 
@@ -63,7 +177,7 @@
 
 ## Step 4 summary: Core analyses
 
-**1. Status.** Done. Metric definitions were written first (D06), then 4a to 4g and a findings notebook (4h). There are 13 charts, 40 output tables, `outputs/key_findings.md` and seven new Q&A items (Q15 to Q21).
+**1. Status.** Done. Metric definitions were written first (D06), then 4a to 4g and a findings notebook (4h). There are 13 charts, 39 output tables, `outputs/key_findings.md` and seven new Q&A items (Q15 to Q21).
 
 **2. Readings.** Revenue is real, but its quality is weaker than the headline:
 - 2025 growth of 22.8% falls to 12.1% on recurring revenue and 11.9% without the 45 other-implementation invoices.
@@ -119,6 +233,41 @@
 - How would you present the 2025 other-implementation revenue to an investment committee?
 
 **11. What Step 5 does first.** Builds the databook from `outputs/tables/`, with input values in blue and every total, share and check as a live Excel formula. It then recalculates the workbook in LibreOffice and scans every cell for errors.
+
+## Step 8 summary: Portfolio packaging
+
+**1. Status.** Done. The README, CV bullets and interview prep are generated from the pipeline. The fresh-clone run passed, and the release is tagged v1.0.
+
+**2. Readings.** The README is 397 words, with five headline findings and three charts. There are three CV bullets. The interview prep has five answers of about 135 to 165 words each (roughly 60 to 75 seconds spoken), with two follow-ups per answer. Every £ and % in them is tested against `outputs/tables/`.
+
+**3. Adjustments.** None.
+
+**4. Revenue walk.** Not applicable.
+
+**5. Fresh-clone check.**
+
+| Check | Result |
+|---|---|
+| Clone | `main`, new virtual environment from `requirements.txt` (46 seconds to install) |
+| `run_all.py` from nothing (data, database, outputs, databook, memo deleted) | exit 0 in 65.3 seconds |
+| Tests | 106 passed |
+| Regenerated CSVs, charts and markdown | identical to the committed versions |
+
+**6. Files created.**
+- `docs/build_readme.py`: the generator.
+- `README.md`: rewritten.
+- `docs/cv_bullets.md` and `docs/interview_prep.md`: new.
+- `tests/test_tieouts.py`: style, README and figure tests.
+
+**7. Tests and runtime.** 106 passed. From a fresh clone, `run_all.py` takes 65.3 seconds.
+
+**8. Git.** Pushed to `main` and tagged `v1.0`.
+
+**9. Judgement calls to review.** The interview answers are in a plain spoken style. Adjust the phrasing to how you speak, in `docs/build_readme.py`, so the figures stay tested.
+
+**10. Be ready to explain.** See section 10 of the morning summary.
+
+**11. Next.** Nothing further in the brief. Your hand steps are in section 7 of the morning summary.
 
 ## Planted issues found
 

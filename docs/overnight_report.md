@@ -11,7 +11,7 @@
 | 5 Excel databook | Done. 13 tabs, 901 formulas, 0 errors, 53 of 53 checks TRUE. |
 | 6 Power BI plan | Done, except the `.pbix` and screenshots, which need Power BI Desktop. |
 | 7 Findings memo | Done. Two pages; PDF built via Word and LibreOffice. |
-| 8 Packaging | Done, except pushing the v1.0 tag: the session's git policy refused it (HTTP 403). README, CV bullets and interview prep done; fresh-clone run passed. |
+| 8 Packaging | Done. README, CV bullets and interview prep; fresh-clone run passed; `v1.0` is on GitHub at `8dead6c`. |
 
 ### 2. Headline findings
 
@@ -74,7 +74,7 @@ Full entries are in `docs/decisions_log.md`. **Review first** marks the ones wor
 - No Power BI Desktop: the DAX has been checked in Python against the same logic, not run in Power BI.
 - Notebooks, the xlsx, the docx and the PDF carry run metadata, so they show as modified after every run even when every number is the same. The CSV outputs, charts and markdown are byte-identical from run to run.
 - Benchmarks in 4d are not sourced (D12).
-- Pushing the `v1.0` tag was refused with HTTP 403 by the session's egress policy. I did not retry, per the proxy rules. The tag needs pushing from your machine (command in section 8).
+- Pushing the `v1.0` tag from this session was refused with HTTP 403 by the session's egress policy, and I did not retry. Abhinav then created the `v1.0` release through the GitHub web interface at `8dead6c`.
 
 ### 7. What you need to do by hand
 
@@ -88,8 +88,8 @@ Full entries are in `docs/decisions_log.md`. **Review first** marks the ones wor
 
 | Item | Value |
 |---|---|
-| Final commit | the head of `main` (the commit that adds this report) |
-| Tag | `v1.0` created locally but **not pushed**: the push returned HTTP 403 (session git policy; branch pushes work). To publish it: `git fetch origin && git tag -a v1.0 origin/main -m "v1.0" && git push origin v1.0` |
+| Final commit | `8dead6c` for code and outputs; later commits on `main` only correct this report |
+| Tag | `v1.0` on GitHub, pointing at `8dead6c`. The push from this session was refused (HTTP 403); Abhinav created the release through the GitHub web interface. |
 | Tests | 106 passed |
 | `run_all.py` from a fresh clone | 65.3 seconds (plus 46 seconds for `pip install`) |
 | `main` | up to date with the session branch |
@@ -237,7 +237,7 @@ Full entries are in `docs/decisions_log.md`. **Review first** marks the ones wor
 
 ## Step 8 summary: Portfolio packaging
 
-**1. Status.** Done, except that the v1.0 tag could not be pushed from this session (HTTP 403 from the session's git policy). The README, CV bullets and interview prep are generated from the pipeline, and the fresh-clone run passed.
+**1. Status.** Done. The README, CV bullets and interview prep are generated from the pipeline, the fresh-clone run passed, and `v1.0` is on GitHub at `8dead6c` (the push from this session was refused with HTTP 403; Abhinav created the release through the GitHub web interface).
 
 **2. Readings.** The README is 397 words, with five headline findings and three charts. There are three CV bullets. The interview prep has five answers of about 135 to 165 words each (roughly 60 to 75 seconds spoken), with two follow-ups per answer. Every £ and % in them is tested against `outputs/tables/`.
 
@@ -262,7 +262,7 @@ Full entries are in `docs/decisions_log.md`. **Review first** marks the ones wor
 
 **7. Tests and runtime.** 106 passed. From a fresh clone, `run_all.py` takes 65.3 seconds.
 
-**8. Git.** Pushed to `main`. The `v1.0` tag was created locally, but the push was refused (HTTP 403); push it from your machine.
+**8. Git.** Pushed to `main`; `v1.0` is on GitHub at `8dead6c`.
 
 **9. Judgement calls to review.** The interview answers are in a plain spoken style. Adjust the phrasing to how you speak, in `docs/build_readme.py`, so the figures stay tested.
 

@@ -279,3 +279,41 @@ def test_source_to_cube_walk_adds_up():
 def test_qa_log_ids_sequential(con):
     ids = [r[0] for r in con.execute("SELECT qa_id FROM qa_log ORDER BY qa_id").fetchall()]
     assert ids == [f"Q{i:02d}" for i in range(1, len(ids) + 1)]
+
+
+# ---------------------------------------------------------------------------
+# Step 3: reconciliation (checks that hold whatever anomaly treatment is chosen)
+# ---------------------------------------------------------------------------
+
+def test_recon_walk_adds_up(con):
+    bad = scalar(con, """
+        SELECT count(*) FROM recon_walk
+        WHERE raw_gross_billings + less_duplicates + anomaly_treatment + credit_notes <> cube_net
+           OR cube_net + unreconciled_difference <> mgmt_total
+    """)
+    assert bad == 0
+    assert scalar(con, "SELECT count(*) FROM recon_walk") == 4
+
+
+def test_recon_walk_matches_management_accounts(con):
+    assert scalar(con, "SELECT sum(mgmt_total) FROM recon_walk") == \
+        scalar(con, "SELECT sum(total_revenue) FROM clean_management_accounts")
+
+
+def test_costs_tie_to_cost_of_sales_every_month(con):
+    assert scalar(con, "SELECT count(*) FROM recon_costs_monthly WHERE difference <> 0") == 0
+    assert scalar(con, "SELECT count(*) FROM recon_costs_monthly") == 48
+
+
+def test_options_grid_complete(con):
+    assert scalar(con, "SELECT count(*) FROM recon_options_monthly") == 3 * 48
+
+
+def test_product_lines_sum_to_cube_total(con):
+    bad = scalar(con, """
+        SELECT count(*) FROM (
+            SELECT p.month, sum(p.cube_net) AS lines, any_value(r.cube_net) AS total
+            FROM recon_product_line_monthly p JOIN recon_monthly r USING (month) GROUP BY p.month)
+        WHERE lines <> total
+    """)
+    assert bad == 0

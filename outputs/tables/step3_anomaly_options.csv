@@ -1,0 +1,4 @@
+treatment,months_tied_to_total,months_tied_to_lines,abs_diff_vs_total,abs_diff_vs_lines,net_vs_total_2022,net_vs_total_2023,net_vs_total_2024,net_vs_total_2025
+as_reported,33,36,68843.82,13843.82,-5788.75,16381.04,-6573.48,-16862.63
+flipped,33,36,65234.88,13843.82,5788.75,20618.96,1573.48,-13137.37
+excluded,44,48,55000.0,0.0,0.0,18500.0,-2500.0,-15000.0

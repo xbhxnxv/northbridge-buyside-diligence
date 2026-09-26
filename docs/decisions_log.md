@@ -131,6 +131,31 @@ Flag: **Review first** marks the entries most worth checking.
 - **Decision:** `notebooks/04h_key_findings.ipynb` opens the database read-write, deletes any earlier Step 4 rows and inserts Q15 onwards, then re-renders `docs/qa_log.md`. Evidence strings are built from `outputs/tables/`.
 - **Reverse:** move the inserts to a SQL file.
 
+## Step 5: Excel databook
+
+### D18. £ stored in pounds, displayed in £'000
+
+- **Date:** 27 September 2026
+- **Decision:** money cells hold pounds (rounded to the penny) and use the number format `#,##0,` to display thousands. Ratios are computed by formula from those inputs.
+- **Alternatives:** divide inputs by 1,000 (tie-outs would then work only to £1,000, and the penny test would fail).
+- **Evidence:** 147 mapped figures match `outputs/tables/` within £0.005 or 1e-6 for ratios (test `test_databook_key_figures_match_outputs_to_the_penny`).
+- **Reverse:** change the `GBP_K` format in `databook/build_databook.py`.
+
+### D19. Recalculation with LibreOffice after installing its spreadsheet component
+
+- **Date:** 27 September 2026
+- **Decision:** the workbook is recalculated with LibreOffice headless (`databook/recalc.py`, a Basic macro that runs calculateAll and saves). The fallbacks (the `formulas` or `pycel` packages, or rebuilding the checks in Python) were not needed.
+- **Evidence:** `databook/recalc_report.json`: 901 formulas, 0 errors; all 53 check cells TRUE.
+- **Reverse:** not applicable.
+
+### D20. Chart and tab layout choices
+
+- **Date:** 27 September 2026
+- **Decision:** the 2025 ARR waterfall is a stacked bar with a base series filled in the page colour (LibreOffice drops a "no fill" setting when it re-saves). The Reconciliation chart sits under the tables because the explanation column is wide. The cohort triangle on 4c shows tenure 0 to 36 months with a colour scale; the full triangle is in `outputs/tables/4c_logo_retention_triangle.csv`.
+- **Reverse:** edit `databook/build_databook.py`.
+
 ## Limitations
 
 - `pandoc`, `python-docx`, `reportlab` and `pypdf` are not installed at the start of the run. LibreOffice 24.2 is installed. Handling is recorded under the step that needs them.
+- The container had LibreOffice core without its spreadsheet component, so LibreOffice could not open any spreadsheet (conversion failed with "source file could not be loaded" and the recalculation macro hung). Fixed by `apt-get update` then `apt-get install --no-install-recommends libreoffice-calc` (first attempt failed on a stale package index; second attempt succeeded). A fresh environment needs `libreoffice-calc` for the databook stage; the README says so.
+- PyMuPDF was installed into the virtual environment to render the databook and memo PDFs to images for visual checks. It is not needed by the pipeline.

@@ -1,0 +1,1688 @@
+{
+  "recon_cube_net_2022": {
+    "sheet": "Reconciliation",
+    "cell": "C59",
+    "table": "step3_recon_annual",
+    "column": "cube_net",
+    "where": {
+      "year": 2022
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "recon_difference_2022": {
+    "sheet": "Reconciliation",
+    "cell": "D59",
+    "table": "step3_recon_annual",
+    "column": "difference",
+    "where": {
+      "year": 2022
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "recon_cube_net_2023": {
+    "sheet": "Reconciliation",
+    "cell": "C60",
+    "table": "step3_recon_annual",
+    "column": "cube_net",
+    "where": {
+      "year": 2023
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "recon_difference_2023": {
+    "sheet": "Reconciliation",
+    "cell": "D60",
+    "table": "step3_recon_annual",
+    "column": "difference",
+    "where": {
+      "year": 2023
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "recon_cube_net_2024": {
+    "sheet": "Reconciliation",
+    "cell": "C61",
+    "table": "step3_recon_annual",
+    "column": "cube_net",
+    "where": {
+      "year": 2024
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "recon_difference_2024": {
+    "sheet": "Reconciliation",
+    "cell": "D61",
+    "table": "step3_recon_annual",
+    "column": "difference",
+    "where": {
+      "year": 2024
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "recon_cube_net_2025": {
+    "sheet": "Reconciliation",
+    "cell": "C62",
+    "table": "step3_recon_annual",
+    "column": "cube_net",
+    "where": {
+      "year": 2025
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "recon_difference_2025": {
+    "sheet": "Reconciliation",
+    "cell": "D62",
+    "table": "step3_recon_annual",
+    "column": "difference",
+    "where": {
+      "year": 2025
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "walk_cube_net_2022": {
+    "sheet": "Reconciliation",
+    "cell": "B71",
+    "table": "step3_walk",
+    "column": "cube_net",
+    "where": {
+      "year": 2022
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "walk_cube_net_2023": {
+    "sheet": "Reconciliation",
+    "cell": "C71",
+    "table": "step3_walk",
+    "column": "cube_net",
+    "where": {
+      "year": 2023
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "walk_cube_net_2024": {
+    "sheet": "Reconciliation",
+    "cell": "D71",
+    "table": "step3_walk",
+    "column": "cube_net",
+    "where": {
+      "year": 2024
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "walk_cube_net_2025": {
+    "sheet": "Reconciliation",
+    "cell": "E71",
+    "table": "step3_walk",
+    "column": "cube_net",
+    "where": {
+      "year": 2025
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "net_revenue_2022": {
+    "sheet": "4a Revenue quality",
+    "cell": "F7",
+    "table": "4a_revenue_mix",
+    "column": "net_revenue",
+    "where": {
+      "year": 2022
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "recurring_pct_2022": {
+    "sheet": "4a Revenue quality",
+    "cell": "G7",
+    "table": "4a_revenue_mix",
+    "column": "recurring_pct",
+    "where": {
+      "year": 2022
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "headline_growth_2023": {
+    "sheet": "4a Revenue quality",
+    "cell": "I8",
+    "table": "4a_growth",
+    "column": "headline_growth_pct",
+    "where": {
+      "year": 2023
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "recurring_growth_2023": {
+    "sheet": "4a Revenue quality",
+    "cell": "J8",
+    "table": "4a_growth",
+    "column": "recurring_growth_pct",
+    "where": {
+      "year": 2023
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "growth_ex_other_2023": {
+    "sheet": "4a Revenue quality",
+    "cell": "K8",
+    "table": "4a_growth",
+    "column": "growth_ex_other_implementation_pct",
+    "where": {
+      "year": 2023
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "net_revenue_2023": {
+    "sheet": "4a Revenue quality",
+    "cell": "F8",
+    "table": "4a_revenue_mix",
+    "column": "net_revenue",
+    "where": {
+      "year": 2023
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "recurring_pct_2023": {
+    "sheet": "4a Revenue quality",
+    "cell": "G8",
+    "table": "4a_revenue_mix",
+    "column": "recurring_pct",
+    "where": {
+      "year": 2023
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "headline_growth_2024": {
+    "sheet": "4a Revenue quality",
+    "cell": "I9",
+    "table": "4a_growth",
+    "column": "headline_growth_pct",
+    "where": {
+      "year": 2024
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "recurring_growth_2024": {
+    "sheet": "4a Revenue quality",
+    "cell": "J9",
+    "table": "4a_growth",
+    "column": "recurring_growth_pct",
+    "where": {
+      "year": 2024
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "growth_ex_other_2024": {
+    "sheet": "4a Revenue quality",
+    "cell": "K9",
+    "table": "4a_growth",
+    "column": "growth_ex_other_implementation_pct",
+    "where": {
+      "year": 2024
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "net_revenue_2024": {
+    "sheet": "4a Revenue quality",
+    "cell": "F9",
+    "table": "4a_revenue_mix",
+    "column": "net_revenue",
+    "where": {
+      "year": 2024
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "recurring_pct_2024": {
+    "sheet": "4a Revenue quality",
+    "cell": "G9",
+    "table": "4a_revenue_mix",
+    "column": "recurring_pct",
+    "where": {
+      "year": 2024
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "headline_growth_2025": {
+    "sheet": "4a Revenue quality",
+    "cell": "I10",
+    "table": "4a_growth",
+    "column": "headline_growth_pct",
+    "where": {
+      "year": 2025
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "recurring_growth_2025": {
+    "sheet": "4a Revenue quality",
+    "cell": "J10",
+    "table": "4a_growth",
+    "column": "recurring_growth_pct",
+    "where": {
+      "year": 2025
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "growth_ex_other_2025": {
+    "sheet": "4a Revenue quality",
+    "cell": "K10",
+    "table": "4a_growth",
+    "column": "growth_ex_other_implementation_pct",
+    "where": {
+      "year": 2025
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "net_revenue_2025": {
+    "sheet": "4a Revenue quality",
+    "cell": "F10",
+    "table": "4a_revenue_mix",
+    "column": "net_revenue",
+    "where": {
+      "year": 2025
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "recurring_pct_2025": {
+    "sheet": "4a Revenue quality",
+    "cell": "G10",
+    "table": "4a_revenue_mix",
+    "column": "recurring_pct",
+    "where": {
+      "year": 2025
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "arr_2022": {
+    "sheet": "4a Revenue quality",
+    "cell": "B15",
+    "table": "4a_arr",
+    "column": "arr",
+    "where": {
+      "year": 2022
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "arr_growth_ex_price_2023": {
+    "sheet": "4a Revenue quality",
+    "cell": "G16",
+    "table": "4a_arr",
+    "column": "arr_growth_ex_price_pct",
+    "where": {
+      "year": 2023
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "arr_2023": {
+    "sheet": "4a Revenue quality",
+    "cell": "B16",
+    "table": "4a_arr",
+    "column": "arr",
+    "where": {
+      "year": 2023
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "arr_growth_ex_price_2024": {
+    "sheet": "4a Revenue quality",
+    "cell": "G17",
+    "table": "4a_arr",
+    "column": "arr_growth_ex_price_pct",
+    "where": {
+      "year": 2024
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "arr_2024": {
+    "sheet": "4a Revenue quality",
+    "cell": "B17",
+    "table": "4a_arr",
+    "column": "arr",
+    "where": {
+      "year": 2024
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "arr_growth_ex_price_2025": {
+    "sheet": "4a Revenue quality",
+    "cell": "G18",
+    "table": "4a_arr",
+    "column": "arr_growth_ex_price_pct",
+    "where": {
+      "year": 2025
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "arr_2025": {
+    "sheet": "4a Revenue quality",
+    "cell": "B18",
+    "table": "4a_arr",
+    "column": "arr",
+    "where": {
+      "year": 2025
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "top1_share_2022": {
+    "sheet": "4b Concentration",
+    "cell": "E7",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2022,
+      "top_n": 1
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "top5_share_2022": {
+    "sheet": "4b Concentration",
+    "cell": "E8",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2022,
+      "top_n": 5
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "top10_share_2022": {
+    "sheet": "4b Concentration",
+    "cell": "E9",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2022,
+      "top_n": 10
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "top20_share_2022": {
+    "sheet": "4b Concentration",
+    "cell": "E10",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2022,
+      "top_n": 20
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "top1_share_2023": {
+    "sheet": "4b Concentration",
+    "cell": "E11",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2023,
+      "top_n": 1
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "top5_share_2023": {
+    "sheet": "4b Concentration",
+    "cell": "E12",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2023,
+      "top_n": 5
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "top10_share_2023": {
+    "sheet": "4b Concentration",
+    "cell": "E13",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2023,
+      "top_n": 10
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "top20_share_2023": {
+    "sheet": "4b Concentration",
+    "cell": "E14",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2023,
+      "top_n": 20
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "top1_share_2024": {
+    "sheet": "4b Concentration",
+    "cell": "E15",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2024,
+      "top_n": 1
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "top5_share_2024": {
+    "sheet": "4b Concentration",
+    "cell": "E16",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2024,
+      "top_n": 5
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "top10_share_2024": {
+    "sheet": "4b Concentration",
+    "cell": "E17",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2024,
+      "top_n": 10
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "top20_share_2024": {
+    "sheet": "4b Concentration",
+    "cell": "E18",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2024,
+      "top_n": 20
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "top1_share_2025": {
+    "sheet": "4b Concentration",
+    "cell": "E19",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2025,
+      "top_n": 1
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "top5_share_2025": {
+    "sheet": "4b Concentration",
+    "cell": "E20",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2025,
+      "top_n": 5
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "top10_share_2025": {
+    "sheet": "4b Concentration",
+    "cell": "E21",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2025,
+      "top_n": 10
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "top20_share_2025": {
+    "sheet": "4b Concentration",
+    "cell": "E22",
+    "table": "4b_top_n_shares",
+    "column": "share_of_net_pct",
+    "where": {
+      "year": 2025,
+      "top_n": 20
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "large_account_share_2022": {
+    "sheet": "4b Concentration",
+    "cell": "D33",
+    "table": "4b_large_account_share",
+    "column": "large_share_of_net_pct",
+    "where": {
+      "year": 2022
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "large_account_share_2023": {
+    "sheet": "4b Concentration",
+    "cell": "D34",
+    "table": "4b_large_account_share",
+    "column": "large_share_of_net_pct",
+    "where": {
+      "year": 2023
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "large_account_share_2024": {
+    "sheet": "4b Concentration",
+    "cell": "D35",
+    "table": "4b_large_account_share",
+    "column": "large_share_of_net_pct",
+    "where": {
+      "year": 2024
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "large_account_share_2025": {
+    "sheet": "4b Concentration",
+    "cell": "D36",
+    "table": "4b_large_account_share",
+    "column": "large_share_of_net_pct",
+    "where": {
+      "year": 2025
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "C1052_arr_change": {
+    "sheet": "4b Concentration",
+    "cell": "E40",
+    "table": "4b_top10_runrate",
+    "column": "change_vs_prior_dec",
+    "where": {
+      "customer_id": "C1052"
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "C1865_arr_change": {
+    "sheet": "4b Concentration",
+    "cell": "E41",
+    "table": "4b_top10_runrate",
+    "column": "change_vs_prior_dec",
+    "where": {
+      "customer_id": "C1865"
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "C1545_arr_change": {
+    "sheet": "4b Concentration",
+    "cell": "E42",
+    "table": "4b_top10_runrate",
+    "column": "change_vs_prior_dec",
+    "where": {
+      "customer_id": "C1545"
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "C1881_arr_change": {
+    "sheet": "4b Concentration",
+    "cell": "E43",
+    "table": "4b_top10_runrate",
+    "column": "change_vs_prior_dec",
+    "where": {
+      "customer_id": "C1881"
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "C1328_arr_change": {
+    "sheet": "4b Concentration",
+    "cell": "E44",
+    "table": "4b_top10_runrate",
+    "column": "change_vs_prior_dec",
+    "where": {
+      "customer_id": "C1328"
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "C1933_arr_change": {
+    "sheet": "4b Concentration",
+    "cell": "E45",
+    "table": "4b_top10_runrate",
+    "column": "change_vs_prior_dec",
+    "where": {
+      "customer_id": "C1933"
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "C1069_arr_change": {
+    "sheet": "4b Concentration",
+    "cell": "E46",
+    "table": "4b_top10_runrate",
+    "column": "change_vs_prior_dec",
+    "where": {
+      "customer_id": "C1069"
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "C2470_arr_change": {
+    "sheet": "4b Concentration",
+    "cell": "E47",
+    "table": "4b_top10_runrate",
+    "column": "change_vs_prior_dec",
+    "where": {
+      "customer_id": "C2470"
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "C2321_arr_change": {
+    "sheet": "4b Concentration",
+    "cell": "E48",
+    "table": "4b_top10_runrate",
+    "column": "change_vs_prior_dec",
+    "where": {
+      "customer_id": "C2321"
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "C1964_arr_change": {
+    "sheet": "4b Concentration",
+    "cell": "E49",
+    "table": "4b_top10_runrate",
+    "column": "change_vs_prior_dec",
+    "where": {
+      "customer_id": "C1964"
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "retention_12m_2017": {
+    "sheet": "4c Cohorts",
+    "cell": "G7",
+    "table": "4c_tenure_matched",
+    "column": "logo_retention_pct",
+    "where": {
+      "signup_year": 2017,
+      "tenure_months": 12
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "retention_12m_2018": {
+    "sheet": "4c Cohorts",
+    "cell": "G8",
+    "table": "4c_tenure_matched",
+    "column": "logo_retention_pct",
+    "where": {
+      "signup_year": 2018,
+      "tenure_months": 12
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "retention_12m_2019": {
+    "sheet": "4c Cohorts",
+    "cell": "G9",
+    "table": "4c_tenure_matched",
+    "column": "logo_retention_pct",
+    "where": {
+      "signup_year": 2019,
+      "tenure_months": 12
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "retention_12m_2020": {
+    "sheet": "4c Cohorts",
+    "cell": "G10",
+    "table": "4c_tenure_matched",
+    "column": "logo_retention_pct",
+    "where": {
+      "signup_year": 2020,
+      "tenure_months": 12
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "retention_12m_2021": {
+    "sheet": "4c Cohorts",
+    "cell": "G11",
+    "table": "4c_tenure_matched",
+    "column": "logo_retention_pct",
+    "where": {
+      "signup_year": 2021,
+      "tenure_months": 12
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "retention_12m_2022": {
+    "sheet": "4c Cohorts",
+    "cell": "G12",
+    "table": "4c_tenure_matched",
+    "column": "logo_retention_pct",
+    "where": {
+      "signup_year": 2022,
+      "tenure_months": 12
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "retention_12m_2023": {
+    "sheet": "4c Cohorts",
+    "cell": "G13",
+    "table": "4c_tenure_matched",
+    "column": "logo_retention_pct",
+    "where": {
+      "signup_year": 2023,
+      "tenure_months": 12
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "retention_12m_2024": {
+    "sheet": "4c Cohorts",
+    "cell": "G14",
+    "table": "4c_tenure_matched",
+    "column": "logo_retention_pct",
+    "where": {
+      "signup_year": 2024,
+      "tenure_months": 12
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "retention_6m_older": {
+    "sheet": "4c Cohorts",
+    "cell": "E18",
+    "table": "4c_old_vs_new_cohorts",
+    "column": "logo_retention_pct",
+    "where": {
+      "group": "2017-2022 signups",
+      "tenure_months": 6
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "retention_6m_newer": {
+    "sheet": "4c Cohorts",
+    "cell": "E19",
+    "table": "4c_old_vs_new_cohorts",
+    "column": "logo_retention_pct",
+    "where": {
+      "group": "2023+ signups",
+      "tenure_months": 6
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "retention_12m_older": {
+    "sheet": "4c Cohorts",
+    "cell": "E20",
+    "table": "4c_old_vs_new_cohorts",
+    "column": "logo_retention_pct",
+    "where": {
+      "group": "2017-2022 signups",
+      "tenure_months": 12
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "retention_12m_newer": {
+    "sheet": "4c Cohorts",
+    "cell": "E21",
+    "table": "4c_old_vs_new_cohorts",
+    "column": "logo_retention_pct",
+    "where": {
+      "group": "2023+ signups",
+      "tenure_months": 12
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "retention_18m_older": {
+    "sheet": "4c Cohorts",
+    "cell": "E22",
+    "table": "4c_old_vs_new_cohorts",
+    "column": "logo_retention_pct",
+    "where": {
+      "group": "2017-2022 signups",
+      "tenure_months": 18
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "retention_18m_newer": {
+    "sheet": "4c Cohorts",
+    "cell": "E23",
+    "table": "4c_old_vs_new_cohorts",
+    "column": "logo_retention_pct",
+    "where": {
+      "group": "2023+ signups",
+      "tenure_months": 18
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_reported_2023": {
+    "sheet": "4d NRR GRR",
+    "cell": "G7",
+    "table": "4d_nrr_grr",
+    "column": "nrr_pct",
+    "where": {
+      "year": 2023,
+      "basis": "reported"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "grr_reported_2023": {
+    "sheet": "4d NRR GRR",
+    "cell": "H7",
+    "table": "4d_nrr_grr",
+    "column": "grr_pct",
+    "where": {
+      "year": 2023,
+      "basis": "reported"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_excluding top 5 customers_2023": {
+    "sheet": "4d NRR GRR",
+    "cell": "G8",
+    "table": "4d_nrr_grr",
+    "column": "nrr_pct",
+    "where": {
+      "year": 2023,
+      "basis": "excluding top 5 customers"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "grr_excluding top 5 customers_2023": {
+    "sheet": "4d NRR GRR",
+    "cell": "H8",
+    "table": "4d_nrr_grr",
+    "column": "grr_pct",
+    "where": {
+      "year": 2023,
+      "basis": "excluding top 5 customers"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_excluding price increase_2023": {
+    "sheet": "4d NRR GRR",
+    "cell": "G9",
+    "table": "4d_nrr_grr",
+    "column": "nrr_pct",
+    "where": {
+      "year": 2023,
+      "basis": "excluding price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "grr_excluding price increase_2023": {
+    "sheet": "4d NRR GRR",
+    "cell": "H9",
+    "table": "4d_nrr_grr",
+    "column": "grr_pct",
+    "where": {
+      "year": 2023,
+      "basis": "excluding price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_excluding top 5 and price increase_2023": {
+    "sheet": "4d NRR GRR",
+    "cell": "G10",
+    "table": "4d_nrr_grr",
+    "column": "nrr_pct",
+    "where": {
+      "year": 2023,
+      "basis": "excluding top 5 and price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "grr_excluding top 5 and price increase_2023": {
+    "sheet": "4d NRR GRR",
+    "cell": "H10",
+    "table": "4d_nrr_grr",
+    "column": "grr_pct",
+    "where": {
+      "year": 2023,
+      "basis": "excluding top 5 and price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_reported_2024": {
+    "sheet": "4d NRR GRR",
+    "cell": "G11",
+    "table": "4d_nrr_grr",
+    "column": "nrr_pct",
+    "where": {
+      "year": 2024,
+      "basis": "reported"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "grr_reported_2024": {
+    "sheet": "4d NRR GRR",
+    "cell": "H11",
+    "table": "4d_nrr_grr",
+    "column": "grr_pct",
+    "where": {
+      "year": 2024,
+      "basis": "reported"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_excluding top 5 customers_2024": {
+    "sheet": "4d NRR GRR",
+    "cell": "G12",
+    "table": "4d_nrr_grr",
+    "column": "nrr_pct",
+    "where": {
+      "year": 2024,
+      "basis": "excluding top 5 customers"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "grr_excluding top 5 customers_2024": {
+    "sheet": "4d NRR GRR",
+    "cell": "H12",
+    "table": "4d_nrr_grr",
+    "column": "grr_pct",
+    "where": {
+      "year": 2024,
+      "basis": "excluding top 5 customers"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_excluding price increase_2024": {
+    "sheet": "4d NRR GRR",
+    "cell": "G13",
+    "table": "4d_nrr_grr",
+    "column": "nrr_pct",
+    "where": {
+      "year": 2024,
+      "basis": "excluding price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "grr_excluding price increase_2024": {
+    "sheet": "4d NRR GRR",
+    "cell": "H13",
+    "table": "4d_nrr_grr",
+    "column": "grr_pct",
+    "where": {
+      "year": 2024,
+      "basis": "excluding price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_excluding top 5 and price increase_2024": {
+    "sheet": "4d NRR GRR",
+    "cell": "G14",
+    "table": "4d_nrr_grr",
+    "column": "nrr_pct",
+    "where": {
+      "year": 2024,
+      "basis": "excluding top 5 and price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "grr_excluding top 5 and price increase_2024": {
+    "sheet": "4d NRR GRR",
+    "cell": "H14",
+    "table": "4d_nrr_grr",
+    "column": "grr_pct",
+    "where": {
+      "year": 2024,
+      "basis": "excluding top 5 and price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_reported_2025": {
+    "sheet": "4d NRR GRR",
+    "cell": "G15",
+    "table": "4d_nrr_grr",
+    "column": "nrr_pct",
+    "where": {
+      "year": 2025,
+      "basis": "reported"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "grr_reported_2025": {
+    "sheet": "4d NRR GRR",
+    "cell": "H15",
+    "table": "4d_nrr_grr",
+    "column": "grr_pct",
+    "where": {
+      "year": 2025,
+      "basis": "reported"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_excluding top 5 customers_2025": {
+    "sheet": "4d NRR GRR",
+    "cell": "G16",
+    "table": "4d_nrr_grr",
+    "column": "nrr_pct",
+    "where": {
+      "year": 2025,
+      "basis": "excluding top 5 customers"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "grr_excluding top 5 customers_2025": {
+    "sheet": "4d NRR GRR",
+    "cell": "H16",
+    "table": "4d_nrr_grr",
+    "column": "grr_pct",
+    "where": {
+      "year": 2025,
+      "basis": "excluding top 5 customers"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_excluding price increase_2025": {
+    "sheet": "4d NRR GRR",
+    "cell": "G17",
+    "table": "4d_nrr_grr",
+    "column": "nrr_pct",
+    "where": {
+      "year": 2025,
+      "basis": "excluding price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "grr_excluding price increase_2025": {
+    "sheet": "4d NRR GRR",
+    "cell": "H17",
+    "table": "4d_nrr_grr",
+    "column": "grr_pct",
+    "where": {
+      "year": 2025,
+      "basis": "excluding price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_excluding top 5 and price increase_2025": {
+    "sheet": "4d NRR GRR",
+    "cell": "G18",
+    "table": "4d_nrr_grr",
+    "column": "nrr_pct",
+    "where": {
+      "year": 2025,
+      "basis": "excluding top 5 and price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "grr_excluding top 5 and price increase_2025": {
+    "sheet": "4d NRR GRR",
+    "cell": "H18",
+    "table": "4d_nrr_grr",
+    "column": "grr_pct",
+    "where": {
+      "year": 2025,
+      "basis": "excluding top 5 and price increase"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "arr_bridge_closing_2023": {
+    "sheet": "4e ARR bridge",
+    "cell": "B15",
+    "table": "4e_arr_bridge",
+    "column": "closing_arr",
+    "where": {
+      "year": 2023
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "arr_bridge_price_2023": {
+    "sheet": "4e ARR bridge",
+    "cell": "B11",
+    "table": "4e_arr_bridge",
+    "column": "price_increase",
+    "where": {
+      "year": 2023
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "arr_bridge_closing_2024": {
+    "sheet": "4e ARR bridge",
+    "cell": "C15",
+    "table": "4e_arr_bridge",
+    "column": "closing_arr",
+    "where": {
+      "year": 2024
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "arr_bridge_price_2024": {
+    "sheet": "4e ARR bridge",
+    "cell": "C11",
+    "table": "4e_arr_bridge",
+    "column": "price_increase",
+    "where": {
+      "year": 2024
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "arr_bridge_closing_2025": {
+    "sheet": "4e ARR bridge",
+    "cell": "D15",
+    "table": "4e_arr_bridge",
+    "column": "closing_arr",
+    "where": {
+      "year": 2025
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "arr_bridge_price_2025": {
+    "sheet": "4e ARR bridge",
+    "cell": "D11",
+    "table": "4e_arr_bridge",
+    "column": "price_increase",
+    "where": {
+      "year": 2025
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "revenue_bridge_net_2023": {
+    "sheet": "4e ARR bridge",
+    "cell": "B47",
+    "table": "4e_revenue_bridge",
+    "column": "net_revenue",
+    "where": {
+      "year": 2023
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "revenue_bridge_net_2024": {
+    "sheet": "4e ARR bridge",
+    "cell": "C47",
+    "table": "4e_revenue_bridge",
+    "column": "net_revenue",
+    "where": {
+      "year": 2024
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "revenue_bridge_net_2025": {
+    "sheet": "4e ARR bridge",
+    "cell": "D47",
+    "table": "4e_revenue_bridge",
+    "column": "net_revenue",
+    "where": {
+      "year": 2025
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "gross_margin_2022": {
+    "sheet": "4f Margin",
+    "cell": "B43",
+    "table": "4f_margin_reconciliation",
+    "column": "gross_margin_pct",
+    "where": {
+      "year": 2022
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "gross_margin_2023": {
+    "sheet": "4f Margin",
+    "cell": "C43",
+    "table": "4f_margin_reconciliation",
+    "column": "gross_margin_pct",
+    "where": {
+      "year": 2023
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "mix_effect_2023": {
+    "sheet": "4f Margin",
+    "cell": "C45",
+    "table": "4f_mix_rate",
+    "column": "mix_effect_pts",
+    "where": {
+      "year": 2023
+    },
+    "scale": 1.0,
+    "tol": 1e-06
+  },
+  "gross_margin_2024": {
+    "sheet": "4f Margin",
+    "cell": "D43",
+    "table": "4f_margin_reconciliation",
+    "column": "gross_margin_pct",
+    "where": {
+      "year": 2024
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "mix_effect_2024": {
+    "sheet": "4f Margin",
+    "cell": "D45",
+    "table": "4f_mix_rate",
+    "column": "mix_effect_pts",
+    "where": {
+      "year": 2024
+    },
+    "scale": 1.0,
+    "tol": 1e-06
+  },
+  "gross_margin_2025": {
+    "sheet": "4f Margin",
+    "cell": "E43",
+    "table": "4f_margin_reconciliation",
+    "column": "gross_margin_pct",
+    "where": {
+      "year": 2025
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "mix_effect_2025": {
+    "sheet": "4f Margin",
+    "cell": "E45",
+    "table": "4f_mix_rate",
+    "column": "mix_effect_pts",
+    "where": {
+      "year": 2025
+    },
+    "scale": 1.0,
+    "tol": 1e-06
+  },
+  "discount_given_up_2022": {
+    "sheet": "4f Margin",
+    "cell": "D61",
+    "table": "4f_discount_by_year",
+    "column": "revenue_given_up",
+    "where": {
+      "year": 2022
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "discount_given_up_2023": {
+    "sheet": "4f Margin",
+    "cell": "D62",
+    "table": "4f_discount_by_year",
+    "column": "revenue_given_up",
+    "where": {
+      "year": 2023
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "discount_given_up_2024": {
+    "sheet": "4f Margin",
+    "cell": "D63",
+    "table": "4f_discount_by_year",
+    "column": "revenue_given_up",
+    "where": {
+      "year": 2024
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "discount_given_up_2025": {
+    "sheet": "4f Margin",
+    "cell": "D64",
+    "table": "4f_discount_by_year",
+    "column": "revenue_given_up",
+    "where": {
+      "year": 2025
+    },
+    "scale": 1.0,
+    "tol": 0.005
+  },
+  "nrr_2025_industry_Construction": {
+    "sheet": "4g Segments",
+    "cell": "L7",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "industry",
+      "segment": "Construction"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_industry_Education": {
+    "sheet": "4g Segments",
+    "cell": "L8",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "industry",
+      "segment": "Education"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_industry_Financial Services": {
+    "sheet": "4g Segments",
+    "cell": "L9",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "industry",
+      "segment": "Financial Services"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_industry_Healthcare": {
+    "sheet": "4g Segments",
+    "cell": "L10",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "industry",
+      "segment": "Healthcare"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_industry_Hospitality": {
+    "sheet": "4g Segments",
+    "cell": "L11",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "industry",
+      "segment": "Hospitality"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_industry_Logistics": {
+    "sheet": "4g Segments",
+    "cell": "L12",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "industry",
+      "segment": "Logistics"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_industry_Manufacturing": {
+    "sheet": "4g Segments",
+    "cell": "L13",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "industry",
+      "segment": "Manufacturing"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_industry_Professional Services": {
+    "sheet": "4g Segments",
+    "cell": "L14",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "industry",
+      "segment": "Professional Services"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_industry_Retail": {
+    "sheet": "4g Segments",
+    "cell": "L15",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "industry",
+      "segment": "Retail"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_industry_Technology": {
+    "sheet": "4g Segments",
+    "cell": "L16",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "industry",
+      "segment": "Technology"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_industry_Unknown": {
+    "sheet": "4g Segments",
+    "cell": "L17",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "industry",
+      "segment": "Unknown"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_region_group_EU": {
+    "sheet": "4g Segments",
+    "cell": "L18",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "region_group",
+      "segment": "EU"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_region_group_UK": {
+    "sheet": "4g Segments",
+    "cell": "L19",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "region_group",
+      "segment": "UK"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_acquisition_channel_Direct Sales": {
+    "sheet": "4g Segments",
+    "cell": "L20",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "acquisition_channel",
+      "segment": "Direct Sales"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_acquisition_channel_Inbound/Website": {
+    "sheet": "4g Segments",
+    "cell": "L21",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "acquisition_channel",
+      "segment": "Inbound/Website"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_acquisition_channel_Paid Search": {
+    "sheet": "4g Segments",
+    "cell": "L22",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "acquisition_channel",
+      "segment": "Paid Search"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_acquisition_channel_Partner/Reseller": {
+    "sheet": "4g Segments",
+    "cell": "L23",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "acquisition_channel",
+      "segment": "Partner/Reseller"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_acquisition_channel_Referral": {
+    "sheet": "4g Segments",
+    "cell": "L24",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "acquisition_channel",
+      "segment": "Referral"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_company_size_Large (250+)": {
+    "sheet": "4g Segments",
+    "cell": "L25",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "company_size",
+      "segment": "Large (250+)"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_company_size_Medium (50-249)": {
+    "sheet": "4g Segments",
+    "cell": "L26",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "company_size",
+      "segment": "Medium (50-249)"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_company_size_Micro (1-9)": {
+    "sheet": "4g Segments",
+    "cell": "L27",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "company_size",
+      "segment": "Micro (1-9)"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "nrr_2025_company_size_Small (10-49)": {
+    "sheet": "4g Segments",
+    "cell": "L28",
+    "table": "4g_segments",
+    "column": "nrr_2025_pct",
+    "where": {
+      "dimension": "company_size",
+      "segment": "Small (10-49)"
+    },
+    "scale": 0.01,
+    "tol": 1e-06
+  },
+  "overall_check": {
+    "sheet": "Checks",
+    "cell": "C5"
+  }
+}

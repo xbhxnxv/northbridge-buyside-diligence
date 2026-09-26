@@ -1,0 +1,11 @@
+action_id,issue_id,table_name,action_type,records,impact_2022,impact_2023,impact_2024,impact_2025,impact_total,rule
+A01,P04,invoices,removed,40,-8596.92,-70158.24,-7115.7,-11086.4,-96957.26,"Remove exact duplicate invoices. Duplicate key: customer_id, product_id, invoice_date, amount, revenue_type, status. Keep the lowest invoice_id; remove the later copy."
+A02,P06,invoices,flagged,15,5788.75,2118.96,4073.48,1862.63,13843.82,"Flag negative amounts on invoices marked paid or overdue (anomaly_flag) and carry amount_as_reported, amount_flipped and amount_excluded. Settled in Step 3: the cube uses amount_excluded (cfg_settings.anomaly_treatment = excluded), so these rows contribute zero to revenue and MRR."
+A03,P03,invoices,linked,1084,0.0,0.0,0.0,0.0,0.0,"Keep credit notes as negative revenue in the month they are dated. Link each to the original invoice with the same customer, product, date and absolute amount (credit_note_original_id, credited_by_id)."
+A04,P08,customers,filled,132,0.0,0.0,0.0,0.0,0.0,Set missing industry to Unknown and set industry_missing_flag.
+A05,P07,customers,flagged,458,0.0,0.0,0.0,0.0,0.0,Set name_collision_flag where another customer_id shares the normalised name key. No ids are merged.
+A06,P11,customers,standardised,382,0.0,0.0,0.0,0.0,0.0,"Build customer_name_std: trim, collapse spaces, strip trailing punctuation, Limited to Ltd, Grp to Group, ""and"" to ""&"". The raw customer_name is kept."
+A07,P02,invoices,categorised,45,0.0,0.0,0.0,0.0,0.0,"Set oneoff_category on one-off invoices: signup_implementation when billed in the customer's signup month, other_implementation otherwise."
+A08,P05,management_accounts,flagged,4,0.0,0.0,0.0,0.0,0.0,"Carry revenue_sum_of_lines, lines_less_total and lines_total_mismatch_flag alongside the reported total_revenue."
+A09,P10,invoices,flagged,1423,0.0,0.0,0.0,0.0,0.0,Set before_signup_flag where invoice_date is earlier than the customer's signup_date. No change to dates.
+A10,P01,customers,flagged,6,0.0,0.0,0.0,0.0,0.0,Set is_large_account where any subscription line is priced at 10x list price or more.

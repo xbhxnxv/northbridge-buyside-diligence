@@ -7,6 +7,7 @@ data/northbridge.duckdb. Every test reads the database read-only.
 from __future__ import annotations
 
 import csv
+import json
 from decimal import Decimal
 from pathlib import Path
 
@@ -516,3 +517,83 @@ def test_step4_charts_exist():
 
 def test_qa_references_in_docs_point_at_the_right_question(con):
     assert scalar(con, "SELECT topic FROM qa_log WHERE qa_id = 'Q15'") == "Price increases"
+
+
+# ---------------------------------------------------------------------------
+# Step 5: databook
+# ---------------------------------------------------------------------------
+
+DATABOOK = ROOT / "databook" / "Northbridge_Databook.xlsx"
+
+
+@pytest.fixture(scope="session")
+def databook():
+    if not DATABOOK.exists():
+        pytest.skip("databook not built; run `python run_all.py`")
+    from openpyxl import load_workbook
+    return load_workbook(DATABOOK, data_only=True), load_workbook(DATABOOK, data_only=False)
+
+
+def test_databook_recalculated_without_errors():
+    report = json.loads((ROOT / "databook" / "recalc_report.json").read_text())
+    assert report.get("status") == "success" and report["total_errors"] == 0, report
+    assert report["total_formulas"] > 500
+
+
+def test_databook_every_check_true(databook):
+    values, formulas = databook
+    ws = values["Checks"]
+    assert ws["C5"].value is True
+    results = [r[4].value for r in ws.iter_rows(min_row=8) if r[0].value is not None]
+    assert len(results) >= 40 and all(v is True for v in results)
+    # every check row points at a formula cell that is itself TRUE
+    for r in formulas["Checks"].iter_rows(min_row=8):
+        if r[0].value is None:
+            continue
+        sheet, ref = r[2].value, r[3].value
+        assert str(formulas[sheet][ref].value).startswith("="), (sheet, ref)
+        assert values[sheet][ref].value is True, (sheet, ref)
+
+
+def test_databook_key_figures_match_outputs_to_the_penny(databook):
+    values, _ = databook
+    cell_map = json.loads((ROOT / "databook" / "cell_map.json").read_text())
+    checked = 0
+    for key, m in cell_map.items():
+        if key == "overall_check":
+            continue
+        rows = table(m["table"])
+        for col_, val in m["where"].items():
+            rows = [r for r in rows if str(r[col_]) == str(val) or (r[col_].replace(".0", "") == str(val))]
+        assert len(rows) == 1, key
+        expected = float(rows[0][m["column"]]) * m["scale"]
+        got = values[m["sheet"]][m["cell"]].value
+        assert got is not None and abs(float(got) - expected) <= m["tol"], (key, got, expected)
+        checked += 1
+    assert checked >= 100
+
+
+def test_databook_inputs_blue_and_formulas_black(databook):
+    _, formulas = databook
+    blue = ("FF0000FF", "000000FF", "0000FF")
+    for name in ["Reconciliation", "4a Revenue quality", "4b Concentration", "4d NRR GRR", "4e ARR bridge", "4f Margin", "4g Segments"]:
+        ws = formulas[name]
+        n_inputs = n_formulas = 0
+        for row in ws.iter_rows(min_row=5):
+            for c in row:
+                colour = c.font.color.rgb if c.font and c.font.color and isinstance(c.font.color.rgb, str) else None
+                if isinstance(c.value, str) and c.value.startswith("="):
+                    assert colour not in blue, (name, c.coordinate)
+                    n_formulas += 1
+                elif isinstance(c.value, (int, float)) and not isinstance(c.value, bool):
+                    assert colour in blue, (name, c.coordinate, c.value)
+                    n_inputs += 1
+        assert n_inputs > 0 and n_formulas > 0, name
+
+
+def test_databook_has_native_charts_and_draft_commentary(databook):
+    _, formulas = databook
+    for name in ["Reconciliation", "4a Revenue quality", "4b Concentration", "4c Cohorts", "4d NRR GRR", "4e ARR bridge", "4f Margin", "4g Segments"]:
+        ws = formulas[name]
+        assert len(ws._charts) >= 1, name
+        assert any(isinstance(c.value, str) and c.value.startswith("DRAFT commentary") for row in ws.iter_rows() for c in row), name

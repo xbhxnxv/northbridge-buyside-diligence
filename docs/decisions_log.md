@@ -193,6 +193,20 @@ Flag: **Review first** marks the entries most worth checking.
 - **Decision:** the memo text lives in `memo/build_memo.py` with every figure read from `outputs/tables/`. A test extracts every £ and % figure from the memo and from `outputs/key_findings.md` and finds each in `outputs/tables/` at the precision shown.
 - **Reverse:** not applicable.
 
+## Step 8: Packaging
+
+### D26. README, CV bullets and interview prep are generated from the pipeline
+
+- **Date:** 27 September 2026
+- **Decision:** `docs/build_readme.py` writes all three from `outputs/tables/`, and the tests check every £ and % in them. The CV bullets and interview answers say plainly that this is a self-directed simulation on synthetic data.
+- **Reverse:** edit the text in `docs/build_readme.py`; hand edits to the generated files are overwritten on the next run.
+
+### D27. Style checks as tests
+
+- **Date:** 27 September 2026
+- **Decision:** a test scans the README, memo, key findings, CV bullets, interview prep, metric definitions, decisions log, Alteryx note, dashboard plan and this report for the banned words and for em dashes.
+- **Reverse:** edit `BANNED` and `PROSE` in `tests/test_tieouts.py`.
+
 ## Limitations
 
 - `pandoc`, `python-docx`, `reportlab` and `pypdf` are not installed at the start of the run. LibreOffice 24.2 is installed. Handling is recorded under the step that needs them.

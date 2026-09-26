@@ -507,7 +507,9 @@ def test_key_figures_trace_to_the_database(con):
             a_, b_ = [x.strip() for x in src.split(":", 1)[1].split(" - ")]
             assert close(float(r["value"]), kf[a_] - kf[b_]), r["name"]
         else:
-            assert (TABLES_DIR / f"{src.split(' ')[0]}.csv").exists() or src.startswith(("clean_", "raw_")), r["name"]
+            name = src.split(" ")[0]
+            in_db = scalar(con, f"SELECT count(*) FROM duckdb_tables() WHERE table_name = '{name}'") == 1
+            assert (TABLES_DIR / f"{name}.csv").exists() or in_db, r["name"]
 
 
 def test_step4_charts_exist():
@@ -714,14 +716,14 @@ def figures_in(text: str) -> list[tuple[str, float, float]]:
     return out
 
 
-@pytest.mark.parametrize("doc", ["memo/findings_memo.md", "outputs/key_findings.md"])
+@pytest.mark.parametrize("doc", ["memo/findings_memo.md", "outputs/key_findings.md", "README.md", "docs/cv_bullets.md", "docs/interview_prep.md"])
 def test_written_figures_match_outputs(doc):
     path = ROOT / doc
     if not path.exists():
         pytest.skip(f"{doc} not built")
     values = pipeline_values()
     figures = figures_in(path.read_text(encoding="utf-8"))
-    assert len(figures) >= 30, doc
+    assert len(figures) >= (30 if "memo" in doc or "key_findings" in doc else 3), doc
     missing = [tok for tok, v, tol in figures if not has_value(values, v, tol)]
     assert not missing, f"figures in {doc} not found in outputs/tables: {missing}"
 
@@ -744,3 +746,32 @@ def test_memo_has_required_sections():
     assert "synthetic" in text.lower()
     for mo in re.finditer(r"\((Q\d{2})\)", text):   # every question id cited exists in the Q&A log
         assert mo.group(1) in {r["qa_id"] for r in table("qa_log")}
+
+
+# ---------------------------------------------------------------------------
+# Step 8: writing-style rules on the written outputs
+# ---------------------------------------------------------------------------
+
+BANNED = ["delve", "tapestry", "pivotal", "underscore", "testament", "crucial", "robust", "leverage", "seamless",
+          "holistic", "elevate", "unlock", "empower", "cutting-edge", "game-changer"]
+PROSE = ["README.md", "memo/findings_memo.md", "outputs/key_findings.md", "docs/cv_bullets.md", "docs/interview_prep.md",
+         "docs/metric_definitions.md", "docs/decisions_log.md", "docs/alteryx_workflow.md", "dashboard/README.md", "docs/overnight_report.md"]
+
+
+@pytest.mark.parametrize("doc", PROSE)
+def test_prose_follows_style_rules(doc):
+    path = ROOT / doc
+    if not path.exists():
+        pytest.skip(f"{doc} not built")
+    text = path.read_text(encoding="utf-8").lower()
+    found = [w for w in BANNED if re.search(rf"\b{re.escape(w)}", text)]
+    assert not found, f"banned words in {doc}: {found}"
+    assert "—" not in text, f"em dash in {doc}"
+
+
+def test_readme_is_short_and_honest():
+    text = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert len(text.split()) <= 700
+    assert "synthetic" in text.lower() and "not client work" in text.lower()
+    for chart in re.findall(r"!\[[^\]]*\]\(([^)]+)\)", text):
+        assert (ROOT / chart).exists(), chart

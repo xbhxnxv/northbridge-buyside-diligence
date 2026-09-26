@@ -59,7 +59,7 @@ We suggest valuing the business on recurring revenue or ARR, treating the £4.08
 
 ## 6. Overall view: proceed, with price and structure protections
 
-The revenue is real, reconciles to the management accounts and is mostly recurring (88.5%). The concerns are about quality and trend: 2025 growth relies on one-off implementation billing and price increases, retention is weakening, and the largest customer is shrinking. These reduce what the business is worth, not whether the revenue exists, so they belong in the price and the structure.
+The revenue is real, reconciles to the management accounts and is mostly recurring (88.5%). The concerns are about quality and trend: 2025 growth relies on one-off implementation billing and price increases, retention is weakening, and the largest customer is shrinking. These points bear on what the business is worth, so they belong in the price and the structure.
 
 - Price adjustment: value on December 2025 ARR (£41.36m) or recurring revenue, excluding the £4.08m of other implementation (red flags 1 and 4).
 - Earn-out tied to ARR growth before price increases, or to NRR, over 12 to 24 months (red flags 2 and 3).

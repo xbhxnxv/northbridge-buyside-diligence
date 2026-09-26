@@ -17,3 +17,8 @@ Thumbs.db
 # Excel/PowerBI temp
 ~$*.xlsx
 *.tmp
+
+# DuckDB database and cleaned exports (rebuilt by run_all.py)
+*.duckdb
+*.duckdb.wal
+data/clean/

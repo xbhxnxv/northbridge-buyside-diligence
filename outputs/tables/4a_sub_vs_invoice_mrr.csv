@@ -1,0 +1,5 @@
+year_end,subscription_lines,invoiced_lines,unmatched_lines,subscription_mrr,invoiced_mrr,gap,invoiced_over_subscription,most_common_line_ratio,lines_at_that_ratio
+2022-12-01,1566,1566,0,2417140.3,2417140.3,0.0,1.0,1.0,1566
+2023-12-01,1893,1893,0,2731778.55,2731778.55,0.0,1.0,1.0,1893
+2024-12-01,2149,2149,0,2975939.12,3124736.34,148797.22,1.05,1.05,2149
+2025-12-01,2355,2355,0,3067780.81,3446652.32,378871.51,1.1235,1.1235,2355

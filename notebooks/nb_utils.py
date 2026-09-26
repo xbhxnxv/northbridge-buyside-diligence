@@ -105,3 +105,18 @@ def replace_block(path: Path, name: str, content: str) -> None:
     head, rest = text.split(begin, 1)
     _, tail = rest.split(end, 1)
     path.write_text(f"{head}{begin}\n{content.strip()}\n{end}{tail}", encoding="utf-8")
+
+
+SQL_ANALYSIS = ROOT / "sql" / "analysis"
+
+
+def sql_file(con: duckdb.DuckDBPyConnection, name: str) -> pd.DataFrame:
+    """Run a SELECT from sql/analysis/<name>.sql and return a DataFrame."""
+    return q(con, (SQL_ANALYSIS / f"{name}.sql").read_text(encoding="utf-8"))
+
+
+def save_table(df: pd.DataFrame, name: str) -> pd.DataFrame:
+    """Save a Step 4+ output table to outputs/tables/<name>.csv (stable name read by the databook)."""
+    TABLES.mkdir(parents=True, exist_ok=True)
+    df.to_csv(TABLES / f"{name}.csv", index=False)
+    return df

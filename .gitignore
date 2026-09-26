@@ -1,0 +1,19 @@
+# Generated data room (reproducible from data/generator/generate_data.py, fixed seed)
+data/raw/*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Excel/PowerBI temp
+~$*.xlsx
+*.tmp

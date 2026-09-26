@@ -44,6 +44,14 @@ The two sources agree line for line on which customers hold which products. The 
 **MRR.** Recurring billings before credit notes in a month, per customer and product (`fact_mrr_monthly`). Credit notes are service concessions; netting them in would make a customer look as if it had contracted or churned in the month of a concession. The credit notes left out of MRR are:
 
 <!-- BEGIN GENERATED: mrr_credit_notes -->
+| year | credit_notes | credit_note_amount |
+| ---: | ---: | ---: |
+| 2022 | 201 | (£329,205) |
+| 2023 | 258 | (£277,054) |
+| 2024 | 288 | (£321,374) |
+| 2025 | 337 | (£408,836) |
+
+Total left out of MRR across 2022 to 2025: (£1,336,469) on 1,084 credit notes.
 <!-- END GENERATED: mrr_credit_notes -->
 
 Net revenue still includes these credit notes, so MRR and net revenue differ by design.
@@ -151,4 +159,5 @@ Industry (including Unknown), region group (UK against EU), acquisition channel 
 **`is_large_account`.** A customer with any subscription line priced at 10 times list price or more.
 
 <!-- BEGIN GENERATED: large_accounts -->
+The rule flags 6 customers (18 subscription lines, priced at 15.6 times list or more). Every other subscription line is priced at no more than 1.07 times list, so the 10x threshold separates the two groups with a wide margin.
 <!-- END GENERATED: large_accounts -->

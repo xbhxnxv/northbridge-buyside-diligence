@@ -46,6 +46,91 @@ Flag: **Review first** marks the entries most worth checking.
 - **Evidence:** the cleaning log now shows A02 adding £13,843.82 to net revenue against the amounts as supplied, which is the change the cube actually makes.
 - **Reverse:** move the two statements back.
 
+## Step 4: Core analyses
+
+### D06. Metric definitions approved by the analyst in Abhinav's absence **Review first**
+
+- **Date:** 27 September 2026
+- **Decision:** `docs/metric_definitions.md` was written in full before any Step 4 analysis and approved by me, as the overnight instructions required.
+- **Alternatives:** wait for sign-off (not possible overnight).
+- **Evidence:** every Step 4 notebook, the databook, the dashboard measures and the memo use these definitions.
+- **Reverse:** change a definition in the document and the matching notebook, then rerun; the tests will show anything that moves.
+
+### D07. The invoice ledger is the source of truth; the uplift over subscription prices is a price increase
+
+- **Date:** 27 September 2026
+- **Decision:** revenue, MRR and ARR come from the cube. The subscriptions table is used only for lifecycle dates, contract attributes and the large-account flag. The uniform uplift (1.05 from January 2024, 1.1235 from January 2025) is treated as an across-the-board price increase.
+- **Alternatives:** use subscription MRR (understates billing by the uplift); treat the uplift as upsell.
+- **Evidence:** `outputs/tables/4a_sub_vs_invoice_mrr.csv`: the two sources match line for line at every year end, and every line's ratio is identical within a year. `4a_price_change_distribution.csv`: 100% of continuing lines move by 0%, 5% and 7%. Raised as Q15.
+- **Reverse:** set k to 1 in `sql/analysis/uplift_factors.sql` consumers; the bridge would then show the uplift as upsell.
+
+### D08. Penny rounding counted in the price increase
+
+- **Date:** 27 September 2026
+- **Decision:** a same-line residual below £1 of ARR after applying k is treated as part of the price increase, not upsell or contraction.
+- **Evidence:** residuals range from −12p to +12p of ARR (a penny of MRR), from invoice amounts rounded to the penny.
+- **Reverse:** set `ROUNDING = 0` in `notebooks/04e_arr_bridge.ipynb`.
+
+### D09. Extra components in the revenue bridge
+
+- **Date:** 27 September 2026
+- **Decision:** besides the components in the brief, the revenue bridge shows the full-year effect of prior-year additions, billing gaps and the change in credit notes, so that it adds up to the change in net revenue exactly.
+- **Alternatives:** fold the full-year effect into "new" (overstates the year's new business).
+- **Evidence:** `4e_revenue_bridge.csv`; billing gaps are under £4,000 a year and come from the excluded anomaly months.
+- **Reverse:** merge columns in the notebook.
+
+### D10. Cohort rules
+
+- **Date:** 27 September 2026
+- **Decision:** a cohort cell is shown only if every customer in the cohort had reached that tenure by December 2025. Revenue retention uses month 3 as the baseline and in-window cohorts only. The older-against-newer comparison counts every customer who had reached the tenure.
+- **Alternatives:** month 0 baseline (would show add-on take-up as expansion); include partial cells (biased towards early signups).
+- **Evidence:** `4c_*` tables.
+- **Reverse:** edit `observable()` and the baseline in `notebooks/04c_cohorts.ipynb`.
+
+### D11. NRR and GRR sensitivities
+
+- **Date:** 27 September 2026
+- **Decision:** "top 5" means the five customers with the largest opening-December MRR in each year. "Excluding the price increase" divides closing MRR by that year's k.
+- **Reverse:** edit `notebooks/04d_nrr_grr.ipynb`.
+
+### D12. Benchmarks are indicative and not sourced **Review first**
+
+- **Date:** 27 September 2026
+- **Decision:** the SMB SaaS ranges in 4d (GRR about 80% to 90%, NRR about 90% to 105%) come from general knowledge and are labelled "indicative, not sourced". No survey was read or cited.
+- **Reverse:** replace with figures from a survey you have read, with the citation.
+
+### D13. Cost allocation for margin by size band
+
+- **Date:** 27 September 2026
+- **Decision:** main basis allocates each line's monthly cost pro rata to revenue; a sensitivity shares it equally across active customer lines.
+- **Evidence:** the two bases give very different size-band margins (`4f_margin_by_size.csv`), which is the point of showing both: the data room holds no cost-to-serve driver.
+- **Reverse:** edit the allocation in `notebooks/04f_margins.ipynb`.
+
+### D14. Discount measured by grossing up at the contract line's discount_pct
+
+- **Date:** 27 September 2026
+- **Decision:** list-equivalent = amount / (1 − discount_pct). This works for the large accounts, whose prices are many times list, as well as for standard lines.
+- **Alternatives:** list_price × months (breaks for the large accounts, which are not priced per seat at list).
+- **Reverse:** edit `sql/analysis/recurring_invoice_discounts.sql`.
+
+### D15. Segment flags
+
+- **Date:** 27 September 2026
+- **Decision:** risk if 2025 logo churn is more than 5 points above the company rate or NRR more than 5 points below; strength for the reverse; too small below 30 customers active in December 2024.
+- **Reverse:** edit the thresholds in `notebooks/04g_segments.ipynb`.
+
+### D16. Materiality ratings in the key findings are the analyst's judgement **Review first**
+
+- **Date:** 27 September 2026
+- **Decision:** High = could change price or structure; Medium = should be in the investment case; Low = SPA or completion-accounts point. F01 to F05 are rated High, F06, F07, F09 and F10 Medium, F08 Low.
+- **Reverse:** edit the ratings in `notebooks/04h_key_findings.ipynb`.
+
+### D17. Step 4 questions are added to the Q&A log by the findings notebook
+
+- **Date:** 27 September 2026
+- **Decision:** `notebooks/04h_key_findings.ipynb` opens the database read-write, deletes any earlier Step 4 rows and inserts Q15 onwards, then re-renders `docs/qa_log.md`. Evidence strings are built from `outputs/tables/`.
+- **Reverse:** move the inserts to a SQL file.
+
 ## Limitations
 
 - `pandoc`, `python-docx`, `reportlab` and `pypdf` are not installed at the start of the run. LibreOffice 24.2 is installed. Handling is recorded under the step that needs them.

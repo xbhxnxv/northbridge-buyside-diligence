@@ -372,3 +372,147 @@ def test_annual_reconciliation_within_tolerance_apart_from_documented_items(con)
         SELECT count(*) FROM recon_annual a
         WHERE abs(a.difference - coalesce((SELECT sum(amount) FROM recon_unexplained_items u WHERE u.year = a.year), 0)) >= 0.01
     """) == 0
+
+
+# ---------------------------------------------------------------------------
+# Step 4: core analyses (outputs/tables checked against the database)
+# ---------------------------------------------------------------------------
+
+TABLES_DIR = ROOT / "outputs" / "tables"
+
+
+def table(name: str) -> list[dict]:
+    path = TABLES_DIR / f"{name}.csv"
+    if not path.exists():
+        pytest.skip(f"{path.name} not built; run the notebooks")
+    with open(path, newline="", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+
+def close(a, b, tol=0.01) -> bool:
+    return abs(float(a) - float(b)) <= tol
+
+
+def test_arr_bridge_ties_every_year(con):
+    comps = ["new", "cross_sell", "upsell", "price_increase", "downgrade", "contraction", "churn"]
+    rows = table("4e_arr_bridge")
+    assert [int(r["year"]) for r in rows] == [2023, 2024, 2025]
+    for r in rows:
+        y = int(r["year"])
+        assert close(float(r["opening_arr"]) + sum(float(r[c]) for c in comps), r["closing_arr"]), y
+        # opening and closing equal December MRR x 12 straight from the cube
+        for col, yy in (("opening_arr", y - 1), ("closing_arr", y)):
+            db = scalar(con, f"SELECT 12 * sum(mrr) FROM fact_mrr_monthly WHERE month_start = DATE '{yy}-12-01'")
+            assert close(r[col], db), (y, col)
+        # new and churn customer counts recomputed independently
+        new, churned = con.execute(f"""
+            WITH o AS (SELECT DISTINCT customer_id FROM fact_mrr_monthly WHERE month_start = DATE '{y - 1}-12-01'),
+                 c AS (SELECT DISTINCT customer_id FROM fact_mrr_monthly WHERE month_start = DATE '{y}-12-01')
+            SELECT (SELECT count(*) FROM c WHERE customer_id NOT IN (SELECT customer_id FROM o)),
+                   (SELECT count(*) FROM o WHERE customer_id NOT IN (SELECT customer_id FROM c))
+        """).fetchone()
+        assert int(float(r["new_customers"])) == new and int(float(r["churned_customers"])) == churned, y
+
+
+def test_nrr_grr_recomputed_independently(con):
+    reported = {(int(r["year"]), r["basis"]): r for r in table("4d_nrr_grr")}
+    for y in (2023, 2024, 2025):
+        nrr, grr = con.execute(f"""
+            WITH m AS (SELECT customer_id, month_start, sum(mrr) AS mrr FROM fact_mrr_monthly
+                       WHERE month_start IN (DATE '{y - 1}-12-01', DATE '{y}-12-01') GROUP BY ALL),
+                 o AS (SELECT customer_id, mrr FROM m WHERE month_start = DATE '{y - 1}-12-01'),
+                 j AS (SELECT o.customer_id, o.mrr AS open_mrr, coalesce(c.mrr, 0) AS close_mrr
+                       FROM o LEFT JOIN m c ON c.customer_id = o.customer_id AND c.month_start = DATE '{y}-12-01')
+            SELECT 100 * sum(close_mrr) / sum(open_mrr), 100 * sum(least(close_mrr, open_mrr)) / sum(open_mrr) FROM j
+        """).fetchone()
+        r = reported[(y, "reported")]
+        assert close(r["nrr_pct"], nrr, 1e-6) and close(r["grr_pct"], grr, 1e-6), y
+        assert float(r["grr_pct"]) <= float(r["nrr_pct"]) + 1e-9
+    assert {y for y, _ in reported} == {2023, 2024, 2025}   # no 2022: there is no December 2021
+
+
+def test_concentration_shares(con):
+    rows = table("4b_top_n_shares")
+    by_year: dict[int, list] = {}
+    for r in rows:
+        assert 0 < float(r["share_of_net_pct"]) <= 100 and 0 < float(r["share_of_recurring_pct"]) <= 100
+        assert close(100 * float(r["net_revenue_top_n"]) / float(r["net_revenue_total"]), r["share_of_net_pct"], 1e-6)
+        by_year.setdefault(int(r["year"]), []).append(r)
+    for y, rs in by_year.items():
+        rs.sort(key=lambda r: int(r["top_n"]))
+        shares = [float(r["share_of_net_pct"]) for r in rs]
+        assert shares == sorted(shares), y          # top 5 >= top 1, and so on
+        total = scalar(con, f"SELECT sum(net_revenue) FROM fact_revenue_monthly WHERE year(month_start) = {y}")
+        top1 = scalar(con, f"""SELECT max(s) FROM (SELECT sum(net_revenue) AS s FROM fact_revenue_monthly
+                               WHERE year(month_start) = {y} GROUP BY customer_id)""")
+        assert close(rs[0]["net_revenue_total"], total) and close(rs[0]["net_revenue_top_n"], top1), y
+
+
+def test_revenue_bridge_equals_cube_change(con):
+    parts = ["new_customers", "full_year_effect_of_prior_year_additions", "cross_sell", "upsell", "price_increase", "billing_gaps",
+             "downgrade", "contraction", "churn", "credit_notes_change", "signup_implementation_change", "other_implementation_change"]
+    for r in table("4e_revenue_bridge"):
+        y = int(r["year"])
+        cube = {yy: scalar(con, f"SELECT sum(net_revenue) FROM fact_revenue_monthly WHERE year(month_start) = {yy}") for yy in (y - 1, y)}
+        assert close(sum(float(r[p]) for p in parts), cube[y] - cube[y - 1]), y
+
+
+def test_revenue_mix_adds_up(con):
+    for r in table("4a_revenue_mix"):
+        assert close(float(r["recurring"]) + float(r["oneoff"]), r["net_revenue"])
+        assert close(float(r["signup_implementation"]) + float(r["other_implementation"]), r["oneoff"])
+        assert close(r["net_revenue"], scalar(con, f"SELECT sum(net_revenue) FROM fact_revenue_monthly WHERE year(month_start) = {r['year']}"))
+
+
+def test_uplift_factors_quoted_in_docs_match_data():
+    k = {int(r["year"]): float(r["k"]) for r in table("4a_uplift_factors")}
+    svi = {r["year_end"][:4]: float(r["invoiced_over_subscription"]) for r in table("4a_sub_vs_invoice_mrr")}
+    text = (ROOT / "docs" / "metric_definitions.md").read_text(encoding="utf-8")
+    assert k[2023] == 1.0 and k[2024] == 1.05 and k[2025] == 1.07
+    assert svi["2024"] == 1.05 and svi["2025"] == 1.1235
+    assert "× 1.05" in text and "× 1.1235" in text
+
+
+def test_price_increase_uniform_across_continuing_lines():
+    for r in table("4a_uplift_factors"):
+        assert float(r["share_of_lines_at_k_pct"]) == 100.0, r["year"]
+
+
+def test_margin_allocation_adds_back_to_total_cost(con):
+    by_year: dict[int, float] = {}
+    for r in table("4f_margin_by_size"):
+        by_year[int(r["year"])] = by_year.get(int(r["year"]), 0.0) + float(r["cost_basis_a"])
+    for y, cost in by_year.items():
+        assert close(cost, scalar(con, f"SELECT sum(total_cost_of_delivery) FROM clean_costs WHERE year(month) = {y}")), y
+
+
+def test_mix_plus_rate_equals_margin_change():
+    for r in table("4f_mix_rate"):
+        assert close(float(r["mix_effect_pts"]) + float(r["rate_effect_pts"]), r["change_pts"], 1e-9)
+
+
+def test_key_figures_trace_to_the_database(con):
+    kf = {r["name"]: float(r["value"]) for r in table("key_figures")}
+    for y in (2022, 2023, 2024, 2025):
+        assert close(kf[f"net_revenue_{y}"], scalar(con, f"SELECT sum(net_revenue) FROM fact_revenue_monthly WHERE year(month_start) = {y}"))
+        assert close(kf[f"arr_{y}"], scalar(con, f"SELECT 12 * sum(mrr) FROM fact_mrr_monthly WHERE month_start = DATE '{y}-12-01'"))
+        assert close(kf[f"mgmt_revenue_{y}"], scalar(con, f"SELECT sum(total_revenue) FROM clean_management_accounts WHERE year(month) = {y}"))
+    assert close(kf["other_implementation_2025"],
+                 scalar(con, "SELECT sum(amount) FROM clean_invoices WHERE oneoff_category = 'other_implementation'"))
+    for r in table("key_figures"):
+        assert (TABLES_DIR / f"{r['source'].split(' ')[0]}.csv").exists() or r["source"].startswith("clean_"), r["name"]
+
+
+def test_step4_charts_exist():
+    charts = ROOT / "outputs" / "charts"
+    for name in ["4a_revenue_mix", "4b_pareto", "4b_top10_trend", "4c_logo_retention_heatmap", "4c_revenue_retention_heatmap",
+                 "4c_tenure_matched", "4d_nrr_grr", "4e_arr_bridge", "4e_revenue_bridge", "4f_margin", "4f_discount_by_size",
+                 "4g_segments", "4g_segment_retention"]:
+        path = charts / f"{name}.png"
+        if not path.exists():
+            pytest.skip("charts not built; run the notebooks")
+        assert path.stat().st_size > 10_000, name
+
+
+def test_qa_references_in_docs_point_at_the_right_question(con):
+    assert scalar(con, "SELECT topic FROM qa_log WHERE qa_id = 'Q15'") == "Price increases"

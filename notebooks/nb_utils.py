@@ -120,3 +120,22 @@ def save_table(df: pd.DataFrame, name: str) -> pd.DataFrame:
     TABLES.mkdir(parents=True, exist_ok=True)
     df.to_csv(TABLES / f"{name}.csv", index=False)
     return df
+
+
+def render_qa_log(con: duckdb.DuckDBPyConnection) -> int:
+    """Write docs/qa_log.md from the qa_log table. Returns the number of questions."""
+    qa = q(con, "SELECT * FROM qa_log ORDER BY qa_id")
+    lines = ["# Q&A log", "",
+             "Questions for management raised by the data. Generated from the `qa_log` table, which the Step 2 and 3 SQL "
+             "and the Step 4 findings notebook append to. The evidence is built from the tables on every run. Do not edit by hand.", ""]
+    for _, r in qa.iterrows():
+        lines += [f"## {r.qa_id}: {r.topic} ({r.issue_ref}, {r.step})", "",
+                  f"**Question.** {r.question}", "",
+                  f"**Evidence.** {r.evidence}", "",
+                  f"**Status.** {r.status}", ""]
+    (DOCS / "qa_log.md").write_text("\n".join(lines), encoding="utf-8")
+    return len(qa)
+
+
+def read_table(name: str) -> pd.DataFrame:
+    return pd.read_csv(TABLES / f"{name}.csv")

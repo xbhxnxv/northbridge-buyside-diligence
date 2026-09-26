@@ -1,6 +1,6 @@
 # Q&A log
 
-Questions for management raised by the data. Generated from the `qa_log` table, which each step's SQL appends to. The evidence is built from the tables on every run. Do not edit by hand.
+Questions for management raised by the data. Generated from the `qa_log` table, which the Step 2 and 3 SQL and the Step 4 findings notebook append to. The evidence is built from the tables on every run. Do not edit by hand.
 
 ## Q01: Customer identity (P07, Step 2)
 
@@ -111,5 +111,61 @@ Questions for management raised by the data. Generated from the `qa_log` table, 
 **Question.** Which 2025 revenue figure appears in the information memorandum: the reported total or the sum of the product lines?
 
 **Evidence.** 2025 reported total revenue is £45,771,419.35; the sum of the product lines is £45,756,419.35. The February 2025 adjustment adds £15,000 to the reported total.
+
+**Status.** open
+
+## Q15: Price increases (4a, Step 4)
+
+**Question.** Please confirm the price increases applied from January 2024 and January 2025, the contractual basis for them, how customers were notified, and whether a further increase is planned for 2026.
+
+**Evidence.** Every recurring line bills 5% above its contracted price in 2024 and a further 7% in 2025. The subscription table does not record the increases.
+
+**Status.** open
+
+## Q16: Large customers (4b, Step 4)
+
+**Question.** Why did C1052 end Analytics Add-on (ended 2025-09-01) and Payments Module (ended 2025-09-01)? What is the renewal date and status of its remaining contract? Why did C1545 end Payments Module (ended 2025-02-01)? What is the renewal date and status of its remaining contract?
+
+**Evidence.** C1052: December ARR £2.32m in 2024, £1.34m in 2025 (down 42.4%). C1545: December ARR £2.05m in 2024, £1.81m in 2025 (down 11.9%).
+
+**Status.** open
+
+## Q17: Large customers (4b, Step 4)
+
+**Question.** Please provide the contracts for the six customers priced at 10 times list or more, including term, renewal dates, termination and change-of-control clauses.
+
+**Evidence.** They carry 20.8% of 2025 revenue.
+
+**Status.** open
+
+## Q18: Retention (4c, Step 4)
+
+**Question.** What changed in customer acquisition, onboarding or pricing from 2023 that could explain faster churn among newer customers? Please provide churn reasons by customer for 2024 and 2025.
+
+**Evidence.** 12-month logo retention: 78.6% for 2023+ signups against 92.5% for 2017 to 2022 signups; Micro customers 66.1%.
+
+**Status.** open
+
+## Q19: Retention (4g, Step 4)
+
+**Question.** Why do customers acquired through Paid Search and Partner/Reseller churn faster, and what is the acquisition cost of each channel?
+
+**Evidence.** 2025 logo churn: Paid Search 19.5%, Partner/Reseller 19.7%, Direct Sales 8.6%.
+
+**Status.** open
+
+## Q20: Margin (4f, Step 4)
+
+**Question.** Is the Implementation Services cost of delivery for the 2025 projects complete, and is further cost to come on work already billed?
+
+**Evidence.** Implementation cost of delivery rose from £0.80m in 2024 to £3.85m in 2025; margin 27.1%.
+
+**Status.** open
+
+## Q21: Pricing (4f, Step 4)
+
+**Question.** What is the discount policy for large customers, who approves discounts, and are any discounts due to fall away or be renegotiated at renewal?
+
+**Evidence.** Large customers average 22.2% off list; £5.35m given up across all customers in 2025.
 
 **Status.** open

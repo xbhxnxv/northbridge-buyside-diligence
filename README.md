@@ -32,6 +32,6 @@ docs/             data profile, cleaning log, data dictionary, metric definition
 tests/            pytest tie-outs
 ```
 
-**Reproduce.** `pip install -r requirements.txt`, install LibreOffice Calc and Writer (for example `apt-get install libreoffice-calc libreoffice-writer`), then `python run_all.py`. It takes about a minute.
+**Reproduce.** `pip install -r requirements.txt`, install LibreOffice Calc and Writer (for example `apt-get install libreoffice-calc libreoffice-writer`), then `python run_all.py`. It takes a little over a minute. `python run_all.py --check-determinism` runs everything twice and confirms that every output is byte-for-byte identical.
 
 **Tools.** Python (pandas, numpy, matplotlib, openpyxl, python-docx), SQL (DuckDB), Jupyter, pytest, LibreOffice, Power BI (DAX).

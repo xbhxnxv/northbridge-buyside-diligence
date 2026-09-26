@@ -232,6 +232,51 @@ Also found by search but not tried, because their domains were already blocked: 
 - **What is in place for the next attempt:** `tests/test_benchmarks.py` holds the checks the brief asks for. The check on `benchmarks.csv` (URL, year and accessed date on every row, allowed values for statistic and comparability) skips until the file exists. So does the check that no text says "indicative, not sourced". A third check runs now: the databook's benchmark rows equal the table they are read from, and the memo, key findings and README say nothing about benchmarks while none are sourced.
 - **Reverse:** allow the publishers' domains in this environment's network settings (or work from a machine with open web access), then rerun Job 1 from step 1.2.
 
+### D29. `document_date` is the v1.0 release date
+
+- **Date:** 26 September 2026
+- **Decision:** `report_config.json` gains `"document_date": "2026-09-26"`, the day Abhinav published the v1.0 release on GitHub. Every date written into a file's metadata comes from it: the xlsx and docx core properties, the zip entry times and the PDF dates. The date printed in the memo is still `report_date` (27 September 2026), which is the memo's own date and was not changed.
+- **Alternatives:** use `report_date` for both (rejected: the brief asks for the release date, and the two fields answer different questions); use the date of each run (rejected: that is what made the files change on every run).
+- **Evidence:** the GitHub release list shows `v1.0` published at 14:46 UTC on 26 September 2026. No code writes the current date or time into an output; `run_all.py` only times the stages for the console summary.
+- **Reverse:** change `document_date`; the next run restamps every file.
+
+### D30. Notebooks: no timing metadata, outputs kept
+
+- **Date:** 26 September 2026
+- **Decision:** nbconvert runs with `record_timing` off, and `tools/normalise_notebook.py` runs after each notebook. It removes any per-cell `execution` timestamps and widget state, writes the file in nbformat's standard layout, and fails if an output contains a memory address or this checkout's absolute path. All outputs stay visible. `language_info` (the Python version) is kept, because it describes the environment rather than the run.
+- **Evidence:** before the change, the only differences between two runs were the four timestamps per code cell, plus one printed `-0.0` against `0.0` in 04e (D33).
+- **Reverse:** remove the flag and the normaliser call from the notebooks stage in `run_all.py`.
+
+### D31. Office files and the PDF are normalised after they are saved
+
+- **Date:** 26 September 2026
+- **Decision:** `tools/normalise_ooxml.py` rewrites the xlsx after the LibreOffice recalculation and the docx after python-docx saves it. It sets created, modified, lastModifiedBy (the same as the author), revision 1 and, for the docx, lastPrinted. It sets TotalTime to 0 if it is anything else, renumbers chart axis ids in order of first appearance, and writes the zip entries in a fixed order (`[Content_Types].xml` first, then sorted) with fixed times and compression. `tools/normalise_pdf.py` sets the PDF dates, updates XMP dates if a packet exists (LibreOffice writes none), and removes LibreOffice's `/DocChecksum` and the old `/ID`. It then saves with qpdf's content-derived ID, after checking that the page count and extracted text are unchanged.
+- **Alternatives:** set the dates through LibreOffice itself (rejected: it overwrites modified on save and has no switch for the axis ids or the PDF ID); commit the Office files and PDF only when their content changes (rejected: hides the problem instead of fixing it).
+- **Evidence:** between two runs the xlsx differed in `core.xml` (modified), eight chart files (random axis ids) and every zip entry time. The docx differed only in zip entry times. The PDF differed in `/CreationDate`, `/ID` and `/DocChecksum`. After normalising, all three are identical across runs, and all 112 tests in the default run pass on the normalised files, including the databook recalculation, checks and penny tests.
+- **Note:** app.xml's AppVersion (15.0000 in the xlsx, 14.0000 in the docx template) does not change between runs, so it is left as it is.
+- **Reverse:** remove the `normalise` calls in `databook/build_databook.py` and `memo/build_memo.py`.
+
+### D32. Export rounding stays at six decimal places
+
+- **Date:** 26 September 2026
+- **Decision:** every table in `outputs/tables/` is written through `save_table`, which rounds every float to six decimal places. The step 2 and step 3 tables used to bypass it; now they go through it too. £ amounts were not re-rounded to two decimal places, and `step2_cube_vs_management.csv` keeps its unrounded export.
+- **Alternatives:** round £ to 2dp as the brief suggests (rejected for now: 33 tables have float columns beyond 2dp, so this would change table bytes, and the brief also requires the tables to stay byte-identical; six places already removes the run-to-run noise); round `step2_cube_vs_management.csv` too (rejected for the same reason: its `as_reported_less_mgmt_total` column carries last-digit noise such as `16381.039999999106` from v1.0).
+- **Evidence:** the noise in that column comes from subtracting exact DECIMAL sums, so it is the same on every run. The one table that did move during this work (`step2_cleaning_summary.csv`, after its rows got a fixed order) went back to its v1.0 bytes once it was exported through `save_table`.
+- **Reverse:** change the rounding in `save_table` (`notebooks/nb_utils.py`), and export `step2_cube_vs_management` through it (`notebooks/02_data_preparation.ipynb`). Expect the table bytes to change once.
+
+### D33. Explicit ordering everywhere a row order or a sum order can reach an output
+
+- **Date:** 26 September 2026
+- **Decision:** `run_all.py` gives every child process, including the notebook kernels, `PYTHONHASHSEED=0`. The 04e revenue bridge sums customers in `sorted()` order instead of set order. The five analysis queries that lacked one got an `ORDER BY` on their grain, and so did the five `COPY` exports. Multi-row `UNION ALL` tables and notebook queries now carry an ordinal column that is sorted on and then dropped, so rows keep their written order. `cleaning_actions` and `clean_removed_invoices` are ordered by action and record. `preserve_insertion_order` is set explicitly on every connection; it is DuckDB's default, and it is what makes a plain scan of a table created with `ORDER BY` return rows in that order.
+- **Evidence:** the 04e revenue bridge printed `-0.0` or `0.0` for a check value depending on the run, because string hashing changes set order and so the order of a floating-point sum. I could not confirm DuckDB's documented order guarantees for `UNION ALL`, because duckdb.org is blocked from this session, so the order is made explicit instead of assumed.
+- **Reverse:** remove the `ORDER BY` clauses and ordinals; outputs may then depend on DuckDB's execution order.
+
+### D34. The rerun test is marked slow and deselected by default
+
+- **Date:** 26 September 2026
+- **Decision:** `tests/test_reproducible.py` reruns the pipeline and checks that `git status --porcelain` and every tracked file are unchanged. It takes about 75 seconds, so `pytest.ini` deselects it by default, and the `tests` stage of `run_all.py` does not run it. Run it with `python -m pytest tests -m slow`, or use `python run_all.py --check-determinism`, which compares two full runs, including the generated CSVs that git ignores.
+- **Reverse:** remove the `addopts` line in `pytest.ini`.
+
 ## Limitations
 
 - `pandoc`, `python-docx`, `reportlab` and `pypdf` are not installed at the start of the run. LibreOffice 24.2 is installed. Handling is recorded under the step that needs them.

@@ -72,7 +72,7 @@ Full entries are in `docs/decisions_log.md`. **Review first** marks the ones wor
 - pandoc is not available, so the memo uses the second route (Word, then LibreOffice to PDF).
 - PyMuPDF was installed only to render pages for visual checks. It is not a pipeline dependency.
 - No Power BI Desktop: the DAX has been checked in Python against the same logic, not run in Power BI.
-- Notebooks, the xlsx, the docx and the PDF carry run metadata, so they show as modified after every run even when every number is the same. The CSV outputs, charts and markdown are byte-identical from run to run.
+- In v1.0, notebooks, the xlsx, the docx and the PDF carried run metadata, so they showed as modified after every run even when every number was the same. The CSV outputs, charts and markdown were already byte-identical from run to run. Fixed after v1.0: every output is now identical from run to run (D29 to D34, and `CHANGELOG.md`).
 - Benchmarks in 4d are not sourced (D12).
 - Pushing the `v1.0` tag from this session was refused with HTTP 403 by the session's egress policy, and I did not retry. Abhinav then created the `v1.0` release through the GitHub web interface at `8dead6c`.
 

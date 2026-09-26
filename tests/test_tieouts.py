@@ -755,7 +755,8 @@ def test_memo_has_required_sections():
 BANNED = ["delve", "tapestry", "pivotal", "underscore", "testament", "crucial", "robust", "leverage", "seamless",
           "holistic", "elevate", "unlock", "empower", "cutting-edge", "game-changer"]
 PROSE = ["README.md", "memo/findings_memo.md", "outputs/key_findings.md", "docs/cv_bullets.md", "docs/interview_prep.md",
-         "docs/metric_definitions.md", "docs/decisions_log.md", "docs/alteryx_workflow.md", "dashboard/README.md", "docs/overnight_report.md"]
+         "docs/metric_definitions.md", "docs/decisions_log.md", "docs/alteryx_workflow.md", "dashboard/README.md", "docs/overnight_report.md",
+         "CHANGELOG.md"]
 
 
 @pytest.mark.parametrize("doc", PROSE)
